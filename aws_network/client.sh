@@ -5,6 +5,7 @@ GOSSIP_KEY=$(echo $CONFIG_FILE | base64 -D | jq -r '.encrypt')
 RETRY_JOIN=$(echo $CONFIG_FILE | base64 -D | jq -r '.retry_join[]')
 DATACENTER=$(echo $CONFIG_FILE | base64 -D | jq -r '.datacenter')
 CONSUL_CA=$(echo "${CONSUL_CA_FILE}" | base64 -D)
+
 # Install Consul
 curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
 apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
