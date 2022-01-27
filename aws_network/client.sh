@@ -1,15 +1,17 @@
 #!/bin/bash
 
-CONFIG_FILE="${CONSUL_CONFIG_FILE}"
-GOSSIP_KEY=$(echo $CONFIG_FILE | base64 -d | jq -r '.encrypt')
-RETRY_JOIN=$(echo $CONFIG_FILE | base64 -d | jq -r '.retry_join[]')
-DATACENTER=$(echo $CONFIG_FILE | base64 -d | jq -r '.datacenter')
-CONSUL_CA=$(echo "${CONSUL_CA_FILE}" | base64 -d)
+CONFIG_FILE_64="${CONSUL_CONFIG_FILE}"
+CONSUL_CA=$(echo ${CONSUL_CA_FILE}| base64 -d)
 
 # Install Consul
 curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
 apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
 apt update && apt install -y consul unzip jq
+
+# Set variables with jq
+GOSSIP_KEY=$(echo $CONFIG_FILE_64 | base64 -d | jq -r '.encrypt')
+RETRY_JOIN=$(echo $CONFIG_FILE_64 | base64 -d | jq -r '.retry_join[]')
+DATACENTER=$(echo $CONFIG_FILE_64 | base64 -d | jq -r '.datacenter')
 
 # Grab instance IP
 local_ip=`ip -o route get to 169.254.169.254 | sed -n 's/.*src \([0-9.]\+\).*/\1/p'`

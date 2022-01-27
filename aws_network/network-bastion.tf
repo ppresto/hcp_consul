@@ -7,7 +7,7 @@ data "aws_ssm_parameter" "ubuntu_1804_ami_id" {
 data "template_file" "userdata" {
   template = file("${path.module}/client.sh")
   vars = {
-    CONSUL_CA_FILE     = base64encode(data.terraform_remote_state.hcp_consul.outputs.consul_ca_file)
+    CONSUL_CA_FILE     = data.terraform_remote_state.hcp_consul.outputs.consul_ca_file
     CONSUL_CONFIG_FILE = data.terraform_remote_state.hcp_consul.outputs.consul_config_file
     CONSUL_ACL_TOKEN   = data.terraform_remote_state.hcp_consul.outputs.consul_root_token_secret_id
   }
