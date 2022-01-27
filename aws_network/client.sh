@@ -1,10 +1,10 @@
 #!/bin/bash
 
 CONFIG_FILE="${CONSUL_CONFIG_FILE}"
-GOSSIP_KEY=$(echo $CONFIG_FILE | base64 -D | jq -r '.encrypt')
-RETRY_JOIN=$(echo $CONFIG_FILE | base64 -D | jq -r '.retry_join[]')
-DATACENTER=$(echo $CONFIG_FILE | base64 -D | jq -r '.datacenter')
-CONSUL_CA=$(echo "${CONSUL_CA_FILE}" | base64 -D)
+GOSSIP_KEY=$(echo $CONFIG_FILE | base64 -d | jq -r '.encrypt')
+RETRY_JOIN=$(echo $CONFIG_FILE | base64 -d | jq -r '.retry_join[]')
+DATACENTER=$(echo $CONFIG_FILE | base64 -d | jq -r '.datacenter')
+CONSUL_CA=$(echo "${CONSUL_CA_FILE}" | base64 -d)
 
 # Install Consul
 curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
