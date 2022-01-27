@@ -18,10 +18,11 @@ local_ip=`ip -o route get to 169.254.169.254 | sed -n 's/.*src \([0-9.]\+\).*/\1
 
 # Setup Consul Client for HCP
 mkdir -p /opt/consul
+mkdir -p /etc/consul.d/certs
 
 touch /etc/consul.d/consul.env  #placeholder for env vars
 
-cat > /etc/consul.d/ca.pem <<- EOF
+cat > /etc/consul.d/certs/ca.pem <<- EOF
 $CONSUL_CA
 EOF
 
