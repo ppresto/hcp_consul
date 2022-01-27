@@ -3,7 +3,6 @@
 This example uses only verified Terraform modules to create all resources that are needed for an ECS cluster that is sufficient for staging or production environment.
 
 While this example is still in the early stage there are other repositories that show how to create an ECS cluster:
-
 * <https://github.com/anrim/terraform-aws-ecs>
 * <https://github.com/arminc/terraform-ecs>
 * <https://github.com/alex/ecs-terraform>
