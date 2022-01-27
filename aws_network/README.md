@@ -1,6 +1,6 @@
 # AWS VPC + Transit Gateway
 
-Configuration in this directory creates AWS Transit Gateway, attach VPC to it and share it with other AWS principals using [Resource Access Manager (RAM)](https://aws.amazon.com/ram/).
+Configuration in this directory creates the AWS VPC, Transit Gateway, TGW attachements and shares it with other AWS principals using [Resource Access Manager (RAM)](https://aws.amazon.com/ram/).  An SSH Bastion host is provisioned in a public subnet with external access and all security groups, routes, and services running to connect it to HCP Consul.
 
 ## Notes
 An SSH Bastion host was created in the public subnet with rules allowing ssh to private subnets for troubleshooting.
@@ -9,7 +9,7 @@ An SSH Bastion host was created in the public subnet with rules allowing ssh to 
 
 If you have your aws keypair setup your ssh agent (-A) and the bastion_ip you can ssh to it.
 ```
-ssh -A ubuntu@${terraform output bastion_ip}
+ssh -A ubuntu@${bastion_ip}
 ```
 ## Usage
 
@@ -85,4 +85,22 @@ sudo cat /var/lib/cloud/instance/user-data.txt
 The cloud-init log captures console output of the user-data script run.
 ```
 sudo cat /var/log/cloud-init-output.log
+```
+
+## systemctl consul.service
+This repo creates the systemd start script located at `/etc/systemd/system/consul.service`.  This scripts requires:
+*  /opt/consul to store data.
+*  /etc/consul.d/certs - ca.pem from HCP
+*  /etc/consul.d/ - HCP default configs and an ACL token
+
+To stop, start, and get the status of the service
+```
+systemctl stop consul.service
+systemctl start consul.service
+systemctl status consul.service
+```
+
+To investigate systemd errors starting consul use `journalctl`
+```
+journalctl -u consul.service
 ```

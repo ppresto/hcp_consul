@@ -6,12 +6,12 @@ locals {
   ec2_resources_name = "${local.name}_${local.environment}"
 }
 
-data "terraform_remote_state" "aws_vpc2_tgw" {
+data "terraform_remote_state" "aws_network" {
   backend = "remote"
   config = {
     organization = "presto-projects"
     workspaces = {
-      name = "aws_vpc2_tgw"
+      name = "aws_network"
     }
   }
 }
@@ -22,7 +22,7 @@ data "aws_availability_zones" "available" {
 
 data "aws_security_group" "vpc_default" {
   name   = "default"
-  vpc_id = data.terraform_remote_state.aws_vpc2_tgw.outputs.vpc2_id
+  vpc_id = data.terraform_remote_state.aws_network.outputs.vpc_id
 }
 
 #----- ECS --------
@@ -69,15 +69,15 @@ resource "aws_ecs_capacity_provider" "prov1" {
 #module "hello_world" {
 #  source = "./service-hello-world"
 #  cluster_id = module.ecs.ecs_cluster_id
-#  target_subnets = data.terraform_remote_state.aws_vpc2_tgw.outputs.vpc2_private_subnets
+#  target_subnets = data.terraform_remote_state.aws_network.outputs.vpc_private_subnets
 #}
 
 module "fake-service" {
   source            = "./service-client-example"
   name              = "fake-service"
-  target_subnets    = data.terraform_remote_state.aws_vpc2_tgw.outputs.vpc2_private_subnets
-  alb_subnets       = data.terraform_remote_state.aws_vpc2_tgw.outputs.vpc2_public_subnets
-  vpc_id            = data.terraform_remote_state.aws_vpc2_tgw.outputs.vpc2_id
+  target_subnets    = data.terraform_remote_state.aws_network.outputs.vpc_private_subnets
+  alb_subnets       = data.terraform_remote_state.aws_network.outputs.vpc_public_subnets
+  vpc_id            = data.terraform_remote_state.aws_network.outputs.vpc_id
   security_group_id = data.aws_security_group.vpc_default.id
   cluster_id        = module.ecs.ecs_cluster_id
 }
@@ -114,14 +114,14 @@ module "asg" {
 
   image_id                  = data.aws_ami.amazon_linux_ecs.id
   instance_type             = "t2.micro"
-  security_groups           = [data.terraform_remote_state.aws_vpc2_tgw.outputs.vpc2_default_security_group_id]
+  security_groups           = [data.terraform_remote_state.aws_network.outputs.vpc_default_security_group_id]
   iam_instance_profile_name = module.ec2_profile.iam_instance_profile_id
   user_data = templatefile("${path.module}/templates/user-data.sh", {
     cluster_name = local.name
   })
 
   # Auto scaling group
-  vpc_zone_identifier       = data.terraform_remote_state.aws_vpc2_tgw.outputs.vpc2_private_subnets
+  vpc_zone_identifier       = data.terraform_remote_state.aws_network.outputs.vpc_private_subnets
   health_check_type         = "EC2"
   min_size                  = 0
   max_size                  = 2
