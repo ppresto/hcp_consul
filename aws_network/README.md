@@ -78,4 +78,5 @@ No inputs.
 # Troubleshooting
 ## AWS user_data
 * When a user data script is processed, it is copied to and run from /var/lib/cloud/instances/instance-id/. The script is not deleted after it is run and can be found in this directory with the name user-data.txt So to check if your shell script made to the server refer this directory and the file.
+
 * The cloud-init output log file (/var/log/cloud-init-output.log) captures console output of your user_data shell script. to know how your user_data shell script was executed and its output check this file.
