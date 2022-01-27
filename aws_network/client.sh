@@ -90,5 +90,5 @@ LimitNOFILE=65536
 [Install]
 WantedBy=multi-user.target
 EOF
-systemctl enable consul
-systemctl start consul
+systemctl enable consul.service
+systemctl start consul.service
