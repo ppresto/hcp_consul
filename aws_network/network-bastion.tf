@@ -3,6 +3,15 @@
 data "aws_ssm_parameter" "ubuntu_1804_ami_id" {
   name = "/aws/service/canonical/ubuntu/server/18.04/stable/current/amd64/hvm/ebs-gp2/ami-id"
 }
+
+data "template_file" "userdata" {
+  template = file("${path.module}/client.sh")
+  vars = {
+    CONSUL_CA_FILE     = base64encode(data.terraform_remote_state.hcp_consul.outputs.consul_ca_file)
+    CONSUL_CONFIG_FILE = data.terraform_remote_state.hcp_consul.outputs.consul_config_file
+    CONSUL_ACL_TOKEN   = data.terraform_remote_state.hcp_consul.outputs.consul_root_token_secret_id
+  }
+}
 resource "aws_instance" "bastion" {
   ami                         = var.use_latest_ami ? data.aws_ssm_parameter.ubuntu_1804_ami_id.value : var.ami_id
   instance_type               = "t3.micro"
@@ -10,11 +19,7 @@ resource "aws_instance" "bastion" {
   vpc_security_group_ids      = [aws_security_group.bastion.id]
   subnet_id                   = module.vpc.public_subnets[0]
   associate_public_ip_address = true
-  user_data = base64encode(templatefile("${path.module}/client.sh", {
-    CONSUL_CA_FILE     = data.terraform_remote_state.hcp_consul.outputs.consul_ca_file
-    CONSUL_CONFIG_FILE = data.terraform_remote_state.hcp_consul.outputs.consul_config_file
-    CONSUL_ACL_TOKEN   = data.terraform_remote_state.hcp_consul.outputs.consul_root_token_secret_id
-  }))
+  user_data = base64encode(data.template_file.userdata.rendered)
   tags = merge(
     { "Name" = "${var.region}-bastion" },
     { "Project" = var.region }
