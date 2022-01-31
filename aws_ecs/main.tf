@@ -80,6 +80,7 @@ module "fake-service" {
   vpc_id            = data.terraform_remote_state.aws_network.outputs.vpc_id
   security_group_id = data.aws_security_group.vpc_default.id
   cluster_id        = module.ecs.ecs_cluster_id
+  region            = var.region
 }
 
 #----- ECS  Resources--------
