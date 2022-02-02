@@ -11,10 +11,10 @@ module "acl_controller" {
     }
   }
   consul_bootstrap_token_secret_arn = aws_secretsmanager_secret.bootstrap_token.arn
-  consul_server_http_addr           = data.terraform_remote_state.hcp_consul.consul_private_endpoint_url
+  consul_server_http_addr           = local.consul_server_http_addr
   ecs_cluster_arn                   = aws_ecs_cluster.this.arn
   region                            = var.region
-  subnets                           = data.terraform_remote_state.aws_network.vpc_private_subnets
+  subnets                           = local.private_subnet_ids
   name_prefix                       = var.name
 }
 
@@ -97,7 +97,7 @@ module "example_server_app" {
   acls                           = true
   consul_client_token_secret_arn = module.acl_controller.client_token_secret_arn
   acl_secret_name_prefix         = var.name
-  consul_datacenter              = data.terraform_remote_state.hcp_consul.datacenter
+  consul_datacenter              = var.consul_datacenter
 
   depends_on = [module.acl_controller]
 }
