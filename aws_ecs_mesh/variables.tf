@@ -48,7 +48,7 @@ locals {
   private_subnet_ids = data.terraform_remote_state.aws_network.outputs.vpc_private_subnets
   public_subnet_ids = data.terraform_remote_state.aws_network.outputs.vpc_public_subnets
 
-  consul_config_file = jsondecode(data.terraform_remote_state.hcp_consul.outputs.consul_config_file)
+  consul_config_file = jsondecode(base64decode(data.terraform_remote_state.hcp_consul.outputs.consul_config_file))
   consul_gossip_key = local.consul_config_file.encrypt
   consul_server_http_addr = data.terraform_remote_state.hcp_consul.outputs.consul_private_endpoint_url
   consul_datacenter = data.terraform_remote_state.hcp_consul.outputs.datacenter
