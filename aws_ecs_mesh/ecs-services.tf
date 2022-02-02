@@ -27,7 +27,7 @@ resource "aws_ecs_service" "example_server_app" {
   task_definition = module.example_server_app.task_definition_arn
   desired_count   = 1
   network_configuration {
-    subnets = data.terraform_remote_state.aws_network.vpc_private_subnets
+    subnets = local.private_subnet_ids
   }
   launch_type            = "FARGATE"
   propagate_tags         = "TASK_DEFINITION"

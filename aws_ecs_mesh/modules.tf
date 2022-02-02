@@ -58,7 +58,7 @@ module "example_client_app" {
     }
   ]
   // Strip away the https prefix from the Consul network address
-  retry_join                     = [substr(var.consul_cluster_addr, 8, -1)]
+  retry_join                     = [substr(local.consul_server_http_addr, 8, -1)]
   tls                            = true
   consul_server_ca_cert_arn      = aws_secretsmanager_secret.consul_ca_cert.arn
   gossip_key_secret_arn          = aws_secretsmanager_secret.gossip_key.arn
