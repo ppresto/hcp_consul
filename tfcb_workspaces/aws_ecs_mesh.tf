@@ -20,7 +20,7 @@ module "ws_aws_ecs_mesh" {
     "ssh_key_name"     = "ppresto-ptfe-dev-key"
     "region"           = var.aws_default_region
     "name"             = "hcp-ecs-learn"
-    "user_public_ip    = "52.119.127.230"
+    "user_public_ip"   = "52.119.127.230"
     }
     env_variables_sec = {
       "HCP_CLIENT_SECRET" = var.HCP_CLIENT_SECRET
