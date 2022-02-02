@@ -2,7 +2,7 @@ module "ws_aws_ecs" {
     source = "../modules/workspace-mgr"
     agent_pool_id     = ""
     organization = var.organization
-    workspacename = "aws_ecs"
+    workspacename = "aws_ecs_basic"
     workingdir = "aws_ecs"
     tfversion = "1.1.4"
     queue_all_runs = false
