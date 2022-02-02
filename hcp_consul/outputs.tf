@@ -17,6 +17,10 @@ output "consul_private_endpoint_url" {
   value = hcp_consul_cluster.example_hcp.consul_private_endpoint_url
 }
 
+output "datacenter" {
+  value = hcp_consul_cluster.example_hcp.datacenter
+}
+
 output "organization_id" {
   value = hcp_consul_cluster.example_hcp.organization_id
 }
