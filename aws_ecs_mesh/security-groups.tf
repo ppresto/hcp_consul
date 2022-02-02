@@ -1,6 +1,6 @@
 resource "aws_security_group" "example_client_app_alb" {
   name   = "${var.name}-example-client-app-alb"
-  vpc_id = var.vpc_id
+  vpc_id = local.vpc_id
 
   ingress {
     description = "Access to example client application."

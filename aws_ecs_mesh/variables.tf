@@ -44,6 +44,7 @@ locals {
       awslogs-stream-prefix = "client"
     }
   }
+  vpc_id = data.terraform_remote_state.aws_network.vpc_id
   private_subnet_ids = data.terraform_remote_state.aws_network.vpc_private_subnets
   public_subnet_ids = data.terraform_remote_state.aws_network.vpc_public_subnets
 
