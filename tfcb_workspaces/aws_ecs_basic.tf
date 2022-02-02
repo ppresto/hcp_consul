@@ -1,9 +1,9 @@
-module "ws_aws_ecs" {
+module "aws_ecs_basic" {
     source = "../modules/workspace-mgr"
     agent_pool_id     = ""
     organization = var.organization
     workspacename = "aws_ecs_basic"
-    workingdir = "aws_ecs"
+    workingdir = "aws_ecs_basic"
     tfversion = "1.1.4"
     queue_all_runs = false
     auto_apply = true
