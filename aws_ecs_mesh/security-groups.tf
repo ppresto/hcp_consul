@@ -1,6 +1,6 @@
 resource "aws_security_group" "example_client_app_alb" {
   name   = "${var.name}-example-client-app-alb"
-  vpc_id = local.vpc_id
+  vpc_id = data.terraform_remote_state.aws_network.vpc_id
 
   ingress {
     description = "Access to example client application."
