@@ -11,7 +11,7 @@ data "aws_caller_identity" "current" {}
 
 data "aws_security_group" "vpc_default" {
   name   = "default"
-  vpc_id = data.terraform_remote_state.aws_network.vpc_id
+  vpc_id = local.vpc_id
 }
 
 data "terraform_remote_state" "aws_network" {

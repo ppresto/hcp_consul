@@ -3,7 +3,7 @@ resource "aws_lb" "example_client_app" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.example_client_app_alb.id]
-  subnets            = data.terraform_remote_state.aws_network.vpc_public_subnets
+  subnets            = local.public_subnet_ids
 }
 
 resource "aws_lb_target_group" "example_client_app" {
