@@ -45,7 +45,7 @@ module "eks" {
   }]
 
   vpc_id     = data.terraform_remote_state.aws_network.outputs.vpc_id
-  subnet_ids = private_subnet_ids = data.terraform_remote_state.aws_network.outputs.vpc_private_subnets
+  subnet_ids = data.terraform_remote_state.aws_network.outputs.vpc_private_subnets
 
   enable_irsa = true
 
