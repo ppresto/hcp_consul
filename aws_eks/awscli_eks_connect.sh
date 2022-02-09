@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Setup local AWS Env using doormat alias
-dme
+$(dme)
 
 # get identity
 aws sts get-caller-identity
