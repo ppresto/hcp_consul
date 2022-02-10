@@ -104,3 +104,6 @@ output "vpc_public_subnets" {
 output "vpc_default_security_group_id" {
   value = module.vpc.default_security_group_id
 }
+output "consul_server_sg_id" {
+  value = aws_security_group.consul_server.id
+}
