@@ -167,5 +167,5 @@ output "aws_auth_configmap_yaml" {
 }
 
 output "consul_retry_join" {
-  value = [ for v in local.consul_retry_join: v ]
+  value = local.consul_retry_join
 }
