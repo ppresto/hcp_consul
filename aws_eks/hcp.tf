@@ -8,7 +8,7 @@ resource "kubernetes_secret" "consul-ca-cert" {
   }
 
   data = {
-    tls.crt = data.terraform_remote_state.hcp_consul.outputs.consul_ca_file
+    "tls.crt" = data.terraform_remote_state.hcp_consul.outputs.consul_ca_file
   }
 }
 
@@ -18,7 +18,7 @@ resource "kubernetes_secret" "consul-gossip-key" {
   }
 
   data = {
-    key = local.consul_config_file.encrypt
+    "key" = local.consul_config_file.encrypt
   }
 }
 
@@ -28,7 +28,7 @@ resource "kubernetes_secret" "consul-bootstrap-token" {
   }
 
   data = {
-    token = local.consul_acl_token
+    "token" = local.consul_acl_token
   }
 }
 
