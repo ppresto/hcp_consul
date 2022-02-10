@@ -33,7 +33,7 @@ resource "kubernetes_secret" "consul-bootstrap-token" {
 }
 
 #
-### Install Consul Client Agents into EKS
+### Install Consul Client Agents into EKS using helm
 #
 
 data "template_file" "agent_config" {
