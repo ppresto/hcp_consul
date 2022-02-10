@@ -17,7 +17,7 @@ locals {
 
   consul_config_file = jsondecode(base64decode(data.terraform_remote_state.hcp_consul.outputs.consul_config_file))
   consul_gossip_key = local.consul_config_file.encrypt
-  consul_retry_join = "${local.consul_config_file.retry_join[]}"
+  consul_retry_join = "${local.consul_config_file.retry_join}[]"
   consul_server_http_addr = data.terraform_remote_state.hcp_consul.outputs.consul_private_endpoint_url
   consul_datacenter = data.terraform_remote_state.hcp_consul.outputs.datacenter
   consul_acl_token = data.terraform_remote_state.hcp_consul.outputs.consul_root_token_secret_id
