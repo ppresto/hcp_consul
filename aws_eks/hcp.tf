@@ -50,13 +50,13 @@ resource "helm_release" "consul" {
 
   repository = "https://helm.releases.hashicorp.com"
   chart      = "consul"
-  #version    = "0.32.1"
+  version    = "0.32.1"
 
   values = [data.template_file.agent_config.rendered]
 
   set {
     name  = "global.image"
     #value = "hashicorp/consul-enterprise:1.11.0-ent"
-    value = "hashicorp/consul:1.11.2"
+    value = "hashicorp/consul:1.10.1"
   }
 }
