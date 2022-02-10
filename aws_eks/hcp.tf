@@ -8,7 +8,7 @@ resource "kubernetes_secret" "consul-ca-cert" {
   }
 
   data = {
-    "tls.crt" = data.terraform_remote_state.hcp_consul.outputs.consul_ca_file
+    "tls.crt" = base64decode(data.terraform_remote_state.hcp_consul.outputs.consul_ca_file)
   }
 }
 
