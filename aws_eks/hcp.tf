@@ -49,7 +49,7 @@ resource "helm_release" "consul" {
   name       = "consul"
 
   repository = "https://helm.releases.hashicorp.com"
-  chart      = "hashicorp/consul-helm"
+  chart      = "hashicorp/consul"
   #version    = "0.32.1"
 
   values = [data.template_file.agent_config.rendered]
