@@ -40,7 +40,7 @@ data "template_file" "agent_config" {
   template = file("${path.module}/config.yaml")
   vars = {
     DATACENTER     = local.consul_datacenter
-    RETRY_JOIN = local.consul_retry_join
+    RETRY_JOIN = "test"
     KUBE_API_URL   = local.consul_server_http_addr
   }
 }
