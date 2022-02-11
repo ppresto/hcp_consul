@@ -59,8 +59,8 @@ module "eks" {
       instance_types = ["t3.large"]
       labels = {
         Example    = "managed_node_groups"
-        GithubRepo = "terraform-aws-eks"
-        GithubOrg  = "terraform-aws-modules"
+        GithubRepo = "hcp_consul"
+        GithubOrg  = "ppresto"
       }
       tags = {
         ExtraTag = "example"
@@ -102,9 +102,9 @@ module "eks" {
         {
           namespace = "default"
           labels = {
-            Environment = "test"
-            GithubRepo  = "terraform-aws-eks"
-            GithubOrg   = "terraform-aws-modules"
+            Environment = "dev"
+            GithubRepo  = "hcp_consul"
+            GithubOrg   = "ppresto"
           }
         }
       ]
