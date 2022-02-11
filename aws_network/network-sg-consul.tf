@@ -61,7 +61,15 @@ resource "aws_security_group_rule" "consul_server_allow_22_bastion" {
   source_security_group_id = aws_security_group.bastion.id
   description              = "Allow SSH traffic from consul bastion."
 }
-
+resource "aws_security_group_rule" "consul_server_allow_client_8501" {
+  security_group_id        = aws_security_group.consul_server.id
+  type                     = "ingress"
+  protocol                 = "tcp"
+  from_port                = 8501
+  to_port                  = 8501
+  source_security_group_id = aws_security_group.consul_server.id
+  description              = "Used to handle gossip between client agents"
+}
 #
 ### Egress Rules
 #
