@@ -27,7 +27,7 @@ module "eks" {
   cluster_version                 = local.cluster_version
   cluster_endpoint_private_access = true
   cluster_endpoint_public_access  = true
-  cluster_additional_security_group_ids = ["sg-01e618efe23b68aea"]
+  cluster_additional_security_group_ids = [data.terraform_remote_state.aws_network.outputs.consul_server_sg_id]
   cluster_addons = {
     # Note: https://docs.aws.amazon.com/eks/latest/userguide/fargate-getting-started.html#fargate-gs-coredns
     coredns = {
