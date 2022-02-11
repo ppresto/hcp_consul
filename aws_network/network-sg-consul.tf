@@ -61,12 +61,34 @@ resource "aws_security_group_rule" "consul_server_allow_22_bastion" {
   source_security_group_id = aws_security_group.bastion.id
   description              = "Allow SSH traffic from consul bastion."
 }
+#EKS - Consul ingress gateway
+# Error from server (BadRequest): a container name must be specified for pod consul-ingress-gateway-55d874f58-l2x4w, choose one of: [copy-consul-bin get-auto-encrypt-client-ca service-init ingress-gateway consul-sidecar]
 resource "aws_security_group_rule" "consul_server_allow_client_8501" {
   security_group_id        = aws_security_group.consul_server.id
   type                     = "ingress"
   protocol                 = "tcp"
   from_port                = 8501
   to_port                  = 8501
+  source_security_group_id = aws_security_group.consul_server.id
+  description              = "Used to handle gossip between client agents"
+}
+# EKS - Consul client
+# [ERROR] agent.auto_config: AutoEncrypt.Sign RPC failed: addr=172.25.26.99:8300 error="rpcinsecure error establishing connection: dial tcp <nil>->172.25.26.99:8300: i/o timeout"
+resource "aws_security_group_rule" "consul_server_allow_client_8300" {
+  security_group_id        = aws_security_group.consul_server.id
+  type                     = "ingress"
+  protocol                 = "tcp"
+  from_port                = 8300
+  to_port                  = 8300
+  source_security_group_id = aws_security_group.consul_server.id
+  description              = "Used to handle gossip between client agents"
+}
+resource "aws_security_group_rule" "consul_server_allow_client_8300_udp" {
+  security_group_id        = aws_security_group.consul_server.id
+  type                     = "ingress"
+  protocol                 = "udp"
+  from_port                = 8300
+  to_port                  = 8300
   source_security_group_id = aws_security_group.consul_server.id
   description              = "Used to handle gossip between client agents"
 }
