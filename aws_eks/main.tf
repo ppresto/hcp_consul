@@ -55,6 +55,7 @@ module "eks" {
   eks_managed_node_groups = {
     example = {
       desired_size = 1
+      vpc_security_group_ids = [data.terraform_remote_state.aws_network.outputs.consul_server_sg_id]
 
       instance_types = ["t3.large"]
       labels = {
