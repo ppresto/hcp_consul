@@ -34,20 +34,3 @@ resource "hcp_hvn_route" "route" {
   destination_cidr = var.vpc_cidr_block
   target_link      = hcp_aws_transit_gateway_attachment.example.self_link
 }
-
-# Define additional Routes for Layer 3 connectivity from within the VPC.
-
-# VPC private subnet route to HCP CIDR Block
-resource "aws_route" "private" {
-  for_each               = toset(module.vpc.private_route_table_ids)
-  route_table_id         = each.key
-  destination_cidr_block = data.terraform_remote_state.hcp_consul.outputs.hvn_cidr_block
-  transit_gateway_id     = module.tgw.ec2_transit_gateway_id
-}
-# VPC public subnet route to HCP CIDR Block
-resource "aws_route" "public" {
-  for_each               = toset(module.vpc.public_route_table_ids)
-  route_table_id         = each.key
-  destination_cidr_block = data.terraform_remote_state.hcp_consul.outputs.hvn_cidr_block
-  transit_gateway_id     = module.tgw.ec2_transit_gateway_id
-}
