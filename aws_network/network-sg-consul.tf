@@ -61,6 +61,7 @@ resource "aws_security_group_rule" "consul_server_allow_22_bastion" {
   source_security_group_id = aws_security_group.bastion.id
   description              = "Allow SSH traffic from consul bastion."
 }
+
 #EKS - Consul ingress gateway
 # Error from server (BadRequest): a container name must be specified for pod consul-ingress-gateway-55d874f58-l2x4w, choose one of: [copy-consul-bin get-auto-encrypt-client-ca service-init ingress-gateway consul-sidecar]
 resource "aws_security_group_rule" "consul_server_allow_client_8501" {
@@ -92,6 +93,20 @@ resource "aws_security_group_rule" "consul_server_allow_client_8300_udp" {
   source_security_group_id = aws_security_group.consul_server.id
   description              = "Used to handle gossip between client agents"
 }
+
+# EKS - API needs access to Pods
+# Error from server (InternalError): error when creating "hashicups/frontend.yaml": Internal error occurred: failed calling webhook "mutate-servicedefaults.consul.hashicorp.com": 
+#   Post "https://consul-controller-webhook.default.svc:443/mutate-v1alpha1-servicedefaults?timeout=10s": context deadline exceeded
+resource "aws_security_group_rule" "consul_client_allow_eksapi_9443" {
+  security_group_id        = aws_security_group.consul_server.id
+  type                     = "ingress"
+  protocol                 = "tcp"
+  from_port                = 9443
+  to_port                  = 9443
+  source_security_group_id = aws_security_group.consul_server.id
+  description              = "Used to handle EKS API request to Pods"
+}
+
 #
 ### Egress Rules
 #
