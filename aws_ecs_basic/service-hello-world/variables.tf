@@ -5,7 +5,7 @@ variable "cluster_id" {
 
 variable "target_subnets" {
   description = "target subnets required for awsvpc network config"
-  type        = list
+  type        = list(any)
 }
 
 

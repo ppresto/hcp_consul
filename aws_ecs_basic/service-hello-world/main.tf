@@ -8,14 +8,14 @@ resource "aws_cloudwatch_log_group" "hello_world" {
 }
 
 resource "aws_ecs_task_definition" "hello_world" {
-  family = "hello_world"
+  family                   = "hello_world"
   execution_role_arn       = data.aws_iam_role.ecs_task_execution_role.arn
   task_role_arn            = data.aws_iam_role.ecs_task_execution_role.arn
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   cpu                      = 1024
   memory                   = 2048
-  container_definitions = <<EOF
+  container_definitions    = <<EOF
 [
   {
     "name": "hello_world",
@@ -40,7 +40,7 @@ resource "aws_ecs_service" "hello_world" {
   cluster         = var.cluster_id
   task_definition = aws_ecs_task_definition.hello_world.arn
   launch_type     = "FARGATE"
-  desired_count = 1
+  desired_count   = 1
 
   deployment_maximum_percent         = 100
   deployment_minimum_healthy_percent = 0

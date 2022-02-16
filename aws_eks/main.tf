@@ -23,10 +23,10 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "18.4.1"
 
-  cluster_name                    = local.name
-  cluster_version                 = local.cluster_version
-  cluster_endpoint_private_access = true
-  cluster_endpoint_public_access  = true
+  cluster_name                          = local.name
+  cluster_version                       = local.cluster_version
+  cluster_endpoint_private_access       = true
+  cluster_endpoint_public_access        = true
   cluster_additional_security_group_ids = [data.terraform_remote_state.aws_network.outputs.consul_server_sg_id]
   cluster_addons = {
     # Note: https://docs.aws.amazon.com/eks/latest/userguide/fargate-getting-started.html#fargate-gs-coredns
@@ -54,7 +54,7 @@ module "eks" {
   # available under https://docs.aws.amazon.com/eks/latest/userguide/fargate-getting-started.html
   eks_managed_node_groups = {
     example = {
-      desired_size = 1
+      desired_size           = 1
       vpc_security_group_ids = [data.terraform_remote_state.aws_network.outputs.consul_server_sg_id]
 
       instance_types = ["t3.large"]

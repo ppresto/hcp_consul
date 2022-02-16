@@ -24,7 +24,7 @@ resource "aws_secretsmanager_secret" "consul_ca_cert" {
 }
 
 resource "aws_secretsmanager_secret_version" "consul_ca_cert" {
-  secret_id     = aws_secretsmanager_secret.consul_ca_cert.id
+  secret_id = aws_secretsmanager_secret.consul_ca_cert.id
   #secret_string = file(var.consul_client_ca_path)
   secret_string = base64decode(local.consul_client_ca_path)
 }

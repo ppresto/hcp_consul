@@ -39,14 +39,14 @@ resource "kubernetes_secret" "consul-bootstrap-token" {
 data "template_file" "agent_config" {
   template = file("${path.module}/templates/config.yaml")
   vars = {
-    DATACENTER     = local.consul_datacenter
-    RETRY_JOIN = jsonencode(local.consul_retry_join)
-    KUBE_API_URL   = module.eks.cluster_endpoint
+    DATACENTER   = local.consul_datacenter
+    RETRY_JOIN   = jsonencode(local.consul_retry_join)
+    KUBE_API_URL = module.eks.cluster_endpoint
   }
 }
 
 resource "helm_release" "consul" {
-  name       = "consul"
+  name = "consul"
 
   repository = "https://helm.releases.hashicorp.com"
   chart      = "consul"

@@ -6,31 +6,27 @@ terraform {
       source  = "hashicorp/aws"
       version = ">= 3.74.1"
     }
-    hcp = {
-      source  = "hashicorp/hcp"
-      version = "~> 0.22"
-    }
     kubernetes = {
-      source = "hashicorp/kubernetes"
+      source  = "hashicorp/kubernetes"
       version = "~> 2.7.0"
     }
     helm = {
-      source = "hashicorp/helm"
+      source  = "hashicorp/helm"
       version = "~> 2.4.1"
     }
   }
 }
 
 provider "kubernetes" {
-  host                    = data.aws_eks_cluster.cluster.endpoint
-  token                   = data.aws_eks_cluster_auth.cluster.token
-  cluster_ca_certificate  = base64decode(data.aws_eks_cluster.cluster.certificate_authority[0].data)
+  host                   = data.aws_eks_cluster.cluster.endpoint
+  token                  = data.aws_eks_cluster_auth.cluster.token
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority[0].data)
 }
 
 provider "helm" {
   kubernetes {
-    host                    = data.aws_eks_cluster.cluster.endpoint
-    token                   = data.aws_eks_cluster_auth.cluster.token
-    cluster_ca_certificate  = base64decode(data.aws_eks_cluster.cluster.certificate_authority[0].data)
+    host                   = data.aws_eks_cluster.cluster.endpoint
+    token                  = data.aws_eks_cluster_auth.cluster.token
+    cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority[0].data)
   }
 }
