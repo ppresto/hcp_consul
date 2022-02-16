@@ -4,8 +4,8 @@
 #        so Terraform cannot predict how many instances will be created.
 #        To work around this, use the -target argument, or put these routes into a new TFCB workspace.
 #
-# Workaround: 
-#   Rename this file, or Comment out these aws_route resources for the first run.  
+# Workaround:
+#   Rename this file, or Comment out these aws_route resources for the first run.
 #   Once the VPC is provisioned rename/uncomment and apply.
 
 
