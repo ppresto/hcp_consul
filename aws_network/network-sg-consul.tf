@@ -63,7 +63,8 @@ resource "aws_security_group_rule" "consul_server_allow_22_bastion" {
 }
 
 #EKS - Consul ingress gateway
-# Error from server (BadRequest): a container name must be specified for pod consul-ingress-gateway-55d874f58-l2x4w, choose one of: [copy-consul-bin get-auto-encrypt-client-ca service-init ingress-gateway consul-sidecar]
+# kubectl logs consul-ingress-gateway-55d874f58-rc98s service-init
+# Error registering service "ingress-gateway": Put "https://10.20.3.197:8501/v1/agent/service/register": dial tcp 10.20.3.197:8501: connect: connection refused
 resource "aws_security_group_rule" "consul_server_allow_client_8501" {
   security_group_id        = aws_security_group.consul_server.id
   type                     = "ingress"
