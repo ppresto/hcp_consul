@@ -37,7 +37,7 @@ resource "kubernetes_secret" "consul-bootstrap-token" {
 #
 
 data "template_file" "agent_config" {
-  template = file("${path.module}/templates/config.yaml")
+  template = file("${path.module}/templates/helm-config.yaml")
   vars = {
     DATACENTER   = local.consul_datacenter
     RETRY_JOIN   = jsonencode(local.consul_retry_join)
