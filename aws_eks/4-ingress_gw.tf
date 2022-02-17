@@ -5,7 +5,7 @@ data "kubectl_file_documents" "svc_intensions" {
     content = file("${path.module}/templates/service-intentions.yaml")
 }
 
-resource "kubectl_manifest" "reg_ingress_gw" {
+resource "kubectl_manifest" "apply_ingress_gw" {
     for_each  = data.kubectl_file_documents.ingress_gw.manifests
     yaml_body = each.value
 }
