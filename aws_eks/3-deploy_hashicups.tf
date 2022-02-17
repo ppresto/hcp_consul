@@ -1,8 +1,3 @@
-resource "kubectl_manifest" "test" {
-    for_each  = toset(data.kubectl_path_documents.docs.documents)
-    yaml_body = each.value
-}
-
 data "kubectl_path_documents" "manifests" {
   pattern = "${path.module}/hashicups/*.yaml"
 }
