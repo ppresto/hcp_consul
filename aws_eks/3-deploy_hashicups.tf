@@ -1,3 +1,8 @@
+resource "kubectl_manifest" "test" {
+    for_each  = toset(data.kubectl_path_documents.docs.documents)
+    yaml_body = each.value
+}
+
 data "kubectl_path_documents" "manifests" {
   pattern = "${path.module}/hashicups/*.yaml"
 }
@@ -7,8 +12,10 @@ resource "kubectl_manifest" "applications" {
   # For some reason using the above line returns a count not known until apply
   # error, even though the files are static. This needs to be kept in sync with
   # the YAML files defined in the hashicups/ directory.
-  count     = 28
-  yaml_body = element(data.kubectl_path_documents.manifests.documents, count.index)
+  #count     = 28
+  #yaml_body = element(data.kubectl_path_documents.manifests.documents, count.index)
+    for_each  = toset(data.kubectl_path_documents.manifests.documents)
+    yaml_body = each.value
 }
 
 data "kubernetes_service" "ingress" {
