@@ -3,12 +3,6 @@ data "kubectl_path_documents" "manifests" {
 }
 
 resource "kubectl_manifest" "applications" {
-  # count     = length(data.kubectl_path_documents.manifests.documents)
-  # For some reason using the above line returns a count not known until apply
-  # error, even though the files are static. This needs to be kept in sync with
-  # the YAML files defined in the hashicups/ directory.
-  #count     = 28
-  #yaml_body = element(data.kubectl_path_documents.manifests.documents, count.index)
     for_each  = toset(data.kubectl_path_documents.manifests.documents)
     yaml_body = each.value
 }
@@ -17,6 +11,5 @@ data "kubernetes_service" "ingress" {
   metadata {
     name = "consul-ingress-gateway"
   }
-
   depends_on = [kubectl_manifest.applications]
 }
