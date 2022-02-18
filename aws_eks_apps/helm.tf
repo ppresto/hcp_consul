@@ -1,34 +1,3 @@
-
-#
-### Configure Consul Secrets
-#
-resource "kubernetes_secret" "consul-ca-cert" {
-  metadata {
-    name = "consul-ca-cert"
-  }
-  data = {
-    "tls.crt" = base64decode(data.terraform_remote_state.hcp_consul.outputs.consul_ca_file)
-  }
-}
-
-resource "kubernetes_secret" "consul-gossip-key" {
-  metadata {
-    name = "consul-gossip-key"
-  }
-  data = {
-    "key" = local.consul_config_file.encrypt
-  }
-}
-
-resource "kubernetes_secret" "consul-bootstrap-token" {
-  metadata {
-    name = "consul-bootstrap-token"
-  }
-  data = {
-    "token" = local.consul_acl_token
-  }
-}
-
 #
 ### Install Consul Client Agents into EKS using helm
 #
@@ -38,7 +7,7 @@ data "template_file" "agent_config" {
   vars = {
     DATACENTER   = local.consul_datacenter
     RETRY_JOIN   = jsonencode(local.consul_retry_join)
-    KUBE_API_URL = module.eks.cluster_endpoint
+    KUBE_API_URL = data.terraform_remote_state.aws_eks.outputs.cluster_endpoint
   }
 }
 
