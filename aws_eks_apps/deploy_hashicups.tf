@@ -5,6 +5,7 @@ data "kubectl_path_documents" "manifests" {
 resource "kubectl_manifest" "applications" {
     for_each  = toset(data.kubectl_path_documents.manifests.documents)
     yaml_body = each.value
+    depends_on = [helm_release.consul]
 }
 
 data "kubernetes_service" "ingress" {
