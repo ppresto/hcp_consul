@@ -96,7 +96,7 @@ resource "aws_security_group_rule" "consul_server_allow_client_8300_udp" {
   description              = "Used to handle gossip between client agents"
 }
 /*
-# EKS - API needs access to Pods
+# EKS - API needs access to Pods.  hashicups pods can't be started
 Error from server (InternalError): error when creating "hashicups/frontend.yaml": Internal error occurred: failed calling webhook "mutate-servicedefaults.consul.hashicorp.com": 
 Post "https://consul-controller-webhook.default.svc:443/mutate-v1alpha1-servicedefaults?timeout=10s": context deadline exceeded
 */
