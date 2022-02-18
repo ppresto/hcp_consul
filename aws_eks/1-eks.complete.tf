@@ -57,7 +57,8 @@ module "eks" {
       desired_size           = 1
       vpc_security_group_ids = [data.terraform_remote_state.aws_network.outputs.consul_server_sg_id]
 
-      instance_types = ["t3.large"]
+      instance_types = ["t3a.medium"]
+      #instance_types = ["t3.large"]
       labels = {
         Example    = "managed_node_groups"
         GithubRepo = "hcp_consul"

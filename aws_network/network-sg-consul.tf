@@ -115,13 +115,14 @@ resource "aws_security_group_rule" "consul_client_allow_eksapi_9443" {
 
 $ kubectl describe rs frontend-d6c448596
 Warning  FailedCreate  2m8s (x16 over 6m42s)  replicaset-controller  Error creating: Internal error occurred: failed calling webhook "consul-connect-injector.consul.hashicorp.com": Post "https://consul-connect-injector-svc.default.svc:443/mutate?timeout=10s": context deadline exceeded
+Warning  FailedCreate  12m                  replicaset-controller  Error creating: Internal error occurred: failed calling webhook "consul-connect-injector.consul.hashicorp.com": Post "https://consul-connect-injector-svc.default.svc:443/mutate?timeout=10s": dial tcp 10.20.2.118:8080: i/o timeout
 */
 resource "aws_security_group_rule" "consul_client_allow_eksapi_443" {
   security_group_id        = aws_security_group.consul_server.id
   type                     = "ingress"
   protocol                 = "tcp"
-  from_port                = 443
-  to_port                  = 443
+  from_port                = 8080
+  to_port                  = 8080
   source_security_group_id = aws_security_group.consul_server.id
   description              = "Used to handle EKS API request to consul-connect"
 }
