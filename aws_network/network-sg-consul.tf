@@ -61,10 +61,11 @@ resource "aws_security_group_rule" "consul_server_allow_22_bastion" {
   source_security_group_id = aws_security_group.bastion.id
   description              = "Allow SSH traffic from consul bastion."
 }
-
-#EKS - Consul ingress gateway
-# kubectl logs consul-ingress-gateway-55d874f58-rc98s service-init
-# Error registering service "ingress-gateway": Put "https://10.20.3.197:8501/v1/agent/service/register": dial tcp 10.20.3.197:8501: connect: connection refused
+/*
+# EKS - Consul ingress gateway
+kubectl logs consul-ingress-gateway-55d874f58-rc98s service-init
+Error registering service "ingress-gateway": Put "https://10.20.3.197:8501/v1/agent/service/register": dial tcp 10.20.3.197:8501: connect: connection refused
+*/
 resource "aws_security_group_rule" "consul_server_allow_client_8501" {
   security_group_id        = aws_security_group.consul_server.id
   type                     = "ingress"
@@ -94,10 +95,11 @@ resource "aws_security_group_rule" "consul_server_allow_client_8300_udp" {
   source_security_group_id = aws_security_group.consul_server.id
   description              = "Used to handle gossip between client agents"
 }
-
+/*
 # EKS - API needs access to Pods
-# Error from server (InternalError): error when creating "hashicups/frontend.yaml": Internal error occurred: failed calling webhook "mutate-servicedefaults.consul.hashicorp.com": 
-#   Post "https://consul-controller-webhook.default.svc:443/mutate-v1alpha1-servicedefaults?timeout=10s": context deadline exceeded
+Error from server (InternalError): error when creating "hashicups/frontend.yaml": Internal error occurred: failed calling webhook "mutate-servicedefaults.consul.hashicorp.com": 
+Post "https://consul-controller-webhook.default.svc:443/mutate-v1alpha1-servicedefaults?timeout=10s": context deadline exceeded
+*/
 resource "aws_security_group_rule" "consul_client_allow_eksapi_9443" {
   security_group_id        = aws_security_group.consul_server.id
   type                     = "ingress"
@@ -106,6 +108,22 @@ resource "aws_security_group_rule" "consul_client_allow_eksapi_9443" {
   to_port                  = 9443
   source_security_group_id = aws_security_group.consul_server.id
   description              = "Used to handle EKS API request to Pods"
+}
+
+/*
+# Hashicups fails to deploy replicaset
+
+$ kubectl describe rs frontend-d6c448596
+Warning  FailedCreate  2m8s (x16 over 6m42s)  replicaset-controller  Error creating: Internal error occurred: failed calling webhook "consul-connect-injector.consul.hashicorp.com": Post "https://consul-connect-injector-svc.default.svc:443/mutate?timeout=10s": context deadline exceeded
+*/
+resource "aws_security_group_rule" "consul_client_allow_eksapi_443" {
+  security_group_id        = aws_security_group.consul_server.id
+  type                     = "ingress"
+  protocol                 = "tcp"
+  from_port                = 443
+  to_port                  = 443
+  source_security_group_id = aws_security_group.consul_server.id
+  description              = "Used to handle EKS API request to consul-connect"
 }
 
 #
