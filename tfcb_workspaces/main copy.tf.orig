@@ -4,10 +4,10 @@ provider "tfe" {
 }
 
 terraform {
-  required_version = ">= 1.0.5"
+  required_version = ">= 0.13.06"
   required_providers {
     tfe = {
-      version = "~>0.31.0"
+      version = "~>0.25"
     }
     multispace = {
       source = "mitchellh/multispace"
