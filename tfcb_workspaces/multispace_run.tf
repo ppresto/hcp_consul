@@ -3,6 +3,7 @@ resource "multispace_run" "hcp_consul" {
   # you can define the multispace runs before the workspace even exists.
   workspace    = "hcp_consul"
   organization = var.organization
+  retry        = true
 }
 
 resource "multispace_run" "aws_network" {
