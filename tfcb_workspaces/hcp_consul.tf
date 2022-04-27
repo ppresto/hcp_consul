@@ -5,7 +5,7 @@ module "ws_hcp_consul" {
   workspacename       = "hcp_consul"
   workingdir          = "hcp_consul"
   tfversion           = "1.1.4"
-  queue_all_runs      = false
+  queue_all_runs      = true
   auto_apply          = true
   identifier          = "${var.repo_org}/hcp_consul"
   oauth_token_id      = var.oauth_token_id
