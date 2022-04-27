@@ -9,5 +9,10 @@ terraform {
     tfe = {
       version = "~>0.25"
     }
+    multispace = {
+      source = "mitchellh/multispace"
+      version = "~>0.1.1"
+    }
   }
 }
+

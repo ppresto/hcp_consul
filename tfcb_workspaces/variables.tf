@@ -36,3 +36,8 @@ variable "arm_client_id" { default = "" }
 # Custom variables
 variable "HCP_CLIENT_ID" { default = "" }
 variable "HCP_CLIENT_SECRET" { default = "" }
+
+variable "tag_names" {
+  type    = list
+  default = ["auto"]
+}

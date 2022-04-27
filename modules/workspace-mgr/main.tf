@@ -12,7 +12,7 @@ resource "tfe_workspace" "ws-vcs" {
   global_remote_state = var.global_remote_state != "" ? true : false
   agent_pool_id       = var.agent_pool_id != "" ? var.agent_pool_id : ""
   execution_mode      = var.agent_pool_id != "" ? "agent" : "remote"
-
+  tag_names           = var.tag_names
   vcs_repo {
     identifier     = var.identifier
     oauth_token_id = var.oauth_token_id

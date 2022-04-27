@@ -44,6 +44,10 @@ variable "env_variables_sec" {
   default = {}
 }
 
+variable "tag_names" {
+  type    = list
+  default = ["auto"]
+}
 # IAM Teams Map
 #variable "teams_config" {
 #  type = map

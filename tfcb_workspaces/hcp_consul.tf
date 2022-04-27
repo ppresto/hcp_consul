@@ -11,6 +11,7 @@ module "ws_hcp_consul" {
   oauth_token_id      = var.oauth_token_id
   repo_branch         = "main"
   global_remote_state = false
+  tag_names           = ["auto","inject_creds"]
   env_variables = {
     "CONFIRM_DESTROY" : 1
     "AWS_DEFAULT_REGION" : var.aws_default_region
