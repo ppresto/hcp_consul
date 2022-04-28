@@ -11,13 +11,6 @@ data "aws_subnet_ids" "default" {
   vpc_id = data.aws_vpc.vpc.id
 }
 
-data "aws_subnet_ids" "public" {
-  vpc_id = data.aws_vpc.vpc.id
-  tags = {
-    Tier = "Public"
-  }
-}
-
 # data source for availability zones
 data "aws_availability_zones" "available" {
   state = "available"
