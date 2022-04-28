@@ -17,7 +17,7 @@ resource "aws_instance" "bastion" {
   instance_type               = "t3.micro"
   key_name                    = var.ec2_key_pair_name
   vpc_security_group_ids      = [aws_security_group.bastion.id, aws_security_group.consul_server.id]
-  subnet_id                   = module.vpc.public_subnets[0]
+  subnet_id                   = data.terraform_remote_state.hcp_consul.outputs.vpc_public_subnets[0]
   associate_public_ip_address = true
   user_data                   = data.template_file.userdata.rendered
   tags = merge(
@@ -30,7 +30,7 @@ resource "aws_instance" "bastion" {
 resource "aws_security_group" "bastion" {
   name_prefix = "${var.region}-bastion-sg"
   description = "Firewall for the bastion instance"
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = data.terraform_remote_state.hcp_consul.outputs.vpc_id
   tags = merge(
     { "Name" = "${var.region}-bastion-sg" },
     { "Project" = var.region }
