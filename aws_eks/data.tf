@@ -1,9 +1,9 @@
-data "terraform_remote_state" "aws_network" {
+data "terraform_remote_state" "aws-tgw" {
   backend = "remote"
   config = {
     organization = "presto-projects"
     workspaces = {
-      name = "aws_network"
+      name = "aws-tgw"
     }
   }
 }

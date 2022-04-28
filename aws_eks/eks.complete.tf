@@ -27,7 +27,7 @@ module "eks" {
   cluster_version                       = local.cluster_version
   cluster_endpoint_private_access       = true
   cluster_endpoint_public_access        = true
-  cluster_additional_security_group_ids = [data.terraform_remote_state.aws_network.outputs.consul_server_sg_id]
+  cluster_additional_security_group_ids = [data.terraform_remote_state.aws-tgw.outputs.consul_server_sg_id]
   cluster_addons = {
     # Note: https://docs.aws.amazon.com/eks/latest/userguide/fargate-getting-started.html#fargate-gs-coredns
     coredns = {
@@ -44,8 +44,8 @@ module "eks" {
     resources        = ["secrets"]
   }]
 
-  vpc_id     = data.terraform_remote_state.aws_network.outputs.vpc_id
-  subnet_ids = data.terraform_remote_state.aws_network.outputs.vpc_private_subnets
+  vpc_id     = data.terraform_remote_state.hcp_consul.outputs.vpc_id
+  subnet_ids = data.terraform_remote_state.hcp_consul.outputs.vpc_private_subnets
 
   enable_irsa = true
 
@@ -55,7 +55,7 @@ module "eks" {
   eks_managed_node_groups = {
     example = {
       desired_size           = 1
-      vpc_security_group_ids = [data.terraform_remote_state.aws_network.outputs.consul_server_sg_id]
+      vpc_security_group_ids = [data.terraform_remote_state.aws-tgw.outputs.consul_server_sg_id]
 
       instance_types = ["t3a.medium"]
       #instance_types = ["t3.large"]
