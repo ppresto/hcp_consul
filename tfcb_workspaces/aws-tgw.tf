@@ -1,9 +1,9 @@
-module "ws_aws_network" {
+module "ws_aws_tgw" {
   source              = "../modules/workspace-mgr"
   agent_pool_id       = ""
   organization        = var.organization
-  workspacename       = "aws_network"
-  workingdir          = "aws_network"
+  workspacename       = "aws-tgw"
+  workingdir          = "aws-tgw"
   tfversion           = "1.1.4"
   queue_all_runs      = false
   auto_apply          = true

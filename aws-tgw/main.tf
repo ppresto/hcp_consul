@@ -4,7 +4,8 @@ provider "aws" {
 
 # See Notes in README.md for explanation regarding using data-sources and computed values
 data "aws_vpc" "default" {
-  default = true
+  default = var.vpc_id == null ? true : false
+  id      = var.vpc_id
 }
 
 data "aws_subnet_ids" "this" {
@@ -15,6 +16,13 @@ data "aws_availability_zones" "available" {
   filter {
     name   = "opt-in-status"
     values = ["opt-in-not-required"]
+  }
+}
+
+data "aws_subnet_ids" "public" {
+  vpc_id = data.aws_vpc.vpc.id
+  tags = {
+    Tier = "Public"
   }
 }
 

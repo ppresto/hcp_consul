@@ -31,6 +31,6 @@ resource "hcp_aws_transit_gateway_attachment" "example" {
 resource "hcp_hvn_route" "route" {
   hvn_link         = data.terraform_remote_state.hcp_consul.outputs.hvn_self_link
   hvn_route_id     = "hvn-to-tgw-attachment"
-  destination_cidr = var.vpc_cidr_block
+  destination_cidr = data.terraform_remote_state.hcp_consul.outputs.vpc_cidr_block
   target_link      = hcp_aws_transit_gateway_attachment.example.self_link
 }
