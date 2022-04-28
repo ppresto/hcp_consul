@@ -11,8 +11,8 @@ module "tgw" {
 
   vpc_attachments = {
     vpc = {
-      vpc_id     = module.vpc.vpc_id          #data.aws_vpc.default.id
-      subnet_ids = module.vpc.private_subnets #data.aws_subnet_ids.this.ids
+      vpc_id     = data.terraform_remote_state.hcp_consul.outputs.vpc_id          #data.aws_vpc.default.id
+      subnet_ids = data.terraform_remote_state.hcp_consul.outputs.vpc_private_subnets #data.aws_subnet_ids.this.ids
 
       tgw_routes = [
         {

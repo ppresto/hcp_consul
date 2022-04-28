@@ -91,19 +91,6 @@ output "ram_principal_association_id" {
   value       = module.tgw.ram_principal_association_id
 }
 
-output "vpc_id" {
-  value = module.vpc.vpc_id
-}
-
-output "vpc_private_subnets" {
-  value = module.vpc.private_subnets
-}
-output "vpc_public_subnets" {
-  value = module.vpc.public_subnets
-}
-output "vpc_default_security_group_id" {
-  value = module.vpc.default_security_group_id
-}
 output "consul_server_sg_id" {
   value = aws_security_group.consul_server.id
 }

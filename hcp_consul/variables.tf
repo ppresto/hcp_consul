@@ -29,3 +29,10 @@ variable "cloud_provider" {
   type        = string
   default     = "aws"
 }
+
+# VPC
+variable "vpc_cidr_block" {
+  description = "VPC CIDR Block Range"
+  type        = string
+  default     = "10.20.0.0/16"
+}

@@ -1,7 +1,7 @@
 resource "aws_security_group" "consul_server" {
   name_prefix = "${var.region}-consul-server-sg"
   description = "Firewall for the consul server."
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = data.terraform_remote_state.hcp_consul.outputs.vpc_id
   tags = merge(
     { "Name" = "${var.region}-consul-server-sg" },
     { "Project" = var.region },
