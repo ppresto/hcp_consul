@@ -5,7 +5,7 @@ resource "aws_ecs_service" "example_client_app" {
   name            = "${var.name}-example-client-app"
   cluster         = aws_ecs_cluster.this.arn
   task_definition = module.example_client_app.task_definition_arn
-  desired_count   = 1
+  desired_count   = 3
   network_configuration {
     subnets = local.private_subnet_ids
   }
@@ -25,7 +25,7 @@ resource "aws_ecs_service" "example_server_app" {
   name            = "${var.name}-example-server-app"
   cluster         = aws_ecs_cluster.this.arn
   task_definition = module.example_server_app.task_definition_arn
-  desired_count   = 1
+  desired_count   = 2
   network_configuration {
     subnets = local.private_subnet_ids
   }
