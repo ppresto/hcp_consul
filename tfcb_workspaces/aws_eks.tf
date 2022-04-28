@@ -3,7 +3,7 @@ module "aws-eks" {
   agent_pool_id       = ""
   organization        = var.organization
   workspacename       = "aws-eks"
-  workingdir          = "aws_eks"
+  workingdir          = "aws-eks"
   tfversion           = "1.1.4"
   queue_all_runs      = false
   auto_apply          = true
