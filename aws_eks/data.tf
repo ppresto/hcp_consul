@@ -1,3 +1,7 @@
+# data source for current (working) aws region
+data "aws_region" "current" {}
+
+
 data "terraform_remote_state" "aws-tgw" {
   backend = "remote"
   config = {
