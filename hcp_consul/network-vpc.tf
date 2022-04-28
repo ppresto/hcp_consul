@@ -3,8 +3,7 @@ data "aws_region" "current" {}
 
 # data source for VPC id for the VPC being used
 data "aws_vpc" "vpc" {
-  default = var.vpc_id == null ? true : false
-  id      = var.vpc_id
+  default = true
 }
 
 # data source for subnet ids in VPC
