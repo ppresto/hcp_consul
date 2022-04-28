@@ -4,8 +4,8 @@ provider "aws" {
 
 # See Notes in README.md for explanation regarding using data-sources and computed values
 data "aws_vpc" "default" {
-  default = var.vpc_id == null ? true : false
-  id      = var.vpc_id
+  default = false
+  id      = data.terraform_remote_state.hcp_consul.outputs.vpc_id
 }
 
 data "aws_subnet_ids" "this" {

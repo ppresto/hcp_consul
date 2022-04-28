@@ -42,7 +42,3 @@ variable "allowed_bastion_cidr_blocks_ipv6" {
   type        = list(string)
   default     = []
 }
-
-variable "vpc_id" {
-  description = "VPC ID"
-}
