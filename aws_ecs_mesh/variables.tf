@@ -44,9 +44,9 @@ locals {
       awslogs-stream-prefix = "client"
     }
   }
-  vpc_id             = data.terraform_remote_state.aws_network.outputs.vpc_id
-  private_subnet_ids = data.terraform_remote_state.aws_network.outputs.vpc_private_subnets
-  public_subnet_ids  = data.terraform_remote_state.aws_network.outputs.vpc_public_subnets
+  vpc_id             = data.terraform_remote_state.hcp_consul.outputs.vpc_id
+  private_subnet_ids = data.terraform_remote_state.hcp_consul.outputs.vpc_private_subnets
+  public_subnet_ids  = data.terraform_remote_state.hcp_consul.outputs.vpc_public_subnets
 
   consul_config_file      = jsondecode(base64decode(data.terraform_remote_state.hcp_consul.outputs.consul_config_file))
   consul_gossip_key       = local.consul_config_file.encrypt

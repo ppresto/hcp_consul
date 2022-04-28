@@ -14,16 +14,6 @@ data "aws_security_group" "vpc_default" {
   vpc_id = local.vpc_id
 }
 
-data "terraform_remote_state" "aws_network" {
-  backend = "remote"
-  config = {
-    organization = "presto-projects"
-    workspaces = {
-      name = "aws_network"
-    }
-  }
-}
-
 data "terraform_remote_state" "hcp_consul" {
   backend = "remote"
   config = {
