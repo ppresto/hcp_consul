@@ -23,6 +23,7 @@ module "ws_hcp_consul" {
     "cluster_id"     = "hcpc-cluster-presto"
     "region"         = var.aws_default_region
     "cloud_provider" = "aws"
+    "vpc_id"         = null
   }
   env_variables_sec = {
     "HCP_CLIENT_SECRET" = var.HCP_CLIENT_SECRET
