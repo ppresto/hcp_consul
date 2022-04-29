@@ -10,7 +10,7 @@ resource "kubectl_manifest" "fake-service" {
 
 data "kubernetes_service" "ingress2" {
   metadata {
-    name = "consul-ingress-gateway"
+    name = "consul-ingress-gateway2"
   }
   depends_on = [kubectl_manifest.fake-service]
 }
