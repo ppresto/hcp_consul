@@ -10,3 +10,5 @@ spec:
       services:
         - name: frontend
           hosts: ["*"]
+        - name: api-v1
+          hosts: ["*"]
