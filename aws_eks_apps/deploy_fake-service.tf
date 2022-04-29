@@ -8,7 +8,7 @@ resource "kubectl_manifest" "fake-service" {
     depends_on = [helm_release.consul]
 }
 
-data "kubernetes_service" "ingress" {
+data "kubernetes_service" "ingress2" {
   metadata {
     name = "consul-ingress-gateway"
   }
