@@ -46,7 +46,7 @@ spec:
       serviceAccountName: api-v1
       containers:
         - name: api-v1
-          image: nicholasjackson/fake-service:0.23.1
+          image: nicholasjackson/fake-service:v0.23.1
           ports:
             - containerPort: 19090
           env:

@@ -10,7 +10,7 @@ terraform {
       version = "~>0.31.0"
     }
     multispace = {
-      source = "mitchellh/multispace"
+      source  = "mitchellh/multispace"
       version = "~>0.1.1"
     }
   }

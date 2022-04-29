@@ -26,7 +26,7 @@ resource "helm_release" "consul" {
     ==> Failed to create configuration to apply traffic redirection rules: failed to fetch proxy service from Consul Agent: Unexpected response code: 403 (Permission denied)
   Fix: version = 0.33.0
   */
-  version    = "0.33.0"
+  version = "0.33.0"
 
   values = [data.template_file.agent_config.rendered]
 

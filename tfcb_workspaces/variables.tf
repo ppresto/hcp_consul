@@ -38,6 +38,6 @@ variable "HCP_CLIENT_ID" { default = "" }
 variable "HCP_CLIENT_SECRET" { default = "" }
 
 variable "tag_names" {
-  type    = list
+  type    = list(any)
   default = ["auto"]
 }

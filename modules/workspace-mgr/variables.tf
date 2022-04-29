@@ -45,7 +45,7 @@ variable "env_variables_sec" {
 }
 
 variable "tag_names" {
-  type    = list
+  type    = list(any)
   default = ["auto"]
 }
 # IAM Teams Map
