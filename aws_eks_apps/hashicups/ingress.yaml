@@ -10,3 +10,8 @@ spec:
       services:
         - name: frontend
           hosts: ["*"]
+    - port: 9090
+      protocol: http
+      services:
+        - name: api-v1
+          hosts: ["*"]
