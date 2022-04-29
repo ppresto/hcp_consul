@@ -8,5 +8,5 @@ spec:
     - port: 9090
       protocol: http
       services:
-        - name: ingress-gw
+        - name: api-v1
           hosts: ["*"]

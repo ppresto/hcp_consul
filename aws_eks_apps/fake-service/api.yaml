@@ -48,7 +48,7 @@ spec:
         - name: api-v1
           image: nicholasjackson/fake-service:v0.23.1
           ports:
-            - containerPort: 19090
+            - containerPort: 9090
           env:
             - name: NAME
               value: api
