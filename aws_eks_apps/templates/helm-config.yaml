@@ -37,3 +37,6 @@ ingressGateways:
     - name: ingress-gateway
       service:
         type: LoadBalancer
+    - name: ingress-gateway-2
+      service:
+        type: LoadBalancer
