@@ -5,13 +5,13 @@ metadata:
   name: ingress-gateway
 spec:
   listeners:
-    - port: 9090
-      protocol: http
-      services:
-        - name: frontend
-          hosts: ["*"]
     - port: 8080
       protocol: http
       services:
         - name: web
+          hosts: ["*"]
+    - port: 8443
+      protocol: http
+      services:
+        - name: api-v1
           hosts: ["*"]
