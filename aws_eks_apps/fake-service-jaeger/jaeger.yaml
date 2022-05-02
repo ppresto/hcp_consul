@@ -11,25 +11,32 @@ spec:
   selector:
     app: jaeger
   ports:
-    - protocol: UDP
+    - name: "01"
+      protocol: UDP
       port: 5775
       targetPort: 5775
-    - protocol: UDP
+    - name: "02"
+      protocol: UDP
       port: 6831
       targetPort: 6831
-    - protocol: UDP
+    - name: "03"
+      protocol: UDP
       port: 6832
       targetPort: 6832
-    - protocol: TCP
+    - name: "04"
+      protocol: TCP
       port: 9411
       targetPort: 9411
-    - protocol: TCP
+    - name: "05"
+      protocol: TCP
       port: 5778
       targetPort: 5778
-    - protocol: TCP
+    - name: "06"
+      protocol: TCP
       port: 16686
       targetPort: 16686
-    - protocol: TCP
+    - name: "07"
+      protocol: TCP
       port: 14268
       targetPort: 14268
 ---

@@ -13,11 +13,11 @@ spec:
 apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceIntentions
 metadata:
-  name: api-v1
+  name: api
 spec:
   # Name of the destination service affected by this ServiceIntentions entry
   destination:
-    name: api-v1
+    name: api
   # The set of traffic sources affected by this ServiceIntentions entry
   sources:
   - name: ingress-gateway
