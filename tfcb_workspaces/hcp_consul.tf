@@ -32,5 +32,5 @@ module "ws_hcp_consul" {
 }
 
 output hcp_consul_ws_name {
-  value = module.ws_hcp_consul.tfe_workspace.ws-vcs.name
+  value = module.ws_hcp_consul
 }
