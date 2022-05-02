@@ -1,3 +1,7 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: api-v1
 ---
 apiVersion: v1
 kind: Service
@@ -7,23 +11,8 @@ spec:
   selector:
     app: api-v1
   ports:
-    - name: http
-      protocol: TCP
-      port: 9090
-      targetPort: 9090
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: api-v1
-automountServiceAccountToken: true
----
-apiVersion: consul.hashicorp.com/v1alpha1
-kind: ServiceDefaults
-metadata:
-  name: api-v1
-spec:
-  protocol: "http"
+    - port: 9091
+      targetPort: 9091
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -41,14 +30,18 @@ spec:
       labels:
         app: api-v1
       annotations:
-        consul.hashicorp.com/connect-inject: "true"
+        consul.hashicorp.com/connect-inject: 'true'
     spec:
       serviceAccountName: api-v1
       containers:
-        - name: api-v1
-          image: nicholasjackson/fake-service:v0.23.1
+        - name: api
+          image: nicholasjackson/fake-service:v0.7.8
           ports:
-            - containerPort: 9090
+            - containerPort: 9091
           env:
-            - name: NAME
-              value: api
+            - name: 'LISTEN_ADDR'
+              value: '127.0.0.1:9091'
+            - name: 'NAME'
+              value: 'api-v1'
+            - name: 'MESSAGE'
+              value: 'Response from API v1'
