@@ -1,4 +1,4 @@
-output "Workspace" {
+output "workspace" {
   value = var.workspacename
 }
 output "ws-id" {
