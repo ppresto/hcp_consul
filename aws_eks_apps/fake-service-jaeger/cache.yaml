@@ -14,6 +14,13 @@ spec:
     - port: 9090
       targetPort: 9090
 ---
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceDefaults
+metadata:
+  name: cache
+spec:
+  protocol: "http"
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -56,4 +63,4 @@ spec:
             - name: 'TIMING_VARIANCE'
               value: '10'
             - name: 'TRACING_ZIPKIN'
-              value: 'http://jaeger:9411'
+              value: 'http://simplest-collector:9411'

@@ -31,6 +31,8 @@ spec:
         app: api
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
+        consul.hashicorp.com/transparent-proxy: 'true'
+        #consul.hashicorp.com/connect-service-upstreams: 'cache:9090, payments:9090'
     spec:
       serviceAccountName: api
       containers:
@@ -42,9 +44,7 @@ spec:
             - name: 'LISTEN_ADDR'
               value: '127.0.0.1:9091'
             - name: 'UPSTREAM_URIS'
-              value: 'grpc://currency:9090, http://cache:9090/abc/123123, http://payments:9090'
-            - name: 'UPSTREAM_WORKDERS'
-              value: '2'
+              value: 'http://cache:9090, http://payments:9090'
             - name: 'NAME'
               value: 'api'
             - name: 'MESSAGE'
@@ -62,4 +62,4 @@ spec:
             - name: 'HTTP_CLIENT_APPEND_REQUEST'
               value: 'true'
             - name: 'TRACING_ZIPKIN'
-              value: 'http://jaeger:9411'
+              value: 'http://simplest-collector:9411'

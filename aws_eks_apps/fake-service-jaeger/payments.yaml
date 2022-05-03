@@ -52,4 +52,4 @@ spec:
             - name: 'HTTP_CLIENT_APPEND_REQUEST'
               value: 'true'
             - name: 'TRACING_ZIPKIN'
-              value: 'http://jaeger:9411'
+              value: 'http://simplest-collector:9411'
