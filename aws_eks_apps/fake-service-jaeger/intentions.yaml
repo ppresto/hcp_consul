@@ -51,17 +51,6 @@ spec:
   destination:
     name: currency
   sources:
-  - name: api
-    action: allow
----
-apiVersion: consul.hashicorp.com/v1alpha1
-kind: ServiceIntentions
-metadata:
-  name: currency
-spec:
-  destination:
-    name: currency
-  sources:
   - name: payments
     action: allow
 ---
