@@ -10,6 +10,9 @@ output "hvn_id" {
 output "hvn_self_link" {
   value = hcp_hvn.example_hvn.self_link
 }
+output "hcpc_versions" {
+  value = data.hcp_consul_versions.default
+}
 output "consul_public_endpoint_url" {
   value = hcp_consul_cluster.example_hcp.consul_public_endpoint_url
 }

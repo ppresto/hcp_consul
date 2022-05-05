@@ -40,10 +40,3 @@ ingressGateways:
     - name: ingress-gateway
       service:
         type: LoadBalancer
-ui:
-  metrics:
-    enabled: true # by default, this inherits from the value global.metrics.enabled
-    provider: "prometheus"
-    baseURL: http://prometheus-server
-prometheus:
-  enabled: true
