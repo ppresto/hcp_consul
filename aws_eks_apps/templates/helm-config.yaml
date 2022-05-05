@@ -16,6 +16,9 @@ global:
     caCert:
       secretName: consul-ca-cert
       secretKey: tls.crt
+  metrics:
+    enabled: true
+    enableGatewayMetrics: true
 externalServers:
   enabled: true
   hosts: ${RETRY_JOIN}
@@ -27,6 +30,12 @@ client:
   join: ${RETRY_JOIN}
 connectInject:
   enabled: true
+  metrics:
+    defaultEnabled: true # by default, this inherits from the value global.metrics.enabled
+    defaultEnableMerging: true
+    defaultMergedMetricsPort: 20100
+    defaultPrometheusScrapePort: 20200
+    defaultPrometheusScrapePath: "/metrics"
 controller:
   enabled: true
 ingressGateways:

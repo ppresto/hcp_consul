@@ -20,6 +20,7 @@ metadata:
   name: payments
   labels:
     app: payments
+    service: fake-service
 spec:
   replicas: 1
   selector:

@@ -24,11 +24,10 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api-deployment-v1
+  name: api-deployment-v2
   labels:
     app: api
-    version: v1
-    service: fake-service
+    version: v2
 spec:
   replicas: 1
   selector:
@@ -42,9 +41,9 @@ spec:
         consul.hashicorp.com/connect-inject: 'true'
         consul.hashicorp.com/transparent-proxy: 'true'
         #consul.hashicorp.com/connect-service-upstreams: 'cache:9090, payments:9090'
-        consul.hashicorp.com/envoy-extra-args: '--log-level debug --disable-hot-restart'
-        consul.hashicorp.com/service-tags: 'api, v1'
-        consul.hashicorp.com/service-meta-version: v1
+        consul.hashicorp.com/envoy-extra-args: '--log-level debug'
+        consul.hashicorp.com/service-tags: 'api, v2'
+        consul.hashicorp.com/service-meta-version: v2
     spec:
       serviceAccountName: api
       containers:
@@ -56,9 +55,9 @@ spec:
             - name: 'LISTEN_ADDR'
               value: '127.0.0.1:9091'
             - name: 'UPSTREAM_URIS'
-              value: 'grpc://currency:9090,http://cache:9090, http://payments:9090'
+              value: 'http://cache:9090, http://payments:9090'
             - name: 'NAME'
-              value: 'api-v1'
+              value: 'api-v2'
             - name: 'MESSAGE'
               value: 'API response'
             - name: 'SERVER_TYPE'

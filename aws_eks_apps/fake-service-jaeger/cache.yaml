@@ -27,6 +27,7 @@ metadata:
   name: cache
   labels:
     app: cache
+    service: fake-service
 spec:
   replicas: 1
   selector:

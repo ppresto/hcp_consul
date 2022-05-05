@@ -23,3 +23,11 @@ kubectl port-forward ${POD_NAME} 16686:16686
 ```
 
 ### Review Jaeger Trace examples
+
+
+### Kubernetes
+
+For proxy global default changes to take affect restart envoy sidecars with rolling deployment.
+```
+for i in  $(kubectl get deployments -l service=fake-service -o name); do kubectl rollout restart $i; done
+```
