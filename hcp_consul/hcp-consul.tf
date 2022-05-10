@@ -16,14 +16,3 @@ resource "hcp_consul_cluster_root_token" "init" {
   cluster_id = var.cluster_id
   depends_on = [hcp_consul_cluster.example_hcp]
 }
-
-
-# Configure Consul
-resource "consul_namespace" "app-api" {
-  name        = "api"
-  description = "API App Team"
-
-  meta = {
-    foo = "bar"
-  }
-}

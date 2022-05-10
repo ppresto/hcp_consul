@@ -6,6 +6,10 @@ terraform {
       source  = "hashicorp/hcp"
       version = "~> 0.22"
     }
+    consul = {
+      source  = "hashicorp/consul"
+      version = "~> 2.15.1"
+    }
     aws = {
       source  = "hashicorp/aws"
       version = ">= 3.74.1"
