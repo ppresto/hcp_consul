@@ -17,5 +17,4 @@ provider "consul" {
   address    = hcp_consul_cluster.example_hcp.consul_public_endpoint_url
   datacenter = hcp_consul_cluster.example_hcp.datacenter
   token      = hcp_consul_cluster_root_token.init.secret_id
-  ca_pem    = base64decode(hcp_consul_cluster.example_hcp.consul_ca_file
 }
