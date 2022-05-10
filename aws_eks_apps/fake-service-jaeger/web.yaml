@@ -66,5 +66,7 @@ spec:
               value: '90ms'
             - name: 'TIMING_VARIANCE'
               value: '10'
+            - name: 'HTTP_CLIENT_APPEND_REQUEST'
+              value: 'true'
             - name: 'TRACING_ZIPKIN'
               value: 'http://simplest-collector:9411'

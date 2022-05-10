@@ -31,6 +31,6 @@ module "ws_hcp_consul" {
   tf_variables_sec = {}
 }
 
-output hcp_consul_ws_name {
+output "hcp_consul_ws_name" {
   value = module.ws_hcp_consul
 }

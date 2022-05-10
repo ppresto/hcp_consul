@@ -8,7 +8,7 @@ spec:
         http:
           header:
             - name : baggage
-              regex: .*
+              regex: version=2
       destination:
         service: api
         serviceSubset: v2
@@ -16,13 +16,6 @@ spec:
         numRetries: 3
         retryOnConnectFailure: true
       # Retry Logic Added
----
-apiVersion: consul.hashicorp.com/v1alpha1
-kind: ServiceRouter
-metadata:
-  name: api
-spec:
-  routes:
     - match:
         http:
           pathPrefix: /
@@ -31,7 +24,6 @@ spec:
         requestTimeout: 10s
         numRetries: 3
         retryOnConnectFailure: true
-      # Retry Logic Added
 ---
 apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceSplitter
