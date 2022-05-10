@@ -1,5 +1,10 @@
 # Configure Consul
-resource "consul_namespace" "app-api" {
+resource "consul_admin_partition" "qa" {
+  name        = "qa"
+  description = "Partition for QA Environment"
+}
+
+resource "consul_namespace" "default-app-api" {
   name        = "api"
   description = "API App Team"
 
@@ -8,8 +13,12 @@ resource "consul_namespace" "app-api" {
   }
 }
 
-resource "consul_admin_partition" "qa" {
-  name        = "qa"
-  description = "Partition for QA Environment"
-}
+resource "consul_namespace" "qa-app-api" {
+  name        = "api"
+  description = "API App Team"
+  partition   = consul_admin_partition.qa.name
 
+  meta = {
+    foo = "bar"
+  }
+}
