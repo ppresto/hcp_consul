@@ -12,3 +12,8 @@ terraform {
     }
   }
 }
+
+provider "consul" {
+  address    = hcp_consul_cluster.example_hcp.consul_public_endpoint_url
+  datacenter = hcp_consul_cluster.example_hcp.datacenter
+}
