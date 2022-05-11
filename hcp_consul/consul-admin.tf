@@ -7,6 +7,7 @@ resource "consul_admin_partition" "qa" {
 resource "consul_namespace" "default-app-api" {
   name        = "api"
   description = "API App Team"
+  partition   = "default"
 
   meta = {
     foo = "bar"
