@@ -1,15 +1,24 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: currency-ns
+  labels:
+    name: cache
+---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: web
+  name: currency
+  namespace: currency-ns
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: web
+  name: currency
+  namespace: currency-ns
 spec:
   selector:
-    app: web
+    app: currency
   ports:
     - port: 9090
       targetPort: 9090
@@ -17,56 +26,52 @@ spec:
 apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceDefaults
 metadata:
-  name: web
+  name: currency
+  namespace: currency-ns
 spec:
-  protocol: "http"
+  protocol: "grpc"
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web
+  name: currency
+  namespace: currency-ns
   labels:
-    app: web
+    app: currency
     service: fake-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: web
+      app: currency
   template:
     metadata:
       labels:
-        app: web
+        app: currency
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
         consul.hashicorp.com/transparent-proxy: 'true'
     spec:
-      serviceAccountName: web
+      serviceAccountName: currency
       containers:
-        - name: web
+        - name: currency
           image: nicholasjackson/fake-service:v0.21.0
           ports:
             - containerPort: 9090
           env:
             - name: 'LISTEN_ADDR'
-              value: '0.0.0.0:9090'
-            - name: 'UPSTREAM_URIS'
-              value: 'http://api.api:9091'
+              value: '127.0.0.1:9090'
             - name: 'NAME'
-              value: 'web'
+              value: 'currency'
             - name: 'MESSAGE'
-              value: 'Hello World'
+              value: 'currency response'
             - name: 'SERVER_TYPE'
-              value: 'http'
-            - name: 'TIMING_50_PERCENTILE'
-              value: '30ms'
-            - name: 'TIMING_90_PERCENTILE'
-              value: '60ms'
-            - name: 'TIMING_99_PERCENTILE'
-              value: '90ms'
-            - name: 'TIMING_VARIANCE'
-              value: '10'
-            - name: 'HTTP_CLIENT_APPEND_REQUEST'
-              value: 'true'
+              value: 'grpc'
+            - name: 'ERROR_TYPE'
+              value: 'http_error'
+            - name: 'ERROR_RATE'
+              value: '0.2'
+            - name: 'ERROR_CODE'
+              value: '14'
             - name: 'TRACING_ZIPKIN'
               value: 'http://simplest-collector:9411'

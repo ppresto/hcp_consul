@@ -30,6 +30,7 @@ metadata:
 spec:
   destination:
     name: cache
+    namespace: cache-ns
   sources:
   - name: api
     namespace: api
@@ -42,6 +43,7 @@ metadata:
 spec:
   destination:
     name: payments
+    namespace: payments-ns
   sources:
   - name: api
     namespace: api
@@ -56,6 +58,7 @@ spec:
     name: currency
   sources:
   - name: payments
+    namespace: payments-ns
     action: allow
   - name: api
     namespace: api

@@ -1,4 +1,11 @@
 
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: api
+  labels:
+    name: api
+---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -62,7 +69,7 @@ spec:
             - name: 'LISTEN_ADDR'
               value: '127.0.0.1:9091'
             - name: 'UPSTREAM_URIS'
-              value: 'grpc://currency.default:9090,http://cache.default:9090, http://payments.default:9090'
+              value: 'http://cache.cache-ns:9090, http://payments.payments-ns:9090'
             - name: 'NAME'
               value: 'api-v1'
             - name: 'MESSAGE'

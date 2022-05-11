@@ -1,12 +1,21 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: cache-ns
+  labels:
+    name: cache
+---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: cache
+  namespace: cache-ns
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: cache
+  namespace: cache-ns
 spec:
   selector:
     app: cache
@@ -18,6 +27,7 @@ apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceDefaults
 metadata:
   name: cache
+  namespace: cache-ns
 spec:
   protocol: "http"
 ---
@@ -25,6 +35,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cache
+  namespace: cache-ns
   labels:
     app: cache
     service: fake-service
