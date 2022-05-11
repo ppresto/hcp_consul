@@ -25,11 +25,19 @@ externalServers:
 client:
   enabled: true
   join: ${RETRY_JOIN}
+ui:
+  enabled: true
+  metrics:
+    enabled: true # by default, this inherits from the value global.metrics.enabled
+    provider: "prometheus"
+    baseURL: http://prometheus-server
 connectInject:
   enabled: true
   metrics:
     defaultEnabled: true # by default, this inherits from the value global.metrics.enabled
     defaultEnableMerging: true
+  consulNamespaces:
+    mirroringK8S: true
 controller:
   enabled: true
 ingressGateways:
