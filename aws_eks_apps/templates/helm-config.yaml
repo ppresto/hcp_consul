@@ -1,6 +1,7 @@
 global:
   name: consul
   enabled: false
+  enableConsulNamespaces: true
   datacenter: ${DATACENTER}
   acls:
     manageSystemACLs: true
