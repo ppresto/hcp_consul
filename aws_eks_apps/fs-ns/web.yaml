@@ -51,7 +51,7 @@ spec:
             - name: 'LISTEN_ADDR'
               value: '0.0.0.0:9090'
             - name: 'UPSTREAM_URIS'
-              value: 'http://api:9091'
+              value: 'http://api.api:9091, http://payments:9090'
             - name: 'NAME'
               value: 'web'
             - name: 'MESSAGE'

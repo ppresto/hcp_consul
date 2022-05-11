@@ -1,15 +1,15 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: currency
+  name: cache
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: currency
+  name: cache
 spec:
   selector:
-    app: currency
+    app: cache
   ports:
     - port: 9090
       targetPort: 9090
@@ -17,32 +17,33 @@ spec:
 apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceDefaults
 metadata:
-  name: currency
+  name: cache
 spec:
-  protocol: "grpc"
+  protocol: "http"
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: currency
+  name: cache
   labels:
-    app: currency
+    app: cache
     service: fake-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: currency
+      app: cache
   template:
     metadata:
       labels:
-        app: currency
+        app: cache
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
+        consul.hashicorp.com/transparent-proxy: 'true'
     spec:
-      serviceAccountName: currency
+      serviceAccountName: cache
       containers:
-        - name: currency
+        - name: cache
           image: nicholasjackson/fake-service:v0.21.0
           ports:
             - containerPort: 9090
@@ -50,16 +51,18 @@ spec:
             - name: 'LISTEN_ADDR'
               value: '127.0.0.1:9090'
             - name: 'NAME'
-              value: 'currency'
+              value: 'cache'
             - name: 'MESSAGE'
-              value: 'currency response'
+              value: 'cache response'
             - name: 'SERVER_TYPE'
-              value: 'grpc'
-            - name: 'ERROR_TYPE'
-              value: 'http_error'
-            - name: 'ERROR_RATE'
-              value: '0.2'
-            - name: 'ERROR_CODE'
-              value: '14'
+              value: 'http'
+            - name: 'TIMING_50_PERCENTILE'
+              value: '1ms'
+            - name: 'TIMING_90_PERCENTILE'
+              value: '2ms'
+            - name: 'TIMING_99_PERCENTILE'
+              value: '3ms'
+            - name: 'TIMING_VARIANCE'
+              value: '10'
             - name: 'TRACING_ZIPKIN'
               value: 'http://simplest-collector:9411'

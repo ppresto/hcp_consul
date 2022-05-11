@@ -32,6 +32,7 @@ spec:
         app: payments
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
+        consul.hashicorp.com/transparent-proxy: 'true'
     spec:
       serviceAccountName: payments
       containers:

@@ -6,6 +6,7 @@ output "consul_config_yaml" {
   value = data.template_file.agent_config.rendered
 }
 
-#output "url" {
-#  value = "http://${data.kubernetes_service.ingress.status[0].load_balancer[0].ingress[0].hostname}:8080"
-#}
+output "url" {
+  value = "http://${data.kubernetes_service.ingress.status[0].load_balancer[0].ingress[0].hostname}:8080"
+  depends_on = [kubernetes_service.ingress]
+}
