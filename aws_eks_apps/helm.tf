@@ -13,7 +13,7 @@ data "template_file" "agent_config" {
 
 resource "helm_release" "consul" {
   name = "consul"
-
+  namespace = "default"
   repository = "https://helm.releases.hashicorp.com"
   chart      = "consul"
   /*
