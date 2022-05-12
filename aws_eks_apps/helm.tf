@@ -14,6 +14,7 @@ data "template_file" "agent_config" {
 resource "helm_release" "consul" {
   name = "consul"
   namespace = "consul"
+  create_namespace = true
   repository = "https://helm.releases.hashicorp.com"
   chart      = "consul"
   /*
