@@ -1,3 +1,4 @@
+# https://github.com/hashicorp/consul-k8s/blob/main/charts/consul/values.yaml
 global:
   name: consul
   enabled: false
@@ -28,6 +29,8 @@ client:
   join: ${RETRY_JOIN}
 connectInject:
   enabled: true
+  transparentProxy:
+    defaultEnabled: true
   metrics:
     defaultEnabled: true # by default, this inherits from the value global.metrics.enabled
     defaultEnableMerging: true

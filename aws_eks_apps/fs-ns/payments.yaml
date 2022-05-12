@@ -54,7 +54,7 @@ spec:
             - name: 'LISTEN_ADDR'
               value: '127.0.0.1:9090'
             - name: 'UPSTREAM_URIS'
-              value: 'grpc://currency.default:9090'
+              value: 'grpc://currency.currency-ns:9090'
             - name: 'NAME'
               value: 'payments'
             - name: 'MESSAGE'

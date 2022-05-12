@@ -51,6 +51,7 @@ spec:
       namespace: api
       labels:
         app: api
+        service: fake-service
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
         consul.hashicorp.com/transparent-proxy: 'true'
