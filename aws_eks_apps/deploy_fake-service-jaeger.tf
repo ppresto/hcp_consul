@@ -11,6 +11,7 @@ resource "kubectl_manifest" "fake-service" {
 data "kubernetes_service" "ingress" {
   metadata {
     name = "consul-ingress-gateway"
+    namespace = var.namespace
   }
   depends_on = [kubectl_manifest.fake-service]
 }
