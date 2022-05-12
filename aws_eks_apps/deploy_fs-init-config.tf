@@ -1,5 +1,5 @@
 data "kubectl_path_documents" "fake-service-yaml" {
-  pattern = "${path.module}/fs-jaeger/*.yaml"
+  pattern = "${path.module}/fs-init-config/*.yaml"
 }
 
 resource "kubectl_manifest" "fake-service" {
