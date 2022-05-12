@@ -46,6 +46,7 @@ spec:
       app: cache
   template:
     metadata:
+      namespace: cache-ns
       labels:
         app: cache
         service: fake-service
@@ -77,4 +78,4 @@ spec:
             - name: 'TIMING_VARIANCE'
               value: '10'
             - name: 'TRACING_ZIPKIN'
-              value: 'http://simplest-collector:9411'
+              value: 'http://simplest-collector.default:9411'

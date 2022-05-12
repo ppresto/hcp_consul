@@ -23,6 +23,14 @@ spec:
     - port: 9090
       targetPort: 9090
 ---
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceDefaults
+metadata:
+  name: payments
+  namespace: payments-ns
+spec:
+  protocol: "http"
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -38,8 +46,10 @@ spec:
       app: payments
   template:
     metadata:
+      namespace: payments-ns
       labels:
         app: payments
+        service: fake-service
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
         consul.hashicorp.com/transparent-proxy: 'true'
@@ -64,4 +74,4 @@ spec:
             - name: 'HTTP_CLIENT_APPEND_REQUEST'
               value: 'true'
             - name: 'TRACING_ZIPKIN'
-              value: 'http://simplest-collector:9411'
+              value: 'http://simplest-collector.default:9411'

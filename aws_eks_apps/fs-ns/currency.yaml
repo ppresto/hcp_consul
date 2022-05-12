@@ -75,4 +75,4 @@ spec:
             - name: 'ERROR_CODE'
               value: '14'
             - name: 'TRACING_ZIPKIN'
-              value: 'http://simplest-collector:9411'
+              value: 'http://simplest-collector.default:9411'

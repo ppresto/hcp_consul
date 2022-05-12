@@ -37,6 +37,7 @@ spec:
     metadata:
       labels:
         app: web
+        service: fake-service
       annotations:
     spec:
       serviceAccountName: web

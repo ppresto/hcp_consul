@@ -13,7 +13,7 @@ variable "region" {
 variable "namespace" {
   description = "K8s Namespace"
   type        = string
-  default     = "consul"
+  default     = "default"
 }
 
 locals {
