@@ -50,8 +50,8 @@ spec:
           env:
             - name: 'LISTEN_ADDR'
               value: '0.0.0.0:9090'
-            - name: 'UPSTREAM_URIS'
-              value: 'http://api:9091'
+           # - name: 'UPSTREAM_URIS'
+           #   value: 'http://api:9091'
             - name: 'NAME'
               value: 'web'
             - name: 'MESSAGE'

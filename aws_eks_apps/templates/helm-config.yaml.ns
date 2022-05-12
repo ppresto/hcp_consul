@@ -2,6 +2,7 @@
 global:
   name: consul
   enabled: false
+  enableConsulNamespaces: true
   datacenter: ${DATACENTER}
   acls:
     manageSystemACLs: true
@@ -30,6 +31,11 @@ connectInject:
   enabled: true
   transparentProxy:
     defaultEnabled: true
+  metrics:
+    defaultEnabled: true # by default, this inherits from the value global.metrics.enabled
+    defaultEnableMerging: true
+  consulNamespaces:
+    mirroringK8S: true
 controller:
   enabled: true
 ingressGateways:
