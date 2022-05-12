@@ -11,8 +11,8 @@ spec:
   selector:
     app: currency
   ports:
-    - port: 9090
-      targetPort: 9090
+    - port: 9093
+      targetPort: 9093
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -32,16 +32,17 @@ spec:
         app: currency
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
+        consul.hashicorp.com/transparent-proxy: 'false'
     spec:
       serviceAccountName: currency
       containers:
         - name: currency
-          image: nicholasjackson/fake-service:v0.21.0
+          image: nicholasjackson/fake-service:v0.23.0
           ports:
-            - containerPort: 9090
+            - containerPort: 9093
           env:
             - name: 'LISTEN_ADDR'
-              value: '127.0.0.1:9090'
+              value: '0.0.0.0:9093'
             - name: 'NAME'
               value: 'currency'
             - name: 'MESSAGE'

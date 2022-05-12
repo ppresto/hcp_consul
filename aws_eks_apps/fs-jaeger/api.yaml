@@ -21,7 +21,6 @@ metadata:
   labels:
     app: api
     version: v1
-    service: fake-service
 spec:
   replicas: 1
   selector:
@@ -33,8 +32,8 @@ spec:
         app: api
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
-        consul.hashicorp.com/transparent-proxy: 'true'
-        #consul.hashicorp.com/connect-service-upstreams: 'cache:9090, payments:9090'
+        consul.hashicorp.com/transparent-proxy: 'false'
+        consul.hashicorp.com/connect-service-upstreams: 'cache:9092,payments:9094'
         consul.hashicorp.com/envoy-extra-args: '--log-level debug --disable-hot-restart'
         consul.hashicorp.com/service-tags: 'api, v1'
         consul.hashicorp.com/service-meta-version: v1
@@ -42,28 +41,20 @@ spec:
       serviceAccountName: api
       containers:
         - name: api
-          image: nicholasjackson/fake-service:v0.21.0
+          image: nicholasjackson/fake-service:v0.23.0
           ports:
             - containerPort: 9091
           env:
             - name: 'LISTEN_ADDR'
               value: '127.0.0.1:9091'
             - name: 'UPSTREAM_URIS'
-              value: 'http://payments:9090'
+              value: 'http://payments:9094,http://cache:9092'
             - name: 'NAME'
               value: 'api-v1'
             - name: 'MESSAGE'
               value: 'API response'
             - name: 'SERVER_TYPE'
               value: 'http'
-            - name: 'TIMING_50_PERCENTILE'
-              value: '20ms'
-            - name: 'TIMING_90_PERCENTILE'
-              value: '30ms'
-            - name: 'TIMING_99_PERCENTILE'
-              value: '40ms'
-            - name: 'TIMING_VARIANCE'
-              value: '10'
             - name: 'HTTP_CLIENT_APPEND_REQUEST'
               value: 'true'
             - name: 'TRACING_ZIPKIN'

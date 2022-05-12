@@ -11,8 +11,8 @@ spec:
   selector:
     app: payments
   ports:
-    - port: 9090
-      targetPort: 9090
+    - port: 9094
+      targetPort: 9094
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -32,18 +32,20 @@ spec:
         app: payments
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
+        consul.hashicorp.com/transparent-proxy: 'false'
+        consul.hashicorp.com/connect-service-upstreams: 'currency:9093'
     spec:
       serviceAccountName: payments
       containers:
         - name: payments
-          image: nicholasjackson/fake-service:v0.21.0
+          image: nicholasjackson/fake-service:v0.23.0
           ports:
-            - containerPort: 9090
+            - containerPort: 9094
           env:
             - name: 'LISTEN_ADDR'
-              value: '127.0.0.1:9090'
+              value: '0.0.0.0:9094'
             - name: 'UPSTREAM_URIS'
-              value: 'grpc://currency:9090'
+              value: 'grpc://currency:9093'
             - name: 'NAME'
               value: 'payments'
             - name: 'MESSAGE'
