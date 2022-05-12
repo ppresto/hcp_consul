@@ -29,7 +29,6 @@ client:
   join: ${RETRY_JOIN}
 connectInject:
   enabled: true
-  default: true
   transparentProxy:
     defaultEnabled: true
   metrics:
