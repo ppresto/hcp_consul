@@ -57,4 +57,6 @@ curl -k -H "Content-Type: application/json" -X PUT --data-binary @temp.json http
 #### Terminate stuck servicedefault
 ```
 kubectl patch servicedefaults.consul.hashicorp.com api --type merge --patch '{"metadata":{"finalizers":[]}}'
+
+kubectl patch ingressgateway.consul.hashicorp.com ingress-gateway --type merge --patch '{"metadata":{"finalizers":[]}}'
 ```
