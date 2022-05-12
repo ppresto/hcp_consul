@@ -14,13 +14,6 @@ spec:
     - port: 9090
       targetPort: 9090
 ---
-apiVersion: consul.hashicorp.com/v1alpha1
-kind: ServiceDefaults
-metadata:
-  name: currency
-spec:
-  protocol: "grpc"
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:

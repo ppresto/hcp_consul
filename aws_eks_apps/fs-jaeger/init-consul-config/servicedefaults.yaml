@@ -32,4 +32,3 @@ metadata:
   name: currency
 spec:
   protocol: "grpc"
----

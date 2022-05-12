@@ -14,20 +14,12 @@ spec:
     - port: 9090
       targetPort: 9090
 ---
-apiVersion: consul.hashicorp.com/v1alpha1
-kind: ServiceDefaults
-metadata:
-  name: web
-spec:
-  protocol: "http"
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: web
   labels:
     app: web
-    service: fake-service
 spec:
   replicas: 1
   selector:
@@ -50,8 +42,8 @@ spec:
           env:
             - name: 'LISTEN_ADDR'
               value: '0.0.0.0:9090'
-           # - name: 'UPSTREAM_URIS'
-           #   value: 'http://api:9091'
+            - name: 'UPSTREAM_URIS'
+              value: 'http://api:9091'
             - name: 'NAME'
               value: 'web'
             - name: 'MESSAGE'
