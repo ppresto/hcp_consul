@@ -29,9 +29,6 @@ client:
   join: ${RETRY_JOIN}
 connectInject:
   enabled: true
-  default: true
-  transparentProxy:
-    defaultEnabled: true
   metrics:
     defaultEnabled: true # by default, this inherits from the value global.metrics.enabled
     defaultEnableMerging: true
