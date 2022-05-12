@@ -10,6 +10,12 @@ variable "region" {
   default     = "us-west-2"
 }
 
+variable "namespace" {
+  description = "K8s Namespace"
+  type        = string
+  default     = "consul"
+}
+
 locals {
   vpc_id             = data.terraform_remote_state.hcp_consul.outputs.vpc_id
   private_subnet_ids = data.terraform_remote_state.hcp_consul.outputs.vpc_private_subnets
