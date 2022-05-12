@@ -61,4 +61,9 @@ kubectl patch servicedefaults.consul.hashicorp.com web --type merge --patch '{"m
 kubectl patch servicedefaults.consul.hashicorp.com api --type merge --patch '{"metadata":{"finalizers":[]}}'
 
 kubectl patch ingressgateway.consul.hashicorp.com ingress-gateway --type merge --patch '{"metadata":{"finalizers":[]}}'
+
+kubectl patch serviceintentions.consul.hashicorp.com cache --type merge --patch '{"metadata":{"finalizers":[]}}'
+kubectl patch serviceintentions.consul.hashicorp.com currency --type merge --patch '{"metadata":{"finalizers":[]}}'
+kubectl patch serviceintentions.consul.hashicorp.com web --type merge --patch '{"metadata":{"finalizers":[]}}'
+kubectl patch serviceintentions.consul.hashicorp.com payments --type merge --patch '{"metadata":{"finalizers":[]}}'
 ```
