@@ -11,7 +11,7 @@ resource "kubectl_manifest" "fs-init" {
   depends_on = [helm_release.consul]
 }
 resource "kubectl_manifest" "fake-service" {
-  for_each   = toset(data.kubectl_path_documents.fake-service-yam.documents)
+  for_each   = toset(data.kubectl_path_documents.fake-service-yaml.documents)
   yaml_body  = each.value
   depends_on = [kubectl_manifest.fs-init]
 }
