@@ -31,3 +31,22 @@ For proxy global default changes to take affect restart envoy sidecars with roll
 ```
 for i in  $(kubectl get deployments -l service=fake-service -o name); do kubectl rollout restart $i; done
 ```
+
+Testing pod to pod requests
+```
+kubectl exec -it $(kubectl get pod -l app=web -o name) -c web -- curl http://localhost:9090
+
+kubectl exec -it $(kubectl get pod -l app=payments -o name) -c payments -- curl http://localhost:9094
+
+kubectl exec -it $(kubectl get pod -l app=api -o name) -c api -- curl http://localhost:9091
+```
+
+start order
+```
+kubectl apply -f api.yaml
+kubectl apply -f jaeger-all-in-one.yaml
+kubectl apply -f currency.yaml
+kubectl apply -f payments.yaml
+kubectl apply -f web.yaml
+
+```
