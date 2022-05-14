@@ -1,61 +1,66 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: cache
+  name: web
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: cache
+  name: web
 spec:
   selector:
-    app: cache
+    app: web
   ports:
-    - port: 9092
-      targetPort: 9092
+    - port: 9090
+      targetPort: 9090
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cache
+  name: web
   labels:
-    app: cache
+    app: web
     service: fake-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: cache
+      app: web
   template:
     metadata:
       labels:
-        app: cache
+        app: web
+        service: fake-service
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
-        consul.hashicorp.com/transparent-proxy: 'false'
+        consul.hashicorp.com/transparent-proxy: 'true'
     spec:
-      serviceAccountName: cache
+      serviceAccountName: web
       containers:
-        - name: cache
+        - name: web
           image: nicholasjackson/fake-service:v0.21.0
           ports:
-            - containerPort: 9092
+            - containerPort: 9090
           env:
             - name: 'LISTEN_ADDR'
-              value: '127.0.0.1:9092'
+              value: '0.0.0.0:9090'
+            - name: 'UPSTREAM_URIS'
+              value: 'http://api:9091'
             - name: 'NAME'
-              value: 'cache'
+              value: 'web'
             - name: 'MESSAGE'
-              value: 'cache response'
+              value: 'Hello World'
             - name: 'SERVER_TYPE'
               value: 'http'
             - name: 'TIMING_50_PERCENTILE'
-              value: '1ms'
+              value: '30ms'
             - name: 'TIMING_90_PERCENTILE'
-              value: '2ms'
+              value: '60ms'
             - name: 'TIMING_99_PERCENTILE'
-              value: '3ms'
+              value: '90ms'
             - name: 'TIMING_VARIANCE'
               value: '10'
+            #- name: 'HTTP_CLIENT_APPEND_REQUEST'
+            #  value: 'true'
             - name: 'TRACING_ZIPKIN'
               value: 'http://simplest-collector:9411'

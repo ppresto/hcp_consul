@@ -43,7 +43,7 @@ spec:
             - containerPort: 9094
           env:
             - name: 'LISTEN_ADDR'
-              value: '0.0.0.0:9094'
+              value: '127.0.0.1:9094'
             - name: 'UPSTREAM_URIS'
               value: 'grpc://currency:9093'
             - name: 'NAME'

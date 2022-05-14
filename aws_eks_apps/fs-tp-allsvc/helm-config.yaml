@@ -29,7 +29,7 @@ client:
 connectInject:
   enabled: true
   transparentProxy:
-    defaultEnabled: false
+    defaultEnabled: true
 controller:
   enabled: true
 ingressGateways:
