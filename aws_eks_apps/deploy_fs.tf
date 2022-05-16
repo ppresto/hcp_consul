@@ -21,5 +21,5 @@ data "kubernetes_service" "ingress" {
     name = "consul-ingress-gateway"
     namespace = var.namespace
   }
-  depends_on = [kubectl_manifest.fake-service]
+  depends_on = [kubectl_manifest.fs-init]
 }

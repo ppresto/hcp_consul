@@ -1,9 +1,36 @@
 # Fake Service Errors
 
-Upstream service (api) returns 504 (web)
+web receives 504 Error from upstream service - api.  This appears to happen when services are on different Nodes of the EKS cluster.  Why?
+
 ```
-"code": 504,
-"error": "Error processing upstream request: http://api:9091/, expected code 200, got 504"
+➜  x fs-tp (main)
+     $  kubectl exec -it $(kubectl get pod -l app=web -o name) -c web -- curl http://localhost:9090
+{
+  "name": "web",
+  "uri": "/",
+  "type": "HTTP",
+  "ip_addresses": [
+    "10.20.3.215"
+  ],
+  "start_time": "2022-05-14T07:08:54.855195",
+  "end_time": "2022-05-14T07:08:54.863842",
+  "duration": "8.646876ms",
+  "body": "Hello World",
+  "upstream_calls": {
+    "http://api:9091": {
+      "uri": "http://api:9091",
+      "headers": {
+        "Content-Length": "19",
+        "Content-Type": "text/plain",
+        "Date": "Sat, 14 May 2022 07:08:54 GMT",
+        "Server": "envoy"
+      },
+      "code": 503,
+      "error": "Error processing upstream request: http://api:9091/, expected code 200, got 503"
+    }
+  },
+  "code": 500
+}
 ```
 
 Replicate by configuring init consul requirements: service defaults, and intentions.  Then start the downstream service followed by the upstream service.
@@ -445,3 +472,19 @@ web-97b47b896-rqz6h   2/2     Running   0          6h35m   10.20.3.164   ip-10-2
 tcp        0      0 10.20.3.164:20000       0.0.0.0:*               LISTEN
 ```
 
+Do fs pods on different nodes cause the problem?  Downgrading to 1 node cluster now to test.
+```
+➜  ✓ fs-tp (main)
+     $  kubectl get pods -o wide
+NAME                                                         READY   STATUS    RESTARTS   AGE     IP            NODE                                        NOMINATED NODE   READINESS GATES
+api-deployment-v1-57c8656457-2vl76                           2/2     Running   0          8h      10.20.1.62    ip-10-20-1-78.us-west-2.compute.internal    <none>           <none>
+consul-connect-injector-webhook-deployment-85db569bb-cqj6n   1/1     Running   0          6h54m   10.20.3.213   ip-10-20-3-189.us-west-2.compute.internal   <none>           <none>
+consul-connect-injector-webhook-deployment-85db569bb-m5hbp   1/1     Running   0          6h54m   10.20.1.201   ip-10-20-1-78.us-west-2.compute.internal    <none>           <none>
+consul-controller-55d966b4bd-thbl8                           1/1     Running   0          31h     10.20.3.82    ip-10-20-3-189.us-west-2.compute.internal   <none>           <none>
+consul-ingress-gateway-74c97db57f-x4msh                      2/2     Running   0          31h     10.20.3.62    ip-10-20-3-189.us-west-2.compute.internal   <none>           <none>
+consul-rnmzv                                                 1/1     Running   0          6h52m   10.20.1.134   ip-10-20-1-78.us-west-2.compute.internal    <none>           <none>
+consul-v75tm                                                 1/1     Running   0          6h51m   10.20.3.117   ip-10-20-3-189.us-west-2.compute.internal   <none>           <none>
+consul-webhook-cert-manager-65b8bb9785-kqhff                 1/1     Running   0          31h     10.20.1.79    ip-10-20-1-78.us-west-2.compute.internal    <none>           <none>
+simplest-59ccc99bcc-l7xl9                                    1/1     Running   0          8h      10.20.1.12    ip-10-20-1-78.us-west-2.compute.internal    <none>           <none>
+web-97b47b896-rqz6h                                          2/2     Running   0          6h51m   10.20.3.164   ip-10-20-3-189.us-west-2.compute.internal   <none>           <none>
+```
