@@ -39,7 +39,7 @@ data "kubernetes_namespace" "check" {
 #  value = lookup(data.kubernetes_namespace.testns, "id") != null
 #}
 resource "kubernetes_namespace" "example" {
-  count = lookup(data.kubernetes_namespace.testns, "id") != null ? lookup(data.kubernetes_namespace.testns, "id") : 0
+  count = lookup(data.kubernetes_namespace.check, "id") != null ? lookup(data.kubernetes_namespace.check, "id") : 0
   metadata {
     labels = {
       service = "consul"
