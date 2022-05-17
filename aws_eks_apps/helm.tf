@@ -51,7 +51,7 @@ resource "kubernetes_secret" "consul-ca-cert" {
   data = {
     "tls.crt" = base64decode(data.terraform_remote_state.hcp_consul.outputs.consul_ca_file)
   }
-  depends_on [kubernetes_namespace.create]
+  depends_on = [kubernetes_namespace.create]
 }
 
 resource "kubernetes_secret" "consul-gossip-key" {
@@ -62,7 +62,7 @@ resource "kubernetes_secret" "consul-gossip-key" {
   data = {
     "key" = local.consul_config_file.encrypt
   }
-  depends_on [kubernetes_namespace.create]
+  depends_on = [kubernetes_namespace.create]
 }
 
 resource "kubernetes_secret" "consul-bootstrap-token" {
@@ -73,5 +73,5 @@ resource "kubernetes_secret" "consul-bootstrap-token" {
   data = {
     "token" = local.consul_acl_token
   }
-  depends_on [kubernetes_namespace.create]
+  depends_on = [kubernetes_namespace.create]
 }
