@@ -30,16 +30,9 @@ resource "helm_release" "consul" {
 #
 ### Namespace
 #
-data "kubernetes_namespace" "check" {
-  metadata {
-    name = var.namespace
-  }
-}
-#output "ns-present" {
-#  value = lookup(data.kubernetes_namespace.testns, "id") != null
-#}
+data "kubernetes_all_namespaces" "allns" {}
 resource "kubernetes_namespace" "example" {
-  count = lookup(data.kubernetes_namespace.check, "id") != null ? lookup(data.kubernetes_namespace.check, "id") : 0
+  count = contains(data.kubernetes_all_namespaces.allns.namespaces, var.namespace) ? 0 : 1
   metadata {
     labels = {
       service = "consul"
