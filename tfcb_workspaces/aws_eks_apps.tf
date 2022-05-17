@@ -19,6 +19,8 @@ module "aws_eks_apps" {
   tf_variables = {
     "ssh_key_name" = "ppresto-ptfe-dev-key"
     "region"       = var.aws_default_region
+    "consul_template" = "fs-tp"
+    "namespace" = "default"
   }
   env_variables_sec = {
     "HCP_CLIENT_SECRET" = var.HCP_CLIENT_SECRET
