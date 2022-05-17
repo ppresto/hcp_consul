@@ -31,7 +31,7 @@ resource "helm_release" "consul" {
 ### Namespace
 #
 data "kubernetes_all_namespaces" "allns" {}
-resource "kubernetes_namespace" "example" {
+resource "kubernetes_namespace" "create" {
   count = contains(data.kubernetes_all_namespaces.allns.namespaces, var.namespace) ? 0 : 1
   metadata {
     labels = {
@@ -51,6 +51,7 @@ resource "kubernetes_secret" "consul-ca-cert" {
   data = {
     "tls.crt" = base64decode(data.terraform_remote_state.hcp_consul.outputs.consul_ca_file)
   }
+  depends_on [kubernetes_namespace.create]
 }
 
 resource "kubernetes_secret" "consul-gossip-key" {
@@ -61,6 +62,7 @@ resource "kubernetes_secret" "consul-gossip-key" {
   data = {
     "key" = local.consul_config_file.encrypt
   }
+  depends_on [kubernetes_namespace.create]
 }
 
 resource "kubernetes_secret" "consul-bootstrap-token" {
@@ -71,4 +73,5 @@ resource "kubernetes_secret" "consul-bootstrap-token" {
   data = {
     "token" = local.consul_acl_token
   }
+  depends_on [kubernetes_namespace.create]
 }
