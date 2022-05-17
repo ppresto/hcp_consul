@@ -1,3 +1,5 @@
+# Copy to main terraform directory to automatically deploy hashicups
+
 data "kubectl_path_documents" "manifests" {
   pattern = "${path.module}/hashicups/*.yaml"
 }

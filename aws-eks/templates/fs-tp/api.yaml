@@ -49,7 +49,7 @@ spec:
             - containerPort: 9091
           env:
             - name: 'LISTEN_ADDR'
-              value: '127.0.0.1:9091'
+              value: '0.0.0.0:9091'
             #- name: 'UPSTREAM_URIS'
             #  value: 'http://cache:9090, http://payments:9090'
             - name: 'NAME'
@@ -68,5 +68,5 @@ spec:
               value: '10'
             - name: 'HTTP_CLIENT_APPEND_REQUEST'
               value: 'true'
-            - name: 'TRACING_ZIPKIN'
-              value: 'http://simplest-collector.default:9411'
+            #- name: 'TRACING_ZIPKIN'
+            #  value: 'http://simplest-collector.default:9411'

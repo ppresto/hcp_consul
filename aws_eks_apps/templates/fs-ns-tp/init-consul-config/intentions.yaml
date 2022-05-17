@@ -17,8 +17,10 @@ metadata:
 spec:
   destination:
     name: api
+    namespace: api-ns
   sources:
   - name: web
+    namespace: default
     action: allow
 ---
 apiVersion: consul.hashicorp.com/v1alpha1
@@ -28,6 +30,25 @@ metadata:
 spec:
   destination:
     name: payments
+    namespace: payments-ns
   sources:
   - name: api
+    namespace: api-ns
     action: allow
+---
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceIntentions
+metadata:
+  name: currency
+spec:
+  destination:
+    name: currency
+    namespace: currency-ns
+  sources:
+  - name: payments
+    namespace: payments-ns
+    action: allow
+  - name: api
+    namespace: api-ns
+    action: allow
+---

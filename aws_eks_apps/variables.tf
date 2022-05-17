@@ -15,6 +15,11 @@ variable "namespace" {
   type        = string
   default     = "default"
 }
+variable "consul_template" {
+  description = "Consul Dir that contains the helm, consul init and fake-service configs to support a given k8s architecture"
+  type        = string
+  default     = "fs-tp"
+}
 
 locals {
   vpc_id             = data.terraform_remote_state.hcp_consul.outputs.vpc_id

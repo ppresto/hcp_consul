@@ -1,12 +1,22 @@
+
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: api-ns
+  labels:
+    name: api
+---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: api
+  namespace: api-ns
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: api
+  namespace: api-ns
 spec:
   selector:
     app: api
@@ -14,20 +24,15 @@ spec:
     - port: 9091
       targetPort: 9091
 ---
-apiVersion: consul.hashicorp.com/v1alpha1
-kind: ServiceDefaults
-metadata:
-  name: api
-spec:
-  protocol: "http"
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: api-deployment-v2
+  namespace: api-ns
   labels:
     app: api
-    version: v2
+    version: v1
+    service: fake-service
 spec:
   replicas: 1
   selector:
@@ -35,12 +40,14 @@ spec:
       app: api
   template:
     metadata:
+      namespace: api-ns
       labels:
         app: api
+        service: fake-service
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
         consul.hashicorp.com/transparent-proxy: 'true'
-        consul.hashicorp.com/envoy-extra-args: '--log-level debug'
+        consul.hashicorp.com/envoy-extra-args: '--log-level debug --disable-hot-restart'
         consul.hashicorp.com/service-tags: 'api, v2'
         consul.hashicorp.com/service-meta-version: v2
     spec:
@@ -52,24 +59,24 @@ spec:
             - containerPort: 9091
           env:
             - name: 'LISTEN_ADDR'
-              value: '127.0.0.1:9091'
+              value: '0.0.0.0:9091'
             - name: 'UPSTREAM_URIS'
-              value: 'http://payments:9090'
+              value: 'grpc://currency.currency-ns:9090,http://payments.payments-ns:9090'
             - name: 'NAME'
-              value: 'api-v2'
+              value: 'api-v1'
             - name: 'MESSAGE'
               value: 'API response'
             - name: 'SERVER_TYPE'
               value: 'http'
             - name: 'TIMING_50_PERCENTILE'
-              value: '10ms'
-            - name: 'TIMING_90_PERCENTILE'
-              value: '15ms'
-            - name: 'TIMING_99_PERCENTILE'
               value: '20ms'
+            - name: 'TIMING_90_PERCENTILE'
+              value: '30ms'
+            - name: 'TIMING_99_PERCENTILE'
+              value: '40ms'
             - name: 'TIMING_VARIANCE'
               value: '10'
             - name: 'HTTP_CLIENT_APPEND_REQUEST'
               value: 'true'
             - name: 'TRACING_ZIPKIN'
-              value: 'http://simplest-collector:9411'
+              value: 'http://simplest-collector.default:9411'
