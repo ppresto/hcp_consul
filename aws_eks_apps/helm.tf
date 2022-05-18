@@ -28,7 +28,7 @@ resource "helm_release" "consul" {
 }
 
 #
-### Namespace
+### Create K8s Namespace if it doesn't exist
 #
 data "kubernetes_all_namespaces" "allns" {}
 resource "kubernetes_namespace" "create" {
@@ -40,8 +40,9 @@ resource "kubernetes_namespace" "create" {
     name = "consul"
   }
 }
+
 #
-### Configure Consul Secrets for the Helm Chart
+### Configure 3 Consul Secrets for the Helm Chart (aka: Agents)
 #
 resource "kubernetes_secret" "consul-ca-cert" {
   metadata {
@@ -51,7 +52,6 @@ resource "kubernetes_secret" "consul-ca-cert" {
   data = {
     "tls.crt" = base64decode(data.terraform_remote_state.hcp_consul.outputs.consul_ca_file)
   }
-  depends_on = [kubernetes_namespace.create]
 }
 
 resource "kubernetes_secret" "consul-gossip-key" {
@@ -62,7 +62,6 @@ resource "kubernetes_secret" "consul-gossip-key" {
   data = {
     "key" = local.consul_config_file.encrypt
   }
-  depends_on = [kubernetes_namespace.create]
 }
 
 resource "kubernetes_secret" "consul-bootstrap-token" {
@@ -73,5 +72,4 @@ resource "kubernetes_secret" "consul-bootstrap-token" {
   data = {
     "token" = local.consul_acl_token
   }
-  depends_on = [kubernetes_namespace.create]
 }
