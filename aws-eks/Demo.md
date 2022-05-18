@@ -1,11 +1,16 @@
-# Fake-Service App
+# Demo
 
+## Review Environment
+Walk through TFCB Workspaces (HCP, VPC/TG, EKS, aws_eks_apps).  
+## Fake-Service App
 Deploy fs to show normal (no consul, no mesh) service running in K8s.  This can be used as a starting point to show existing services day 1.
 
 ## Get Service URL
 ```
-echo "http://$(kubectl get svc web-ingress -o json | jq -r '.status.loadBalancer.ingress[].hostname'):9090"
+kubectl port-forward svc/web 9090:9090
 ```
+http://localhost:9090/ui
+
 
 ## Local - Test Service locally
 Verify fs output on CLI

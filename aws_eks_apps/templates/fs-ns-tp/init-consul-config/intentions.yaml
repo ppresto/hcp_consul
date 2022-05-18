@@ -6,6 +6,7 @@ metadata:
 spec:
   destination:
     name: web
+    namespace: default
   sources:
   - name: ingress-gateway
     action: allow

@@ -63,7 +63,7 @@ spec:
             - name: 'ERROR_TYPE'
               value: 'http_error'
             - name: 'ERROR_RATE'
-              value: '0.1'
+              value: '0.0'
             - name: 'ERROR_CODE'
               value: '14'
             - name: 'TRACING_ZIPKIN'

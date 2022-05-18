@@ -10,6 +10,12 @@ variable "region" {
   default     = "us-west-2"
 }
 
+variable "consul_template" {
+  description = "Consul Dir that contains the helm, consul init and fake-service configs to support a given k8s architecture"
+  type        = string
+  default     = "fs-ns-tp"
+}
+
 locals {
   vpc_id             = data.terraform_remote_state.hcp_consul.outputs.vpc_id
   private_subnet_ids = data.terraform_remote_state.hcp_consul.outputs.vpc_private_subnets
