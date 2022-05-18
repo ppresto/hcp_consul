@@ -82,6 +82,16 @@ Refresh multiple times.
 
 ## Clean up
 ```
+cd $HOME/Projects/hcp/hcp-consul/aws_eks_apps/templates/fs-ns-tp
+kubectl delete -f init-consul-config/
+kubectl delete -f .
+kubectl get serviceDefaults
+kubectl get serviceIntentions
+kubectl get serviceRouters
+kubectl get serviceSplitters
+kubectl get serviceResolvers
+kubectl get ns
+
 source scripts/setConsulEnv.sh <CONSUL_TOKEN>
 consul namespace delete api-ns
 consul namespace delete payments-ns
