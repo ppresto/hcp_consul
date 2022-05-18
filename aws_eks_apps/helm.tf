@@ -28,20 +28,6 @@ resource "helm_release" "consul" {
 }
 
 #
-### Create K8s Namespace if it doesn't exist
-#
-data "kubernetes_all_namespaces" "allns" {}
-resource "kubernetes_namespace" "create" {
-  count = contains(data.kubernetes_all_namespaces.allns.namespaces, var.namespace) ? 0 : 1
-  metadata {
-    labels = {
-      service = "consul"
-    }
-    name = "consul"
-  }
-}
-
-#
 ### Configure 3 Consul Secrets for the Helm Chart (aka: Agents)
 #
 resource "kubernetes_secret" "consul-ca-cert" {
