@@ -24,7 +24,13 @@ kubectl port-forward ${POD_NAME} 16686:16686
 
 ### Review Jaeger Trace examples
 
-
+### Helm
+Manually install consul using Helm
+```
+helm repo add hashicorp https://helm.releases.hashicorp.com
+helm install consul hashicorp/consul --create-namespace --namespace consul --version 0.33.0 --set global.image="hashicorp/consul-enterprise:1.11.0-ent" --values ./helm/test.yaml
+helm status consul
+```
 ### Kubernetes
 
 For proxy global default changes to take affect restart envoy sidecars with rolling deployment.
@@ -33,27 +39,41 @@ for i in  $(kubectl get deployments -l service=fake-service -o name); do kubectl
 ```
 
 #### Terminate stuck namespace
-```
-kubectl get namespace api -o json > temp.json
-```
-Find finalizers [kubernetes] and remove
-```
-"spec": {
-        "finalizers": []
-    }
-```
 
 Start proxy on localhost:8001
 ```
 kubectl proxy
 ```
 
-Run local API 
+Use k8s API to delete namespace
 ```
-curl -k -H "Content-Type: application/json" -X PUT --data-binary @temp.json http://127.0.0.1:8001/api/v1/namespaces/api/finalize
+cat <<EOF | curl -X PUT \
+  localhost:8001/api/v1/namespaces/currency-ns/finalize \
+  -H "Content-Type: application/json" \
+  --data-binary @-
+{
+  "kind": "Namespace",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "currency-ns"
+  },
+  "spec": {
+    "finalizers": null
+  }
+}
+EOF
+```
+
+Find finalizers in "spec"
+```
+kubectl get namespace api -o json > temp.json
+```
 
 ```
-
+"spec": {
+        "finalizers": []
+    }
+```
 #### Terminate stuck servicedefault
 ```
 kubectl patch servicedefaults.consul.hashicorp.com web --type merge --patch '{"metadata":{"finalizers":[]}}'
