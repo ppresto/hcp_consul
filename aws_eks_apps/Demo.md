@@ -5,6 +5,11 @@
 * HCP, AWS VPC/TG, EKS cluster with basic web and api services
 * [Show Consul Dashboard](https://hcpc-cluster-presto.consul.328306de-41b8-43a7-9c38-ca8d89d06b07.aws.hashicorp.cloud/ui/~api-ns/hcpc-cluster-presto/services/api/intentions) (No services)
 ## Fake-Service App
+Show current K8s cluster pods in real time for transparency
+```
+watch kubectl get pods -A
+```
+
 Deploy fs to show normal (no consul, no mesh) service running in K8s.  This can be used as a starting point to show existing services day 1.
 ```
 cd aws_eks_apps/templates/fs-ns-tp
@@ -18,9 +23,6 @@ kubectl port-forward svc/web 9090:9090
 http://localhost:9090/ui
 
 ## Deploy Consul
-```
-watch kubectl get pods -A
-```
 
 TFCB - Run presto-projects: aws_eks_apps to run Consul helm chart and deploy agent to EKS.  
 
