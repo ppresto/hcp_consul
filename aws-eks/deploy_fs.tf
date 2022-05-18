@@ -1,5 +1,5 @@
 data "kubectl_path_documents" "fake-service" {
-  pattern = "${path.module}/../aws_eks/apps/templates/${var.consul_template}/*.yaml"
+  pattern = "${path.module}/../aws_eks_apps/templates/${var.consul_template}/*.yaml"
 }
 
 resource "kubectl_manifest" "fake-service" {

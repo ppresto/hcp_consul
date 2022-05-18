@@ -1,7 +1,7 @@
 # Demo
 
-## Review Environment
-Walk through TFCB Workspaces (HCP, VPC/TG, EKS, aws_eks_apps).  
+## Review Current Environment
+Walk through TFCB Workspaces (HCP, AWS VPC/TG, EKS cluster, basic services).  
 ## Fake-Service App
 Deploy fs to show normal (no consul, no mesh) service running in K8s.  This can be used as a starting point to show existing services day 1.
 
