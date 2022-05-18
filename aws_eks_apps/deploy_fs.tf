@@ -8,14 +8,14 @@ data "kubectl_path_documents" "consul-init" {
 resource "kubectl_manifest" "consul-init" {
   for_each   = toset(data.kubectl_path_documents.consul-init.documents)
   yaml_body  = each.value
-  depends_on = [helm_release.consul]
+  depends_on = [kubectl_manifest.fake-service]
 }
 # Manually deploying before running this to show before consul picture
-#resource "kubectl_manifest" "fake-service" {
-#  for_each   = toset(data.kubectl_path_documents.fake-service.documents)
-#  yaml_body  = each.value
-#  depends_on = [kubectl_manifest.consul-init]
-#}
+resource "kubectl_manifest" "fake-service" {
+  for_each   = toset(data.kubectl_path_documents.fake-service.documents)
+  yaml_body  = each.value
+  depends_on = [helm_release.consul]
+}
 
 data "kubernetes_service" "ingress" {
   metadata {
