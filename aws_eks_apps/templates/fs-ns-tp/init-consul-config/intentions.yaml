@@ -46,9 +46,6 @@ spec:
     name: currency
     namespace: currency-ns
   sources:
-  - name: payments
-    namespace: payments-ns
-    action: allow
   - name: api
     namespace: api-ns
     action: allow
