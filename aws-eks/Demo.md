@@ -25,3 +25,4 @@ kubectl exec -it $(kubectl get pod -l app=api -o name) -c api -- curl http://loc
 ```
 
 ## Deploy Consul
+TFCB - Run presto-projects: aws_eks_apps to run Consul helm chart and deploy agent to EKS.
