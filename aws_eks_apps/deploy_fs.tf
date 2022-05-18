@@ -13,7 +13,6 @@ resource "kubectl_manifest" "consul-init" {
 resource "kubectl_manifest" "fake-service" {
   for_each   = toset(data.kubectl_path_documents.fake-service.documents)
   yaml_body  = each.value
-  depends_on = [kubectl_manifest.consul-init]
 }
 
 data "kubernetes_service" "ingress" {
