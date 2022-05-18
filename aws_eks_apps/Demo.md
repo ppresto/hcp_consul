@@ -18,6 +18,10 @@ kubectl port-forward svc/web 9090:9090
 http://localhost:9090/ui
 
 ## Deploy Consul
+```
+watch kubectl get pods -A
+```
+
 TFCB - Run presto-projects: aws_eks_apps to run Consul helm chart and deploy agent to EKS.  
 
 ## Redeploy Services
@@ -27,8 +31,11 @@ Rolling deploy, scale down, or delete services.
 #kubectl scale deployment web --replicas=0
 #kubectl delete $(kubectl get pods -l service=fake-service)
 
+
+kubectl apply -f ./init-consul-config/
 kubectl delete -f .
 kubectl apply -f .
+kubectl apply -f ./init-consul-config/
 ```
 
 ## Review Consul Dashboard
@@ -43,25 +50,15 @@ kubectl get pods -A -l service=fake-service
 * Services -> Web  - Topology, Intentions
 
 ## Test Ingress GW
-TFCB - Open [Web URL Output](https://app.terraform.io/app/presto-projects/workspaces/aws_eks_apps) in a new Tab.
-
-Troubleshoot: Web to API Intentions using the UI.
-
-Note:  Fake-Service might fail.  Check aws_eks_apps/templates/fs-ns-tp/init-consul-config/*.yaml was properly deployed.  For some reason this dir isn't getting deployed????
-
-Fix
+TFCB - Open Ingress GW URL
 ```
-kubectl apply -f ./init-consul-config/
-kubectl get servicedefaults -A
-kubectl get serviceintentions -A
+echo "http://$(kubectl get svc consul-ingress-gateway -n consul -o json | jq -r '.status.loadBalancer.ingress[].hostname'):8080/ui"
 ```
-
-Review intentions in the UI again.
-
 ## Deploy api-v2
 ```
 cd release-v2
-kubectl apply -f .
+kubectl apply -f ./api-v2.yaml
+kubectl apply -f ./traffic-mgmt.yaml
 ```
 Review api service router/splitter using traffic-mgmt.yaml and Consul UI together.
 
