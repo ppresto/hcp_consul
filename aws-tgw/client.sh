@@ -89,8 +89,6 @@ LimitNOFILE=65536
 [Install]
 WantedBy=multi-user.target
 EOF
-systemctl enable consul.service
-systemctl start consul.service
 
 #
 ### Install Envoy
@@ -176,6 +174,10 @@ services:
     command: ["consul", "connect", "envoy", "-sidecar-for", "api-v1"]
     network_mode: "service:api"
 EOF
+
+# Start Consul
+systemctl enable consul.service
+systemctl start consul.service
 
 # Start fake-service container using docker-compose
 cd /opt/consul/fake-service
