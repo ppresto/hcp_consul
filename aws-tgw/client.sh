@@ -101,7 +101,9 @@ func-e use 1.20.2
 cp $${HOME}/.func-e/versions/1.20.2/bin/envoy /usr/local/bin
 envoy --version
 
-# Install Docker, docker-compose
+#
+### Install Docker, docker-compose
+#
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
 echo \
