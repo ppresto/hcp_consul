@@ -19,9 +19,9 @@ resource "aws_instance" "bastion" {
   vpc_security_group_ids      = [aws_security_group.bastion.id, aws_security_group.consul_server.id]
   subnet_id                   = data.terraform_remote_state.hcp_consul.outputs.vpc_public_subnets[0]
   associate_public_ip_address = true
-  #user_data                   = data.template_file.userdata.rendered
+  user_data                   = data.template_file.userdata.rendered
   tags = merge(
-    { "Name" = "${var.region}-bastion" },
+    { "Name" = "presto-${var.region}-bastion" },
     { "Project" = var.region }
   )
 }
