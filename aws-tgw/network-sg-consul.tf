@@ -75,6 +75,16 @@ resource "aws_security_group_rule" "consul_server_allow_client_8501" {
   source_security_group_id = aws_security_group.consul_server.id
   description              = "Used to handle gossip between client agents"
 }
+# Enable GRPC for Envoy Proxy
+resource "aws_security_group_rule" "consul_server_allow_client_8502" {
+  security_group_id        = aws_security_group.consul_server.id
+  type                     = "ingress"
+  protocol                 = "tcp"
+  from_port                = 8502
+  to_port                  = 8502
+  source_security_group_id = aws_security_group.consul_server.id
+  description              = "Consul Connect requires grpc 8502 for envoy"
+}
 # EKS - Consul client
 # [ERROR] agent.auto_config: AutoEncrypt.Sign RPC failed: addr=172.25.26.99:8300 error="rpcinsecure error establishing connection: dial tcp <nil>->172.25.26.99:8300: i/o timeout"
 resource "aws_security_group_rule" "consul_server_allow_client_8300" {
