@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# stored in: /var/lib/cloud/instances/instance-id/user-data.txt
+# logged at: /var/log/cloud-init-output.log
+
 CONFIG_FILE_64="${CONSUL_CONFIG_FILE}"
 CONSUL_CA=$(echo ${CONSUL_CA_FILE}| base64 -d)
 
@@ -122,20 +125,17 @@ service {
   name = "api"
   id = "api-v1"
   port = 9090
-  
-  connect { 
+  connect {
     sidecar_service {
       port = 20000
-      
       check {
         name = "Connect Envoy Sidecar"
         tcp = "localhost:20000"
         interval ="10s"
       }
-
       proxy {
       }
-    }  
+    }
   }
 }
 EOF
@@ -144,7 +144,6 @@ EOF
 cat >/opt/consul/fake-service/central_config/api_defaults.hcl <<- EOF
 Kind = "service-defaults"
 Name = "api"
-
 Protocol = "grpc"
 EOF
 
