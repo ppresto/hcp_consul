@@ -96,7 +96,7 @@ systemctl start consul.service
 curl https://func-e.io/install.sh | bash -s -- -b /usr/local/bin
 func-e versions -all
 func-e use 1.20.2
-cp ${HOME}/.func-e/versions/1.20.2/bin/envoy /usr/local/bin
+cp $${HOME}/.func-e/versions/1.20.2/bin/envoy /usr/local/bin
 envoy --version
 
 # Install Docker, docker-compose
