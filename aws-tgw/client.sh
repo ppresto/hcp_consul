@@ -92,7 +92,9 @@ EOF
 systemctl enable consul.service
 systemctl start consul.service
 
-# Install Envoy
+#
+### Install Envoy
+#
 curl https://func-e.io/install.sh | bash -s -- -b /usr/local/bin
 func-e versions -all
 func-e use 1.20.2
