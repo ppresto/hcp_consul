@@ -3,10 +3,33 @@
 CONFIG_FILE_64="${CONSUL_CONFIG_FILE}"
 CONSUL_CA=$(echo ${CONSUL_CA_FILE}| base64 -d)
 
-# Install Consul
+#
+### Install Consul
+#
 curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
 apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
 apt update && apt install -y consul unzip jq
+
+#
+### Install Envoy
+#
+curl https://func-e.io/install.sh | bash -s -- -b /usr/local/bin
+func-e versions -all
+func-e use 1.20.2
+cp $${HOME}/.func-e/versions/1.20.2/bin/envoy /usr/local/bin
+envoy --version
+
+#
+### Install Docker, docker-compose
+#
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+apt-get update -y
+apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
 
 # Set variables with jq
 GOSSIP_KEY=$(echo $CONFIG_FILE_64 | base64 -d | jq -r '.encrypt')
@@ -89,27 +112,6 @@ LimitNOFILE=65536
 [Install]
 WantedBy=multi-user.target
 EOF
-
-#
-### Install Envoy
-#
-curl https://func-e.io/install.sh | bash -s -- -b /usr/local/bin
-func-e versions -all
-func-e use 1.20.2
-cp $${HOME}/.func-e/versions/1.20.2/bin/envoy /usr/local/bin
-envoy --version
-
-#
-### Install Docker, docker-compose
-#
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
-
-apt-get update -y
-apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
 
 # Install fake-service (api)
 mkdir -p /opt/consul/fake-service/central_config
