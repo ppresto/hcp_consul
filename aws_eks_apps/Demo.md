@@ -12,8 +12,9 @@ watch kubectl get pods -A
 
 Deploy fs to show normal (no consul, no mesh) service running in K8s.  This can be used as a starting point to show existing services day 1.
 ```
-cd aws_eks_apps/templates/fs-ns-tp
+cd /Users/patrickpresto/Projects/hcp/hcp-consul/aws_eks_apps/templates/fs-ns-tp
 kubectl apply -f .
+kubectl apply -f ./init-consul-config
 kubectl get pods -A -l service=fake-service
 ```
 ## Test Service locally
@@ -24,7 +25,7 @@ http://localhost:9090/ui
 
 ## Deploy Consul
 
-TFCB - Run presto-projects: aws_eks_apps to run Consul helm chart and deploy agent to EKS.  
+TFCB - Run presto-projects: aws_eks_apps to run Consul helm chart and deploy agent to EKS.
 
 ## Redeploy Services
 Rolling deploy, scale down, or delete services.
@@ -84,11 +85,11 @@ Refresh multiple times.
 cd $HOME/Projects/hcp/hcp-consul/aws_eks_apps/templates/fs-ns-tp
 kubectl delete -f init-consul-config/
 kubectl delete -f .
-kubectl get serviceDefaults
-kubectl get serviceIntentions
-kubectl get serviceRouters
-kubectl get serviceSplitters
-kubectl get serviceResolvers
+kubectl get serviceDefaults -A
+kubectl get serviceIntentions -A
+kubectl get serviceRouters -A
+kubectl get serviceSplitters -A
+kubectl get serviceResolvers -A
 kubectl get ns
 
 source scripts/setConsulEnv.sh <CONSUL_TOKEN>

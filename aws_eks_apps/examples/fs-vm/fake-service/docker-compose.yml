@@ -1,0 +1,26 @@
+---
+version: "3.3"
+services:
+  api:
+    image: nicholasjackson/fake-service:v0.21.0
+    container_name: api
+    environment:
+      LISTEN_ADDR: 0.0.0.0:9090
+      MESSAGE: "API response"
+      NAME: "API"
+      SERVER_TYPE: "grpc"
+  api_proxy:
+    image: nicholasjackson/consul-envoy:v1.6.0-v0.10.0
+    container_name: api_proxy
+    depends_on:
+      - "api"
+    environment:
+      CONSUL_HTTP_ADDR: 172.17.0.1:8500
+      CONSUL_GRPC_ADDR: 172.17.0.1:8502
+      SERVICE_CONFIG: /config/api_v1.hcl
+      CENTRAL_CONFIG: "/central_config/api_defaults.hcl"
+    volumes:
+    - "./fake-service/service_config:/config"
+    - "./fake-service/central_config:/central_config"
+    command: ["consul", "connect", "envoy", "-sidecar-for", "api-v1"]
+    network_mode: "service:api"

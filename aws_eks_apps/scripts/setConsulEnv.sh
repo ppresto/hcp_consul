@@ -7,6 +7,9 @@ export CONSUL_HTTP_TOKEN="${1}"
 # curl -s ${CONSUL_HTTP_ADDR}/v1/connect/ca/roots | jq -r '.Roots[0].RootCert' | openssl x509 -text -noout
 
 # Review Consul ingress gateway
-# kubectl exec deploy/consul-ingress-gateway -c ingress-gateway -- wget -qO- 127.0.0.1:19000/config_dump | jq '[.. |."dynamic_route_configs"? | select(. != null)[0]]'
-# kubectl exec deploy/consul-ingress-gateway -c ingress-gateway -- wget -qO- 127.0.0.1:19000/clusters
+
+# kubectl exec $(kubectl get pods -n consul -l ingress-gateway-name=consul-ingress-gateway -o name) -n consul -c ingress-gateway -- wget -qO- 127.0.0.1:19000/clusters
+
+# kubectl exec $(kubectl get pods -n consul -l ingress-gateway-name=consul-ingress-gateway -o name) -n consul -c ingress-gateway -- wget -qO- 127.0.0.1:19000/config_dump | jq '[.. |."dynamic_route_configs"? | select(. != null)[0]]'
+
 
