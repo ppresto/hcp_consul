@@ -85,13 +85,14 @@ resource "aws_security_group_rule" "consul_server_allow_client_8502" {
   source_security_group_id = aws_security_group.consul_server.id
   description              = "Consul Connect requires grpc 8502 for envoy"
 }
-# Enable Consul Connect: Envoy Proxy Ports
+# Enable Consul Connect: Envoy sidecar registration ports
+# ref: https://learn.hashicorp.com/tutorials/consul/service-mesh-production-checklist?in=consul/developer-mesh
 resource "aws_security_group_rule" "consul_allow_client_com_20000-21000" {
   security_group_id        = aws_security_group.consul_server.id
   type                     = "ingress"
   protocol                 = "tcp"
-  from_port                = 20000
-  to_port                  = 22000
+  from_port                = 21000
+  to_port                  = 21255
   source_security_group_id = aws_security_group.consul_server.id
   description              = "Consul Connect requires envoy"
 }
