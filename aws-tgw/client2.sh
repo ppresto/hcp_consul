@@ -176,8 +176,8 @@ services:
       CENTRAL_CONFIG: "/central_config/api_defaults.hcl"
       CONSUL_HTTP_TOKEN: "${CONSUL_ACL_TOKEN}"
     volumes:
-    - "${PWD}/service_config/:/config"
-    - "${PWD}/central_config/:/central_config"
+    - "$${PWD}/service_config/:/config"
+    - "$${PWD}/central_config/:/central_config"
     command: ["consul", "connect", "envoy", "-sidecar-for", "api-v1"]
     network_mode: "service:api"
 EOF
