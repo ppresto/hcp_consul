@@ -91,7 +91,7 @@ resource "aws_security_group_rule" "consul_allow_client_com_20000-21000" {
   type                     = "ingress"
   protocol                 = "tcp"
   from_port                = 20000
-  to_port                  = 21000
+  to_port                  = 22000
   source_security_group_id = aws_security_group.consul_server.id
   description              = "Consul Connect requires envoy"
 }

@@ -11,7 +11,7 @@ CONSUL_CA=$(echo ${CONSUL_CA_FILE}| base64 -d)
 #
 curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
 apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-apt update && apt install -y consul unzip jq
+apt update && apt install -y consul-enterprise=1.12.0-1+ent unzip jq
 
 #
 ### Install Envoy
