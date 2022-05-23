@@ -41,6 +41,7 @@ mkdir -p /opt/consul/fake-service/central_config
 cd /opt/consul/fake-service
 wget https://github.com/nicholasjackson/fake-service/releases/download/v0.23.1/fake_service_linux_amd64.zip
 unzip fake_service_linux_amd64.zip
+chmod 755 ./fake_service
 
 # Set variables with jq
 GOSSIP_KEY=$(echo $CONFIG_FILE_64 | base64 -d | jq -r '.encrypt')
@@ -172,6 +173,8 @@ EOF
 
 cat >/opt/consul/fake-service/start.sh <<- EOF
 #!/bin/bash
+
+export CONSUL_HTTP_TOKEN="${CONSUL_ACL_TOKEN}"
 sleep 1
 consul services register ./service_api.hcl
 

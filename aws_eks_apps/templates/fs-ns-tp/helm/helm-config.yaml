@@ -27,6 +27,10 @@ externalServers:
 client:
   enabled: true
   join: ${RETRY_JOIN}
+syncCatalog:
+  enabled: true
+  toConsul: false
+  toK8S: true
 connectInject:
   enabled: true
   transparentProxy:
