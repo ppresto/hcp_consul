@@ -75,6 +75,10 @@ auto_encrypt = {
   tls = true
 }
 
+connect {
+  enabled = true
+}
+
 ports {
   grpc = 8502
 }
@@ -120,17 +124,18 @@ EOF
 mkdir -p /opt/consul/fake-service/central_config
 mkdir /opt/consul/fake-service/service_config
 
-cat >/opt/consul/fake-service/service_config/api_vi.hcl <<- EOF
+cat >/opt/consul/fake-service/service_config/api_v1.hcl <<- EOF
 service {
   name = "api"
   id = "api-v1"
   port = 9090
+  token = ""
   connect {
     sidecar_service {
       port = 20000
       check {
         name = "Connect Envoy Sidecar"
-        tcp = "localhost:20000"
+        tcp = "0.0.0.0:20000"
         interval ="10s"
       }
       proxy {
@@ -167,11 +172,12 @@ services:
     environment:
       CONSUL_HTTP_ADDR: 172.17.0.1:8500
       CONSUL_GRPC_ADDR: 172.17.0.1:8502
-      SERVICE_CONFIG: /config/api_v1.hcl
+      SERVICE_CONFIG: "/config/api_v1.hcl"
       CENTRAL_CONFIG: "/central_config/api_defaults.hcl"
+      CONSUL_HTTP_TOKEN: "${CONSUL_ACL_TOKEN}"
     volumes:
-    - "./fake-service/service_config:/config"
-    - "./fake-service/central_config:/central_config"
+    - "${PWD}/service_config/:/config"
+    - "${PWD}/central_config/:/central_config"
     command: ["consul", "connect", "envoy", "-sidecar-for", "api-v1"]
     network_mode: "service:api"
 EOF
