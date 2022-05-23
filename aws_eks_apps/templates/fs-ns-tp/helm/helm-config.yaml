@@ -29,8 +29,9 @@ client:
   join: ${RETRY_JOIN}
 syncCatalog:
   enabled: true
-  toConsul: false
   toK8S: true
+  consulNamespaces:
+    consulDestinationNamespace: 'default'
 connectInject:
   enabled: true
   transparentProxy:
