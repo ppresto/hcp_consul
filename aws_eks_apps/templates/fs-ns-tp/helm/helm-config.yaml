@@ -27,11 +27,9 @@ externalServers:
 client:
   enabled: true
   join: ${RETRY_JOIN}
-syncCatalog:
+dns:
   enabled: true
-  toK8S: true
-  consulNamespaces:
-    consulDestinationNamespace: 'default'
+  enableRedirection: true
 connectInject:
   enabled: true
   transparentProxy:
