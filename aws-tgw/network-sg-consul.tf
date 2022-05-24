@@ -87,7 +87,7 @@ resource "aws_security_group_rule" "consul_server_allow_client_8502" {
 }
 # Enable Consul Connect: Envoy sidecar registration ports
 # ref: https://learn.hashicorp.com/tutorials/consul/service-mesh-production-checklist?in=consul/developer-mesh
-resource "aws_security_group_rule" "consul_allow_client_com_20000-21000" {
+resource "aws_security_group_rule" "consul_allow_client_com_20000-21255" {
   security_group_id        = aws_security_group.consul_server.id
   type                     = "ingress"
   protocol                 = "tcp"
@@ -96,6 +96,17 @@ resource "aws_security_group_rule" "consul_allow_client_com_20000-21000" {
   source_security_group_id = aws_security_group.consul_server.id
   description              = "Consul Connect requires envoy"
 }
+# Fake service ports
+resource "aws_security_group_rule" "consul_client_allow_fakeservice" {
+  security_group_id        = aws_security_group.consul_server.id
+  type                     = "ingress"
+  protocol                 = "tcp"
+  from_port                = 9090
+  to_port                  = 9091
+  source_security_group_id = aws_security_group.consul_server.id
+  description              = "Used to handle EKS request to fake-service"
+}
+
 # EKS - Consul client
 # [ERROR] agent.auto_config: AutoEncrypt.Sign RPC failed: addr=172.25.26.99:8300 error="rpcinsecure error establishing connection: dial tcp <nil>->172.25.26.99:8300: i/o timeout"
 resource "aws_security_group_rule" "consul_server_allow_client_8300" {
