@@ -10,6 +10,7 @@ data "template_file" "userdata" {
     CONSUL_CA_FILE     = data.terraform_remote_state.hcp_consul.outputs.consul_ca_file
     CONSUL_CONFIG_FILE = data.terraform_remote_state.hcp_consul.outputs.consul_config_file
     CONSUL_ACL_TOKEN   = data.terraform_remote_state.hcp_consul.outputs.consul_root_token_secret_id
+    SERVICE_ACL_TOKEN  = data.terraform_remote_state.hcp_consul.outputs.consul_service_api_token
   }
 }
 resource "aws_instance" "bastion" {

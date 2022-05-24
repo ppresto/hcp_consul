@@ -138,7 +138,7 @@ cat >/opt/consul/fake-service/service_api.hcl <<- EOF
     "namespace": "api-ns",
     "id": "api",
     "port": 9091,
-    "token": "",
+    "token": "${SERVICE_ACL_TOKEN}",
     "check": {
       "http": "http://localhost:9091/health",
       "method": "GET",

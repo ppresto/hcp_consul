@@ -134,3 +134,16 @@ kubectl patch serviceintentions.consul.hashicorp.com currency --type merge --pat
 kubectl patch serviceintentions.consul.hashicorp.com web --type merge --patch '{"metadata":{"finalizers":[]}}'
 kubectl patch serviceintentions.consul.hashicorp.com payments --type merge --patch '{"metadata":{"finalizers":[]}}'
 ```
+
+### Envoy
+Verify IP:Port connectivity from EKS Pod using netcat/nc
+```
+kubectl exec -it web-7c4f6d77d8-gqs2p -c web -- nc -zv 10.20.11.138 21000
+kubectl exec -it web-7c4f6d77d8-gqs2p -c envoy-sidecar -- nc -zv 10.20.11.138 21000
+```
+
+Get Envoy Proxy Information
+```
+kubectl exec -it web-7c4f6d77d8-gqs2p -c envoy-sidecar -- wget -qO- http://localhost:19000/clusters
+kubectl exec -it web-7c4f6d77d8-gqs2p -c envoy-sidecar -- wget -qO- http://localhost:19000/config_dump
+```
