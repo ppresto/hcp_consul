@@ -57,12 +57,3 @@ data "consul_acl_token_secret_id" "api-service" {
 output "consul_service_api_token" {
   value = nonsensitive(data.consul_acl_token_secret_id.api-service.secret_id)
 }
-
-
-data "consul_autopilot_health" "read" {}
-output "autopilot_health" {
-  value = "${data.consul_autopilot_health.read.healthy}"
-}
-output "health" {
-  value = "${data.consul_autopilot_health.read.healthy}"
-}
