@@ -41,7 +41,7 @@ mkdir -p /opt/consul/fake-service/central_config
 cd /opt/consul/fake-service
 wget https://github.com/nicholasjackson/fake-service/releases/download/v0.23.1/fake_service_linux_amd64.zip
 unzip fake_service_linux_amd64.zip
-chmod 755 ./fake_service
+chmod 755 /opt/consul/fake-service/fake-service
 
 # Set variables with jq
 GOSSIP_KEY=$(echo $CONFIG_FILE_64 | base64 -d | jq -r '.encrypt')

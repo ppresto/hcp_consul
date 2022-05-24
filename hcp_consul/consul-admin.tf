@@ -55,5 +55,5 @@ data "consul_acl_token_secret_id" "api-service" {
     #pgp_key     = "keybase:my_username"
 }
 output "consul_service_api_token" {
-  value = nonsensitive(data.consul_acl_token_secret_id.api-service.encrypted_secret_id)
+  value = nonsensitive(data.consul_acl_token_secret_id.api-service.secret_id)
 }
