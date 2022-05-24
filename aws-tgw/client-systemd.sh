@@ -202,6 +202,9 @@ pkill envoy
 pkill fake-service
 EOF
 
+# Update user profiles for Consul CLI use
+echo "export CONSUL_HTTP_TOKEN=${CONSUL_ACL_TOKEN}" >> /root/.profile
+echo "export CONSUL_HTTP_TOKEN=${CONSUL_ACL_TOKEN}" >> /home/ubuntu/.profile
 # Start Consul
 systemctl enable consul.service
 systemctl start consul.service

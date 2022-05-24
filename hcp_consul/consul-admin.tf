@@ -52,8 +52,8 @@ resource "consul_acl_token" "api-service" {
 }
 data "consul_acl_token_secret_id" "api-service" {
     accessor_id = consul_acl_token.api-service.id
-    pgp_key     = "keybase:my_username"
+    #pgp_key     = "keybase:my_username"
 }
 output "consul_service_api_token" {
-  value = nonsensitive(data.consul_acl_token_secret_id.api-service.secret_id)
+  value = nonsensitive(data.consul_acl_token_secret_id.api-service.encrypted_secret_id)
 }
