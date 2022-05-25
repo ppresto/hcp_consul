@@ -29,13 +29,41 @@ module "eks" {
   vpc_id     = data.terraform_remote_state.hcp_consul.outputs.vpc_id
   subnet_ids = data.terraform_remote_state.hcp_consul.outputs.vpc_private_subnets
 
-  worker_groups = [
-    {
-      instance_type        = "t3.medium"
-      asg_max_size         = 2
-      asg_desired_capacity = 2
+  cluster_addons = {
+    #coredns = {
+    #  resolve_conflicts = "OVERWRITE"
+    #}
+    kube-proxy = {}
+    vpc-cni = {
+      resolve_conflicts = "OVERWRITE"
     }
-  ]
+  }
+
+  cluster_encryption_config = [{
+    provider_key_arn = aws_kms_key.eks.arn
+    resources        = ["secrets"]
+  }]
+  
+  eks_managed_node_group_defaults = {
+    ami_type       = "AL2_x86_64"
+    disk_size      = 50
+    instance_types = ["t3.medium"]
+  }
+
+  eks_managed_node_groups = {
+    # Default node group - as provided by AWS EKS
+    default_node_group = {
+      # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
+      # so we need to disable it to use the default template provided by the AWS EKS managed node group service
+      create_launch_template = false
+      launch_template_name   = ""
+
+      # Remote access cannot be specified with a launch template
+      remote_access = {
+        ec2_ssh_key               = var.ec2_key_pair_name
+        source_security_group_ids = [aws_security_group.remote_access.id]
+      }
+    }
 }
 
 ################################################################################

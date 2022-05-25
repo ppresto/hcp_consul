@@ -9,6 +9,12 @@ variable "region" {
   type        = string
   default     = "us-west-2"
 }
+
+variable "ec2_key_pair_name" {
+  description = "An existing EC2 key pair used to access the bastion server."
+  type        = string
+  default     = "ppresto-ptfe-dev-key"
+}
 locals {
   vpc_id             = data.terraform_remote_state.hcp_consul.outputs.vpc_id
   private_subnet_ids = data.terraform_remote_state.hcp_consul.outputs.vpc_private_subnets

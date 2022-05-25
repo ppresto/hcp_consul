@@ -16,10 +16,10 @@ apt update && apt install -y consul-enterprise=1.12.0-1+ent unzip jq
 #
 ### Install Envoy
 #
-curl https://func-e.io/install.sh | bash -s -- -b /usr/local/bin
+curl https://func-e.io/install.sh | bash -s -- -b /usr/local/bin/
 func-e versions -all
 func-e use 1.20.2
-cp $${HOME}/.func-e/versions/1.20.2/bin/envoy /usr/local/bin
+cp /root/.func-e/versions/1.20.2/bin/envoy /usr/local/bin
 envoy --version
 
 #
@@ -135,10 +135,16 @@ cat >/opt/consul/fake-service/service_api.hcl <<- EOF
 {
   "service": {
     "name": "api",
-    "namespace": "api-ns",
+    "namespace": "default",
     "id": "api",
     "port": 9091,
     "token": "${SERVICE_ACL_TOKEN}",
+    "tagged_addresses": {
+        "virtual": {
+          "address": "203.0.113.50",
+          "port": 9091
+        }
+      },
     "check": {
       "http": "http://localhost:9091/health",
       "method": "GET",

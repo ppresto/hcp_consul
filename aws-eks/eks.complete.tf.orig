@@ -30,9 +30,9 @@ module "eks" {
   cluster_additional_security_group_ids = [data.terraform_remote_state.aws-tgw.outputs.consul_server_sg_id]
   cluster_addons = {
     # Note: https://docs.aws.amazon.com/eks/latest/userguide/fargate-getting-started.html#fargate-gs-coredns
-    coredns = {
-      resolve_conflicts = "OVERWRITE"
-    }
+    #coredns = {
+    #  resolve_conflicts = "OVERWRITE"
+    #}
     kube-proxy = {}
     vpc-cni = {
       resolve_conflicts = "OVERWRITE"
