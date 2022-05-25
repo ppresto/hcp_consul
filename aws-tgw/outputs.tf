@@ -94,3 +94,7 @@ output "ram_principal_association_id" {
 output "consul_server_sg_id" {
   value = aws_security_group.consul_server.id
 }
+
+output "bastion_ssh_sg_id" {
+  value = aws_security_group.bastion.id
+}
