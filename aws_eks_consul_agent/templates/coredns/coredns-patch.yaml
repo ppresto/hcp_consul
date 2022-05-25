@@ -19,7 +19,7 @@ data:
     consul:53 {
     errors
     cache 30
-    forward . 172.20.197.185
+    forward . 172.20.53.212
     }
 metadata:
     name: coredns

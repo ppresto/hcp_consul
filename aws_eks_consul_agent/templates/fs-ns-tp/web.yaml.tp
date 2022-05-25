@@ -33,8 +33,8 @@ spec:
         service: fake-service
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
-        consul.hashicorp.com/transparent-proxy: 'false'
-        consul.hashicorp.com/connect-service-upstreams: 'api.default:9091'
+        consul.hashicorp.com/transparent-proxy: 'true'
+        #consul.hashicorp.com/connect-service-upstreams: 'api.default:9091'
     spec:
       serviceAccountName: web
       containers:
@@ -46,7 +46,7 @@ spec:
             - name: 'LISTEN_ADDR'
               value: '0.0.0.0:9090'
             - name: 'UPSTREAM_URIS'
-              value: 'http://api:9091'
+              value: 'http://api.virtual.consul'
             - name: 'NAME'
               value: 'web'
             - name: 'MESSAGE'
