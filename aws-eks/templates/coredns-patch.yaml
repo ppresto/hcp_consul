@@ -1,0 +1,7 @@
+data:
+  Corefile:
+    consul:53 {
+    errors
+    cache 30
+    forward . 172.20.197.185
+    }

@@ -85,6 +85,21 @@ For proxy global default changes to take affect restart envoy sidecars with roll
 for i in  $(kubectl get deployments -l service=fake-service -o name); do kubectl rollout restart $i; done
 ```
 
+### Kubernetes EKS DNS
+Test coredns config using nslookup
+```
+kubectl run busybox --restart=Never --image=busybox:1.28 -- sleep 3600
+$ kubectl exec busybox -- nslookup <consul-servce-name>
+# kubectl run -it --rm --restart=Never --image=infoblox/dnstools:latest dnstools
+# host foo
+```
+
+Reload coredns configmap
+```
+kubectl exec -n kube-system coredns-980047985-g2748 -- kill -SIGUSR1 1
+```
+References:
+https://aws.amazon.com/premiumsupport/knowledge-center/eks-dns-failure/
 #### Terminate stuck namespace
 
 Start proxy on localhost:8001
