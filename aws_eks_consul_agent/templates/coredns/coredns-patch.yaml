@@ -17,9 +17,9 @@ data:
         loadbalance
     }
     consul:53 {
-    errors
-    cache 30
-    forward . 172.20.53.212
+        errors
+        cache 30
+        forward . 172.20.128.87
     }
 metadata:
     name: coredns

@@ -71,7 +71,7 @@ sudo apt-get install docker-ce=<VERSION_STRING> docker-ce-cli=<VERSION_STRING> c
 ## Troubleshooting
 
 ### Helm
-Manually install consul using Helm.  The test.yaml was take from TFCB Output.
+Manually install consul using Helm.  The test.yaml can be created from Terraform Output.
 ```
 helm repo add hashicorp https://helm.releases.hashicorp.com
 helm install consul hashicorp/consul --create-namespace --namespace consul --version 0.33.0 --set global.image="hashicorp/consul-enterprise:1.11.0-ent" --values ./helm/test.yaml
@@ -86,18 +86,26 @@ for i in  $(kubectl get deployments -l service=fake-service -o name); do kubectl
 ```
 
 ### Kubernetes EKS DNS
-Test coredns config using nslookup
+Get DNS services (consul and coredns)
 ```
-kubectl run busybox --restart=Never --image=busybox:1.28 -- sleep 3600
-$ kubectl exec busybox -- nslookup <consul-servce-name>
-# kubectl run -it --rm --restart=Never --image=infoblox/dnstools:latest dnstools
-# host foo
+consuldnsIP=$(kubectl -n consul get svc consul-dns -o json | jq -r '.spec.clusterIP')
+corednsIP=$(kubectl -n kube-system get svc kube-dns -o json | jq -r '.spec.clusterIP')
 ```
 
-Reload coredns configmap
+Test coredns config
 ```
-kubectl exec -n kube-system coredns-980047985-g2748 -- kill -SIGUSR1 1
+kubectl run busybox --restart=Never --image=busybox:1.28 -- sleep 3600
+kubectl exec busybox -- nslookup kubernetes $corednsIP
 ```
+Test consul config
+```
+kubectl exec busybox -- nslookup web.default
+kubectl exec busybox -- nslookup web.service.consul $consuldnsIP
+kubectl exec busybox -- nslookup web.service.consul
+kubectl exec busybox -- nslookup web
+kubectl exec busybox -- nslookup api.service.consul
+```
+
 References:
 https://aws.amazon.com/premiumsupport/knowledge-center/eks-dns-failure/
 #### Terminate stuck namespace
@@ -136,29 +144,26 @@ kubectl get namespace api -o json > temp.json
         "finalizers": []
     }
 ```
-#### Terminate stuck servicedefault
+#### Terminate stuck objects
+Examples to Fix defaults, intentions, and ingressgateways that wont delete
 ```
-kubectl patch servicedefaults.consul.hashicorp.com currency --type merge --patch '{"metadata":{"finalizers":[]}}'
-
 kubectl patch servicedefaults.consul.hashicorp.com api -n api-ns --type merge --patch '{"metadata":{"finalizers":[]}}'
+kubectl patch servicedefaults.consul.hashicorp.com web --type merge --patch '{"metadata":{"finalizers":[]}}'
 
 kubectl patch ingressgateway.consul.hashicorp.com ingress-gateway --type merge --patch '{"metadata":{"finalizers":[]}}'
 
-kubectl patch serviceintentions.consul.hashicorp.com cache --type merge --patch '{"metadata":{"finalizers":[]}}'
-kubectl patch serviceintentions.consul.hashicorp.com currency --type merge --patch '{"metadata":{"finalizers":[]}}'
 kubectl patch serviceintentions.consul.hashicorp.com web --type merge --patch '{"metadata":{"finalizers":[]}}'
-kubectl patch serviceintentions.consul.hashicorp.com payments --type merge --patch '{"metadata":{"finalizers":[]}}'
 ```
 
 ### Envoy
-Verify IP:Port connectivity from EKS Pod using netcat/nc
-```
-kubectl exec -it web-7c4f6d77d8-gqs2p -c web -- nc -zv 10.20.11.138 21000
-kubectl exec -it web-7c4f6d77d8-gqs2p -c envoy-sidecar -- nc -zv 10.20.11.138 21000
-```
-
 Get Envoy Proxy Information
 ```
 kubectl exec -it web-7c4f6d77d8-gqs2p -c envoy-sidecar -- wget -qO- http://localhost:19000/clusters
 kubectl exec -it web-7c4f6d77d8-gqs2p -c envoy-sidecar -- wget -qO- http://localhost:19000/config_dump
+```
+
+NetCat - Verify IP:Port connectivity from EKS Pod
+```
+kubectl exec -it web-7c4f6d77d8-gqs2p -c web -- nc -zv 10.20.11.138 21000
+kubectl exec -it web-7c4f6d77d8-gqs2p -c envoy-sidecar -- nc -zv 10.20.11.138 20000
 ```

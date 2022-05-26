@@ -30,6 +30,7 @@ client:
 dns:
   enabled: true
   enableRedirection: true
+  clusterIP: ${CONSUL_DNS_CLUSTER_IP} # Needed to configure kube-dns forwarding
 connectInject:
   enabled: true
   transparentProxy:

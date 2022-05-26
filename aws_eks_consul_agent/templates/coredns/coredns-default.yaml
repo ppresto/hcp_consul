@@ -19,7 +19,8 @@ kind: ConfigMap
 metadata:
   annotations:
     kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"v1","data":{"Corefile":".:53 {\n    errors\n    health\n    kubernetes cluster.local in-addr.arpa ip6.arpa {\n      pods insecure\n      fallthrough in-addr.arpa ip6.arpa\n    }\n    prometheus :9153\n    forward . /etc/resolv.conf\n    cache 30\n    loop\n    reload\n    loadbalance\n}\nconsul:53 {\nerrors\ncache 30\nforward . 172.20.197.185\n}\n"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"eks.amazonaws.com/component":"coredns","k8s-app":"kube-dns"},"name":"coredns","namespace":"kube-system"}}
+      {"apiVersion":"v1","data":{"Corefile":".:53 {\n    errors\n    health\n    kubernetes cluster.local in-addr.arpa ip6.arpa {\n      pods insecure\n      fallthrough in-addr.arpa ip6.arpa\n    }\n    prometheus :9153\n    forward . /etc/resolv.conf\n    cache 30\n    loop\n    reload\n    loadbalance\n}\n"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"eks.amazonaws.com/component":"coredns","k8s-app":"kube-dns"},"name":"coredns","namespace":"kube-system"}}
+  creationTimestamp: "2022-05-25T23:51:05Z"
   labels:
     eks.amazonaws.com/component: coredns
     k8s-app: kube-dns
@@ -29,22 +30,25 @@ metadata:
     fieldsV1:
       f:data: {}
       f:metadata:
+        f:annotations:
+          .: {}
+          f:kubectl.kubernetes.io/last-applied-configuration: {}
         f:labels:
           .: {}
           f:eks.amazonaws.com/component: {}
           f:k8s-app: {}
     manager: kubectl-client-side-apply
     operation: Update
+    time: "2022-05-25T23:51:05Z"
   - apiVersion: v1
     fieldsType: FieldsV1
     fieldsV1:
       f:data:
         f:Corefile: {}
-      f:metadata:
-        f:annotations:
-          .: {}
-          f:kubectl.kubernetes.io/last-applied-configuration: {}
     manager: kubectl
     operation: Update
+    time: "2022-05-26T00:16:50Z"
   name: coredns
   namespace: kube-system
+  resourceVersion: "4579"
+  uid: 80e0ad6f-71ee-42e5-9ba3-2ae1f974ff4a

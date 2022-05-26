@@ -5,7 +5,7 @@ data "aws_ssm_parameter" "ubuntu_1804_ami_id" {
 }
 
 data "template_file" "userdata" {
-  template = file("${path.module}/client-systemd.sh")
+  template = file("${path.module}/templates/client-systemd.sh")
   vars = {
     CONSUL_CA_FILE     = data.terraform_remote_state.hcp_consul.outputs.consul_ca_file
     CONSUL_CONFIG_FILE = data.terraform_remote_state.hcp_consul.outputs.consul_config_file

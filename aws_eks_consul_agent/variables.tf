@@ -21,6 +21,12 @@ variable "consul_template" {
   default     = "fs-tp"
 }
 
+variable "consul_dns_cluster_ip" {
+  description = "Preset Consul DNS ClusterIP to configure CoreDNS"
+  type        = string
+  default     = "172.20.128.87"
+}
+
 locals {
   vpc_id             = data.terraform_remote_state.hcp_consul.outputs.vpc_id
   private_subnet_ids = data.terraform_remote_state.hcp_consul.outputs.vpc_private_subnets

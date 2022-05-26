@@ -139,12 +139,6 @@ cat >/opt/consul/fake-service/service_api.hcl <<- EOF
     "id": "api",
     "port": 9091,
     "token": "${SERVICE_ACL_TOKEN}",
-    "tagged_addresses": {
-        "virtual": {
-          "address": "203.0.113.50",
-          "port": 9091
-        }
-      },
     "check": {
       "http": "http://localhost:9091/health",
       "method": "GET",
@@ -192,7 +186,7 @@ consul config write ./central_config/service_defaults.hcl
 export MESSAGE="API RESPONSE"
 export NAME="API"
 export SERVER_TYPE="http"
-export LISTEN_ADDR="0.0.0.0:9091"
+export LISTEN_ADDR="127.0.0.1:9091"
 nohup ./fake-service &
 
 sleep 1
