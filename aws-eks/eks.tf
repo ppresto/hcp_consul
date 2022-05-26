@@ -19,15 +19,15 @@ locals {
 # https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest
 
 module "eks" {
-  source = "terraform-aws-modules/eks/aws"
-  version = "18.4.1"
+  source                                = "terraform-aws-modules/eks/aws"
+  version                               = "18.4.1"
   cluster_name                          = local.name
   cluster_version                       = local.cluster_version
   cluster_endpoint_private_access       = true
   cluster_endpoint_public_access        = true
   cluster_additional_security_group_ids = [data.terraform_remote_state.aws-tgw.outputs.consul_server_sg_id]
-  vpc_id     = data.terraform_remote_state.hcp_consul.outputs.vpc_id
-  subnet_ids = data.terraform_remote_state.hcp_consul.outputs.vpc_private_subnets
+  vpc_id                                = data.terraform_remote_state.hcp_consul.outputs.vpc_id
+  subnet_ids                            = data.terraform_remote_state.hcp_consul.outputs.vpc_private_subnets
 
   cluster_addons = {
     #coredns = {
@@ -43,7 +43,7 @@ module "eks" {
     provider_key_arn = aws_kms_key.eks.arn
     resources        = ["secrets"]
   }]
-  
+
   eks_managed_node_group_defaults = {
     ami_type       = "AL2_x86_64"
     disk_size      = 50

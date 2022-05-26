@@ -40,6 +40,10 @@ connectInject:
     defaultEnableMerging: true
   consulNamespaces:
     mirroringK8S: true
+syncCatalog:
+  enabled: true
+  toConsul: false
+  toK8S: true
 controller:
   enabled: true
 ingressGateways:

@@ -8,7 +8,8 @@ kubectl apply -f .
 kubectl apply -f ./init-consul-config
 kubectl get pods -A -l service=fake-service
 ```
-### Get URL
+### Get Consul IngressGW URL
+If Consul is installed in K8s namespace add it like: `-n consul`
 ```
 #list ports (default 8080)
 kubectl get svc consul-ingress-gateway -o json | jq -r '.spec.ports[].port'
@@ -70,6 +71,14 @@ sudo apt-get install docker-ce=<VERSION_STRING> docker-ce-cli=<VERSION_STRING> c
 ```
 ## Troubleshooting
 
+### SSH
+The TF is leveraging your AWS Key Pair for the Bastion/EC2 and EKS nodes.  Use `Agent Forwarding` to ssh to your nodes.  Locally in your terminal find your key and setup ssh.
+```
+ssh-add -L  # Find SSH Keys added
+ssh-add ${HOME}/.ssh/my-dev-key.pem  # If you dont have any keys then add your key being used in TF.
+ssh -A ubuntu@<BASTION_IP>>  # pass your key in memory to the ubuntu Bastion Host you ssh to.
+ssh -A ec2_user@<K8S_NODE_IP> # Use your key to access the K8s Node
+```
 ### Helm
 Manually install consul using Helm.  The test.yaml can be created from Terraform Output.
 ```
@@ -86,10 +95,12 @@ for i in  $(kubectl get deployments -l service=fake-service -o name); do kubectl
 ```
 
 ### Kubernetes EKS DNS
-Get DNS services (consul and coredns)
+Get DNS services (consul and coredns), start busybox, and use nslookup
 ```
 consuldnsIP=$(kubectl -n consul get svc consul-dns -o json | jq -r '.spec.clusterIP')
 corednsIP=$(kubectl -n kube-system get svc kube-dns -o json | jq -r '.spec.clusterIP')
+kubectl run busybox --restart=Never --image=busybox:1.28 -- sleep 3600
+kubectl exec busybox -- nslookup kubernetes $corednsIP
 ```
 
 Test coredns config

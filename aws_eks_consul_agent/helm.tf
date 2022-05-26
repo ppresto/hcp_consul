@@ -5,20 +5,20 @@
 data "template_file" "agent_config" {
   template = file("${path.module}/templates/${var.consul_template}/helm/helm-config.yaml")
   vars = {
-    DATACENTER   = local.consul_datacenter
-    RETRY_JOIN   = jsonencode(local.consul_retry_join)
-    KUBE_API_URL = data.terraform_remote_state.aws-eks.outputs.cluster_endpoint
+    DATACENTER            = local.consul_datacenter
+    RETRY_JOIN            = jsonencode(local.consul_retry_join)
+    KUBE_API_URL          = data.terraform_remote_state.aws-eks.outputs.cluster_endpoint
     CONSUL_DNS_CLUSTER_IP = var.consul_dns_cluster_ip
   }
 }
 
 resource "helm_release" "consul" {
-  name = "consul"
-  namespace = var.namespace
+  name             = "consul"
+  namespace        = var.namespace
   create_namespace = false
-  repository = "https://helm.releases.hashicorp.com"
-  chart      = "consul"
-  version = "0.33.0"
+  repository       = "https://helm.releases.hashicorp.com"
+  chart            = "consul"
+  version          = "0.33.0"
 
   values = [data.template_file.agent_config.rendered]
   set {
@@ -33,7 +33,7 @@ resource "helm_release" "consul" {
 #
 resource "kubernetes_secret" "consul-ca-cert" {
   metadata {
-    name = "consul-ca-cert"
+    name      = "consul-ca-cert"
     namespace = var.namespace
   }
   data = {
@@ -43,7 +43,7 @@ resource "kubernetes_secret" "consul-ca-cert" {
 
 resource "kubernetes_secret" "consul-gossip-key" {
   metadata {
-    name = "consul-gossip-key"
+    name      = "consul-gossip-key"
     namespace = var.namespace
   }
   data = {
@@ -53,7 +53,7 @@ resource "kubernetes_secret" "consul-gossip-key" {
 
 resource "kubernetes_secret" "consul-bootstrap-token" {
   metadata {
-    name = "consul-bootstrap-token"
+    name      = "consul-bootstrap-token"
     namespace = var.namespace
   }
   data = {
