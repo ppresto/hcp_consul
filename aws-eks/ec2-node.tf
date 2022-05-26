@@ -81,8 +81,8 @@ output "ec2_svc_node_ip" {
   description = "IP address of node"
 }
 
-output "bastion_ip" {
-  value       = data.terraform_remote_state.aws-tgw.outputs.bastion_ip
-  description = "Public IP address of node"
+output "a_ssh_bastion_to_svcNode" {
+  value       = "ssh -J ubuntu@${data.terraform_remote_state.aws-tgw.outputs.bastion_ip} ubuntu@${aws_instance.node.private_ip}"
+  description = "ssh to bastion and then to private network ec2 svc node"
 }
 
