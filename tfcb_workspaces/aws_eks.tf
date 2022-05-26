@@ -2,8 +2,8 @@ module "aws-eks" {
   source              = "../modules/workspace-mgr"
   agent_pool_id       = ""
   organization        = var.organization
-  workspacename       = "aws-eks"
-  workingdir          = "aws-eks"
+  workspacename       = "aws_usw_dev_eks"
+  workingdir          = "aws_eks"
   tfversion           = "1.1.4"
   queue_all_runs      = false
   auto_apply          = true
