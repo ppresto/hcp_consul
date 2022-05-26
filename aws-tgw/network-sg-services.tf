@@ -24,7 +24,7 @@ resource "aws_security_group_rule" "service_9090-9099" {
   protocol          = "tcp"
   from_port         = 9090
   to_port           = 9099
-  cidr_blocks       = var.vpc_cidr_block
+  cidr_blocks       = [var.vpc_cidr_block]
   ipv6_cidr_blocks  = length(var.allowed_bastion_cidr_blocks_ipv6) > 0 ? var.allowed_bastion_cidr_blocks_ipv6 : null
   description       = "Allow SSH traffic."
 }
