@@ -20,11 +20,6 @@ variable "vpc_cidr_block" {
   type        = string
   default     = "10.20.0.0/16"
 }
-variable "ssh_cidr_block" {
-  description = "List of CIDR blocks allowed to access your Bastion.  Defaults to Everywhere."
-  type        = list(string)
-  default     = ["0.0.0.0/0"]
-}
 locals {
   vpc_id             = data.terraform_remote_state.hcp_consul.outputs.vpc_id
   private_subnet_ids = data.terraform_remote_state.hcp_consul.outputs.vpc_private_subnets

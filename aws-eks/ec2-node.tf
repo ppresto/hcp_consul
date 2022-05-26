@@ -17,7 +17,7 @@ resource "aws_instance" "node" {
   ami                         = var.use_latest_ami ? data.aws_ssm_parameter.ubuntu_1804_ami_id.value : var.ami_id
   instance_type               = "t3.micro"
   key_name                    = var.ec2_key_pair_name
-  vpc_security_group_ids      = [aws_security_group.node.id, aws_security_group.service.id, aws_security_group.consul_server.id]
+  vpc_security_group_ids      = [aws_security_group.ec2-svc-node.id, data.terraform_remote_state.aws-tgw.outputs.consul_server_sg_id]
   subnet_id                   = data.terraform_remote_state.hcp_consul.outputs.vpc_private_subnets[0]
   associate_public_ip_address = true
   user_data                   = data.template_file.userdata.rendered
@@ -73,7 +73,7 @@ resource "aws_security_group_rule" "node_allow_22" {
   protocol          = "tcp"
   from_port         = 22
   to_port           = 22
-  cidr_blocks       = var.ssh_cidr_block
+  cidr_blocks       = [var.vpc_cidr_block]
   description       = "Allow SSH traffic."
 }
 
