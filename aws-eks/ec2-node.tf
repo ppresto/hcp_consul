@@ -14,7 +14,7 @@ data "template_file" "userdata" {
   }
 }
 resource "aws_instance" "node" {
-  ami                         = var.use_latest_ami ? data.aws_ssm_parameter.ubuntu_1804_ami_id.value : var.ami_id
+  ami                         = data.aws_ssm_parameter.ubuntu_1804_ami_id.value
   instance_type               = "t3.micro"
   key_name                    = var.ec2_key_pair_name
   vpc_security_group_ids      = [aws_security_group.ec2-svc-node.id, data.terraform_remote_state.aws-tgw.outputs.consul_server_sg_id]
