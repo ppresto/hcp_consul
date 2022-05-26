@@ -4,14 +4,10 @@ data "template_file" "coredns_configmap_patch" {
     CONSUL_DNS_CLUSTER_IP = var.consul_dns_cluster_ip
   }
 }
-
-data "kubectl_path_documents" "coredns-patch" {
-  pattern = "[data.template_file.coredns_configmap_patch.rendered]"
+data "kubectl_file_documents" "docs" {
+    content = data.template_file.coredns_configmap_patch.rendered
 }
-
-# Get consul dns server IP
-resource "kubectl_manifest" "coredns-patch" {
-  for_each   = toset(data.kubectl_path_documents.coredns-patch.documents)
-  yaml_body  = each.value
-  depends_on = [helm_release.consul]
+resource "kubectl_manifest" "test" {
+    for_each  = data.kubectl_file_documents.docs.manifests
+    yaml_body = each.value
 }
