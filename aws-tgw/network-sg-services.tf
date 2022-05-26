@@ -13,7 +13,7 @@ resource "aws_security_group_rule" "service_envoy" {
   protocol          = "tcp"
   from_port         = 20000
   to_port           = 21255
-  cidr_blocks       = var.vpc_cidr_block
+  cidr_blocks       = [var.vpc_cidr_block]
   ipv6_cidr_blocks  = length(var.allowed_bastion_cidr_blocks_ipv6) > 0 ? var.allowed_bastion_cidr_blocks_ipv6 : null
   description       = "Allow SSH traffic."
 }
