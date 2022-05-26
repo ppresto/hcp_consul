@@ -19,6 +19,7 @@ variable "vpc_cidr_block" {
   description = "VPC CIDR Block Range"
   type        = string
   default     = "10.20.0.0/16"
+  default     = "0.0.0.0/0"
 }
 locals {
   vpc_id             = data.terraform_remote_state.hcp_consul.outputs.vpc_id
