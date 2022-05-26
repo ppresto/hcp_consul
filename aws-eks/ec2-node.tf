@@ -77,8 +77,8 @@ resource "aws_security_group_rule" "node_allow_outbound" {
 }
 
 output "ec2_svc_node_ip" {
-  value       = aws_instance.node.public_ip
-  description = "Public IP address of node"
+  value       = aws_instance.node.private_ip
+  description = "IP address of node"
 }
 
 output "bastion_ip" {
