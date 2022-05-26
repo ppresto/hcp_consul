@@ -56,17 +56,6 @@ resource "aws_security_group_rule" "ec2-svc-node_9090-9099" {
   cidr_blocks       = [var.vpc_cidr_block]
   description       = "Allow SSH traffic."
 }
-
-resource "aws_security_group_rule" "ec2-svc-node_allow_outbound" {
-  security_group_id = aws_security_group.ec2-svc-node.id
-  type              = "egress"
-  protocol          = "-1"
-  from_port         = 0
-  to_port           = 0
-  cidr_blocks       = ["0.0.0.0/0"]
-  description       = "Allow any outbound traffic."
-}
-
 resource "aws_security_group_rule" "node_allow_22" {
   security_group_id = aws_security_group.ec2-svc-node.id
   type              = "ingress"
