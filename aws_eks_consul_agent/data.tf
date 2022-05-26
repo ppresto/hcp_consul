@@ -13,7 +13,7 @@ data "terraform_remote_state" "aws-eks" {
   config = {
     organization = "presto-projects"
     workspaces = {
-      name = "aws-eks"
+      name = "aws_usw_dev_eks"
     }
   }
 }
