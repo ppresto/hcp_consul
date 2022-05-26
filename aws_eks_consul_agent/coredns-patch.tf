@@ -1,5 +1,5 @@
 data "template_file" "coredns_configmap_patch" {
-  template = file("${path.module}/templates/coredns/coredns_patch.yaml")
+  template = file("${path.module}/templates/coredns/coredns-patch.yaml")
   vars = {
     CONSUL_DNS_CLUSTER_IP = var.consul_dns_cluster_ip
   }
