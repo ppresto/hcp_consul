@@ -31,39 +31,3 @@ For proxy global default changes to take affect restart envoy sidecars with roll
 ```
 for i in  $(kubectl get deployments -l service=fake-service -o name); do kubectl rollout restart $i; done
 ```
-
-#### Terminate stuck namespace
-```
-kubectl get namespace api -o json > temp.json
-```
-Find finalizers [kubernetes] and remove
-```
-"spec": {
-        "finalizers": []
-    }
-```
-
-Start proxy on localhost:8001
-```
-kubectl proxy
-```
-
-Run local API 
-```
-curl -k -H "Content-Type: application/json" -X PUT --data-binary @temp.json http://127.0.0.1:8001/api/v1/namespaces/api/finalize
-
-```
-
-#### Terminate stuck servicedefault
-```
-kubectl patch servicedefaults.consul.hashicorp.com web --type merge --patch '{"metadata":{"finalizers":[]}}'
-
-kubectl patch servicedefaults.consul.hashicorp.com api --type merge --patch '{"metadata":{"finalizers":[]}}'
-
-kubectl patch ingressgateway.consul.hashicorp.com ingress-gateway --type merge --patch '{"metadata":{"finalizers":[]}}'
-
-kubectl patch serviceintentions.consul.hashicorp.com cache --type merge --patch '{"metadata":{"finalizers":[]}}'
-kubectl patch serviceintentions.consul.hashicorp.com currency --type merge --patch '{"metadata":{"finalizers":[]}}'
-kubectl patch serviceintentions.consul.hashicorp.com web --type merge --patch '{"metadata":{"finalizers":[]}}'
-kubectl patch serviceintentions.consul.hashicorp.com payments --type merge --patch '{"metadata":{"finalizers":[]}}'
-```

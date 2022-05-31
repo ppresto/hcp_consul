@@ -203,7 +203,7 @@ metadata:
     linkerd.io/inject: disabled
     prometheus.io/port: "14269"
     prometheus.io/scrape: "true"
-    sidecar.istio.io/inject: "false"
+    consul.hashicorp.com/connect-inject: "false"
   creationTimestamp: null
   labels:
     app: jaeger
@@ -230,8 +230,7 @@ spec:
         linkerd.io/inject: disabled
         prometheus.io/port: "14269"
         prometheus.io/scrape: "true"
-        sidecar.istio.io/inject: "false"
-        consul.hashicorp.com/connect-inject: 'false'
+        consul.hashicorp.com/connect-inject: "false"
       creationTimestamp: null
       labels:
         app: jaeger

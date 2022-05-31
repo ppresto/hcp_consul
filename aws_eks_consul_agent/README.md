@@ -180,9 +180,20 @@ kubectl exec -it web-7c4f6d77d8-gqs2p -c envoy-sidecar -- nc -zv 10.20.11.138 20
 ```
 
 ### Consul
+
+Service DNS lookups
+```
+web.service.consul
+web.ingress.consul
+api.virtual.consul
+api.virtual.api-ns.ns.default.ap.hcpc-cluster-presto.dc.consul
+```
+
 Deregister Node to remove consul-sync k8s services from HCP.
+```
 curl \
     --header "X-Consul-Token: ${CONSUL_HTTP_TOKEN}" \
     --request PUT \
     --data '{"Datacenter": "hcpc-cluster-presto","Node": "k8s-sync"}' \
     https://hcpc-cluster-presto.consul.328306de-41b8-43a7-9c38-ca8d89d06b07.aws.hashicorp.cloud//v1/catalog/deregister
+```

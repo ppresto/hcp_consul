@@ -9,6 +9,7 @@ apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceDefaults
 metadata:
   name: api
+  namespace: api-ns
 spec:
   protocol: "http"
 ---
@@ -16,6 +17,7 @@ apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceDefaults
 metadata:
   name: payments
+  namespace: payments-ns
 spec:
   protocol: "http"
 ---
@@ -23,5 +25,6 @@ apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceDefaults
 metadata:
   name: currency
+  namespace: currency-ns
 spec:
   protocol: "grpc"

@@ -6,6 +6,7 @@ metadata:
 spec:
   destination:
     name: web
+    namespace: default
   sources:
   - name: ingress-gateway
     action: allow
@@ -17,23 +18,10 @@ metadata:
 spec:
   destination:
     name: api
-    namespace: api
+    namespace: api-ns
   sources:
   - name: web
     namespace: default
-    action: allow
----
-apiVersion: consul.hashicorp.com/v1alpha1
-kind: ServiceIntentions
-metadata:
-  name: cache
-spec:
-  destination:
-    name: cache
-    namespace: cache-ns
-  sources:
-  - name: api
-    namespace: api
     action: allow
 ---
 apiVersion: consul.hashicorp.com/v1alpha1
@@ -46,7 +34,7 @@ spec:
     namespace: payments-ns
   sources:
   - name: api
-    namespace: api
+    namespace: api-ns
     action: allow
 ---
 apiVersion: consul.hashicorp.com/v1alpha1
@@ -58,10 +46,7 @@ spec:
     name: currency
     namespace: currency-ns
   sources:
-  - name: payments
-    namespace: payments-ns
-    action: allow
   - name: api
-    namespace: api
+    namespace: api-ns
     action: allow
 ---

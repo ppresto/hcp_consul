@@ -2,13 +2,14 @@ apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceRouter
 metadata:
   name: api
+  namespace: api-ns
 spec:
   routes:
     - match:
         http:
           header:
             - name : baggage
-              regex: version=2
+              regex: .*version=2.*
       destination:
         service: api
         serviceSubset: v2
@@ -16,19 +17,20 @@ spec:
         numRetries: 3
         retryOnConnectFailure: true
       # Retry Logic Added
-    - match:
-        http:
-          pathPrefix: /
-      destination:
-        service: api
-        requestTimeout: 10s
-        numRetries: 3
-        retryOnConnectFailure: true
+    #- match:
+    #    http:
+    #      pathPrefix: /
+    #  destination:
+    #    service: api
+    #    requestTimeout: 10s
+    #    numRetries: 3
+    #    retryOnConnectFailure: true
 ---
 apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceSplitter
 metadata:
   name: api
+  namespace: api-ns
 spec:
   splits:
     - weight: 100
@@ -40,6 +42,7 @@ apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceResolver
 metadata:
   name: api
+  namespace: api-ns
 spec:
   defaultSubset: v1
   subsets:

@@ -1,22 +1,14 @@
-
-kind: Namespace
-apiVersion: v1
-metadata:
-  name: api
-  labels:
-    name: api
----
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: api
-  namespace: api
+  namespace: api-ns
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: api
-  namespace: api
+  namespace: api-ns
 spec:
   selector:
     app: api
@@ -24,19 +16,11 @@ spec:
     - port: 9091
       targetPort: 9091
 ---
-apiVersion: consul.hashicorp.com/v1alpha1
-kind: ServiceDefaults
-metadata:
-  name: api
-  namespace: api
-spec:
-  protocol: "http"
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: api-deployment-v1
-  namespace: api
+  namespace: api-ns
   labels:
     app: api
     version: v1
@@ -48,14 +32,13 @@ spec:
       app: api
   template:
     metadata:
-      namespace: api
+      namespace: api-ns
       labels:
         app: api
         service: fake-service
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
         consul.hashicorp.com/transparent-proxy: 'true'
-        #consul.hashicorp.com/connect-service-upstreams: 'cache:9090, payments:9090'
         consul.hashicorp.com/envoy-extra-args: '--log-level debug --disable-hot-restart'
         consul.hashicorp.com/service-tags: 'api, v1'
         consul.hashicorp.com/service-meta-version: v1
@@ -68,9 +51,9 @@ spec:
             - containerPort: 9091
           env:
             - name: 'LISTEN_ADDR'
-              value: '127.0.0.1:9091'
-            - name: 'UPSTREAM_URIS'
-              value: 'http://cache.cache-ns:9090, http://payments.payments-ns:9090'
+              value: '0.0.0.0:9091'
+            #- name: 'UPSTREAM_URIS'
+            #  value: 'grpc://currency.currency-ns:9090,http://payments.payments-ns:9090'
             - name: 'NAME'
               value: 'api-v1'
             - name: 'MESSAGE'

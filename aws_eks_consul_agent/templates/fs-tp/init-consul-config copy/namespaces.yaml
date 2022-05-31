@@ -1,6 +1,13 @@
 kind: Namespace
 apiVersion: v1
 metadata:
+  name: api-ns
+  labels:
+    name: api
+---
+kind: Namespace
+apiVersion: v1
+metadata:
   name: payments-ns
   labels:
     name: payments

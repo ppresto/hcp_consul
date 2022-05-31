@@ -14,13 +14,6 @@ spec:
     - port: 9090
       targetPort: 9090
 ---
-apiVersion: consul.hashicorp.com/v1alpha1
-kind: ServiceDefaults
-metadata:
-  name: web
-spec:
-  protocol: "http"
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -39,6 +32,9 @@ spec:
         app: web
         service: fake-service
       annotations:
+        consul.hashicorp.com/connect-inject: 'true'
+        consul.hashicorp.com/transparent-proxy: 'false'
+        consul.hashicorp.com/connect-service-upstreams: 'api.default:9091'
     spec:
       serviceAccountName: web
       containers:
@@ -50,7 +46,7 @@ spec:
             - name: 'LISTEN_ADDR'
               value: '0.0.0.0:9090'
             - name: 'UPSTREAM_URIS'
-              value: 'http://api.api:9091'
+              value: 'http://api.service.consul:9091'
             - name: 'NAME'
               value: 'web'
             - name: 'MESSAGE'
