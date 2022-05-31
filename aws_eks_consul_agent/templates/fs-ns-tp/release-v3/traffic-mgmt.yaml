@@ -2,7 +2,6 @@ apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceRouter
 metadata:
   name: api
-  namespace: api-ns
 spec:
   routes:
     - match:
@@ -30,7 +29,6 @@ apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceSplitter
 metadata:
   name: api
-  namespace: api-ns
 spec:
   splits:
     - weight: 100
@@ -42,7 +40,6 @@ apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceResolver
 metadata:
   name: api
-  namespace: api-ns
 spec:
   defaultSubset: v1
   subsets:

@@ -130,7 +130,6 @@ WantedBy=multi-user.target
 EOF
 
 # Configure fake-service (api)
-
 cat >/opt/consul/fake-service/service_api.hcl <<- EOF
 {
   "service": {
@@ -139,6 +138,10 @@ cat >/opt/consul/fake-service/service_api.hcl <<- EOF
     "id": "api",
     "port": 9091,
     "token": "${SERVICE_ACL_TOKEN}",
+    "tags": ["vm","v1"],
+    "meta": {
+      "version": "v1"
+    },
     "check": {
       "http": "http://localhost:9091/health",
       "method": "GET",
@@ -171,6 +174,35 @@ Name = "api"
 Protocol = "http"
 EOF
 
+cat >/opt/consul/fake-service/central_config/traffic-resolver.hcl <<- EOF
+Kind          = "service-resolver"
+Name          = "api"
+DefaultSubset = "v1"
+Subsets = {
+  v1 = {
+    Filter = "Service.Meta.version == v1"
+  }
+  v2 = {
+    Filter = "Service.Meta.version == v2"
+  }
+}
+EOF
+
+cat >/opt/consul/fake-service/central_config/traffic-splitter.hcl <<- EOF
+Kind = "service-splitter"
+Name = "api"
+Splits = [
+  {
+    Weight        = 100
+    ServiceSubset = "v1"
+  },
+  {
+    Weight        = 0
+    ServiceSubset = "v2"
+  },
+]
+EOF
+
 cat >/opt/consul/fake-service/start.sh <<- EOF
 #!/bin/bash
 
@@ -181,10 +213,12 @@ consul services register ./service_api.hcl
 sleep 1
 consul config write ./central_config/service_intentions.hcl
 consul config write ./central_config/service_defaults.hcl
+consul config write ./central_config/traffic-resolver.hcl
+consul config write ./central_config/traffic-splitter.hcl
 
 # Start API Service
 export MESSAGE="API RESPONSE"
-export NAME="API"
+export NAME="api-v1"
 export SERVER_TYPE="http"
 export LISTEN_ADDR="127.0.0.1:9091"
 nohup ./fake-service &
@@ -197,6 +231,8 @@ cat >/opt/consul/fake-service/stop.sh <<- EOF
 #!/bin/bash
 consul config delete -kind service-intentions -name api
 consul config delete -kind service-defaults -name api
+consul config delete -kind service-resolver -name api
+consul config delete -kind service-splitter -name api
 consul services deregister ./service_api.hcl
 pkill envoy
 pkill fake-service

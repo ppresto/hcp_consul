@@ -26,4 +26,4 @@ metadata:
   name: currency
   namespace: currency-ns
 spec:
-  protocol: "grpc"
+  protocol: "http"

@@ -18,7 +18,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api-deployment-v2
+  name: api-deployment-v3
   labels:
     app: api
     version: v1
@@ -37,8 +37,8 @@ spec:
         consul.hashicorp.com/connect-inject: 'true'
         consul.hashicorp.com/transparent-proxy: 'true'
         consul.hashicorp.com/envoy-extra-args: '--log-level debug --disable-hot-restart'
-        consul.hashicorp.com/service-tags: 'api, v2'
-        consul.hashicorp.com/service-meta-version: v2
+        consul.hashicorp.com/service-tags: 'eks,v3,alpha'
+        consul.hashicorp.com/service-meta-version: 'v3'
     spec:
       serviceAccountName: api
       containers:
@@ -50,9 +50,9 @@ spec:
             - name: 'LISTEN_ADDR'
               value: '0.0.0.0:9091'
             - name: 'UPSTREAM_URIS'
-              value: 'grpc://currency.currency-ns:9090,http://payments.payments-ns:9090'
+              value: 'http://payments.payments-ns:9090'
             - name: 'NAME'
-              value: 'api-v2'
+              value: 'api-v3'
             - name: 'MESSAGE'
               value: 'API response'
             - name: 'SERVER_TYPE'
