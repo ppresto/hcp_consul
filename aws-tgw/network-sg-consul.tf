@@ -90,15 +90,15 @@ resource "aws_security_group_rule" "hcp_udp_server_gossip" {
 #  source_security_group_id = aws_security_group.consul_server.id
 #  description              = "Used to handle gossip between client agents"
 #}
-resource "aws_security_group_rule" "consul_server_allow_client_egress_8301_udp" {
-  security_group_id        = aws_security_group.consul_server.id
-  type                     = "egress"
-  protocol                 = "udp"
-  from_port                = 8301
-  to_port                  = 8301
-  source_security_group_id = aws_security_group.consul_server.id
-  description              = "Used to handle gossip between client agents"
-}
+#resource "aws_security_group_rule" "consul_server_allow_client_egress_8301_udp" {
+#  security_group_id        = aws_security_group.consul_server.id
+#  type                     = "egress"
+#  protocol                 = "udp"
+#  from_port                = 8301
+#  to_port                  = 8301
+#  source_security_group_id = aws_security_group.consul_server.id
+#  description              = "Used to handle gossip between client agents"
+#}
 resource "aws_security_group_rule" "hcp_tcp_https" {
   security_group_id = aws_security_group.consul_server.id
   type              = "egress"
