@@ -81,24 +81,24 @@ resource "aws_security_group_rule" "hcp_udp_server_gossip" {
   cidr_blocks       = [data.terraform_remote_state.hcp_consul.outputs.hvn_cidr_block]
   description       = "Server to server gossip communication"
 }
-#resource "aws_security_group_rule" "consul_server_allow_client_egress_8301" {
-#  security_group_id        = aws_security_group.consul_server.id
-#  type                     = "egress"
-#  protocol                 = "tcp"
-#  from_port                = 8301
-#  to_port                  = 8301
-#  source_security_group_id = aws_security_group.consul_server.id
-#  description              = "Used to handle gossip between client agents"
-#}
-#resource "aws_security_group_rule" "consul_server_allow_client_egress_8301_udp" {
-#  security_group_id        = aws_security_group.consul_server.id
-#  type                     = "egress"
-#  protocol                 = "udp"
-#  from_port                = 8301
-#  to_port                  = 8301
-#  source_security_group_id = aws_security_group.consul_server.id
-#  description              = "Used to handle gossip between client agents"
-#}
+resource "aws_security_group_rule" "consul_server_allow_client_egress_8301" {
+  security_group_id        = aws_security_group.consul_server.id
+  type                     = "egress"
+  protocol                 = "tcp"
+  from_port                = 8301
+  to_port                  = 8301
+  source_security_group_id = aws_security_group.consul_server.id
+  description              = "Used to handle gossip between client agents"
+}
+resource "aws_security_group_rule" "consul_server_allow_client_egress_8301_udp" {
+  security_group_id        = aws_security_group.consul_server.id
+  type                     = "egress"
+  protocol                 = "udp"
+  from_port                = 8301
+  to_port                  = 8301
+  source_security_group_id = aws_security_group.consul_server.id
+  description              = "Used to handle gossip between client agents"
+}
 resource "aws_security_group_rule" "hcp_tcp_https" {
   security_group_id = aws_security_group.consul_server.id
   type              = "egress"
