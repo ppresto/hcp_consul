@@ -19,10 +19,11 @@ envoy --version
 
 ### Install fake-service
 mkdir -p /opt/consul/fake-service/central_config
-cd /opt/consul/fake-service
+mkdir -p /opt/consul/fake-service/bin
+cd /opt/consul/fake-service/bin
 wget https://github.com/nicholasjackson/fake-service/releases/download/v0.23.1/fake_service_linux_amd64.zip
 unzip fake_service_linux_amd64.zip
-chmod 755 /opt/consul/fake-service/fake-service
+chmod 755 /opt/consul/fake-service/bin/fake-service
 
 # Set variables with jq
 GOSSIP_KEY=$(echo $CONFIG_FILE_64 | base64 -d | jq -r '.encrypt')
@@ -33,7 +34,6 @@ DATACENTER=$(echo $CONFIG_FILE_64 | base64 -d | jq -r '.datacenter')
 local_ip=`ip -o route get to 169.254.169.254 | sed -n 's/.*src \([0-9.]\+\).*/\1/p'`
 
 # Setup Consul Client for HCP
-mkdir -p /opt/consul
 mkdir -p /etc/consul.d/certs
 touch /etc/consul.d/consul.env  #placeholder for env vars
 
@@ -111,7 +111,7 @@ WantedBy=multi-user.target
 EOF
 
 # Configure fake-service (api)
-cat >/opt/consul/fake-service/service_api.hcl <<- EOF
+cat >/opt/consul/fake-service/api-service.hcl <<- EOF
 {
   "service": {
     "name": "api",
@@ -189,7 +189,7 @@ cat >/opt/consul/fake-service/start.sh <<- EOF
 
 export CONSUL_HTTP_TOKEN="${CONSUL_ACL_TOKEN}"
 sleep 1
-consul services register ./service_api.hcl
+consul services register ./api-service.hcl
 
 sleep 1
 consul config write ./central_config/service_intentions_api.hcl
@@ -202,7 +202,7 @@ export MESSAGE="API RESPONSE"
 export NAME="api-v1"
 export SERVER_TYPE="http"
 export LISTEN_ADDR="127.0.0.1:9091"
-nohup ./fake-service &
+nohup ./bin/fake-service &
 
 sleep 1
 consul connect envoy -sidecar-for api -admin-bind localhost:19000 > api-proxy.log &
@@ -210,11 +210,11 @@ EOF
 
 cat >/opt/consul/fake-service/stop.sh <<- EOF
 #!/bin/bash
-consul config delete -kind service-intentions -name api
-consul config delete -kind service-defaults -name api
 consul config delete -kind service-resolver -name api
 consul config delete -kind service-splitter -name api
-consul services deregister ./service_api.hcl
+consul config delete -kind service-intentions -name api
+consul config delete -kind service-defaults -name api
+consul services deregister ./api-service.hcl
 pkill envoy
 pkill fake-service
 EOF
