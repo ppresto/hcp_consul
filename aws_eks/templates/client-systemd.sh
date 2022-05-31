@@ -157,7 +157,7 @@ cat >/opt/consul/fake-service/service_api.hcl <<- EOF
 }
 EOF
 
-cat >/opt/consul/fake-service/central_config/service_intentions.hcl <<- EOF
+cat >/opt/consul/fake-service/central_config/service_intentions_api.hcl <<- EOF
 Kind = "service-intentions"
 Name = "api"
 Sources = [
@@ -168,13 +168,13 @@ Sources = [
 ]
 EOF
 
-cat >/opt/consul/fake-service/central_config/service_defaults.hcl <<- EOF
+cat >/opt/consul/fake-service/central_config/service_defaults_api.hcl <<- EOF
 Kind = "service-defaults"
 Name = "api"
 Protocol = "http"
 EOF
 
-cat >/opt/consul/fake-service/central_config/traffic-resolver.hcl <<- EOF
+cat >/opt/consul/fake-service/api-service-resolver.hcl <<- EOF
 Kind          = "service-resolver"
 Name          = "api"
 DefaultSubset = "v1"
@@ -188,7 +188,7 @@ Subsets = {
 }
 EOF
 
-cat >/opt/consul/fake-service/central_config/traffic-splitter.hcl <<- EOF
+cat >/opt/consul/fake-service/api-service-splitter.hcl <<- EOF
 Kind = "service-splitter"
 Name = "api"
 Splits = [
@@ -211,10 +211,10 @@ sleep 1
 consul services register ./service_api.hcl
 
 sleep 1
-consul config write ./central_config/service_intentions.hcl
-consul config write ./central_config/service_defaults.hcl
-consul config write ./central_config/traffic-resolver.hcl
-consul config write ./central_config/traffic-splitter.hcl
+consul config write ./central_config/service_intentions_api.hcl
+consul config write ./central_config/service_defaults_api.hcl
+consul config write ./api-service-resolver.hcl
+consul config write ./api-service-splitter.hcl
 
 # Start API Service
 export MESSAGE="API RESPONSE"
@@ -244,6 +244,19 @@ echo "export CONSUL_HTTP_TOKEN=${CONSUL_ACL_TOKEN}" >> /home/ubuntu/.profile
 # Start Consul
 systemctl enable consul.service
 systemctl start consul.service
+
+# Point DNS to Consul's DNS
+mkdir -p /etc/systemd/resolved.conf.d
+cat > /etc/systemd/resolved.conf.d/consul.conf <<- EOF
+[Resolve]
+DNS=127.0.0.1
+Domains=~consul
+EOF
+# Because our Ubuntu's systemd is < 245, we need to redirect traffic to the correct port for the DNS changes to take effect
+iptables --table nat --append OUTPUT --destination localhost --protocol udp --match udp --dport 53 --jump REDIRECT --to-ports 8600
+iptables --table nat --append OUTPUT --destination localhost --protocol tcp --match tcp --dport 53 --jump REDIRECT --to-ports 8600
+# Restart systemd-resolved so that the above DNS changes take effect
+systemctl restart systemd-resolved
 
 # Start fake-service container using docker-compose
 cd /opt/consul/fake-service
