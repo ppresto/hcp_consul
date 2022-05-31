@@ -6,25 +6,19 @@
 CONFIG_FILE_64="${CONSUL_CONFIG_FILE}"
 CONSUL_CA=$(echo ${CONSUL_CA_FILE}| base64 -d)
 
-#
 ### Install Consul
-#
 curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
 apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
 apt update && apt install -y consul-enterprise=1.12.0-1+ent unzip jq
 
-#
 ### Install Envoy
-#
 curl https://func-e.io/install.sh | bash -s -- -b /usr/local/bin/
 func-e versions -all
 func-e use 1.20.2
 cp /root/.func-e/versions/1.20.2/bin/envoy /usr/local/bin
 envoy --version
 
-#
 ### Install Docker, docker-compose
-#
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
 echo \
@@ -34,9 +28,7 @@ echo \
 apt-get update -y
 apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
 
-#
 ### Install fake-service
-#
 mkdir -p /opt/consul/fake-service/central_config
 cd /opt/consul/fake-service
 wget https://github.com/nicholasjackson/fake-service/releases/download/v0.23.1/fake_service_linux_amd64.zip
@@ -238,9 +230,6 @@ pkill envoy
 pkill fake-service
 EOF
 
-# Update user profiles for Consul CLI use
-echo "export CONSUL_HTTP_TOKEN=${CONSUL_ACL_TOKEN}" >> /root/.profile
-echo "export CONSUL_HTTP_TOKEN=${CONSUL_ACL_TOKEN}" >> /home/ubuntu/.profile
 # Start Consul
 systemctl enable consul.service
 systemctl start consul.service
@@ -252,13 +241,14 @@ cat > /etc/systemd/resolved.conf.d/consul.conf <<- EOF
 DNS=127.0.0.1
 Domains=~consul
 EOF
-# Because our Ubuntu's systemd is < 245, we need to redirect traffic to the correct port for the DNS changes to take effect
 iptables --table nat --append OUTPUT --destination localhost --protocol udp --match udp --dport 53 --jump REDIRECT --to-ports 8600
 iptables --table nat --append OUTPUT --destination localhost --protocol tcp --match tcp --dport 53 --jump REDIRECT --to-ports 8600
-# Restart systemd-resolved so that the above DNS changes take effect
 systemctl restart systemd-resolved
 
 # Start fake-service container using docker-compose
 cd /opt/consul/fake-service
 chmod 755 *.sh
 ./start.sh
+
+echo "export CONSUL_HTTP_TOKEN=${CONSUL_ACL_TOKEN}" >> /root/.profile
+echo "export CONSUL_HTTP_TOKEN=${CONSUL_ACL_TOKEN}" >> /home/ubuntu/.profile
