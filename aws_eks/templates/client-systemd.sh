@@ -18,8 +18,7 @@ cp /root/.func-e/versions/1.20.2/bin/envoy /usr/local/bin
 envoy --version
 
 ### Install fake-service
-mkdir -p /opt/consul/fake-service/central_config
-mkdir -p /opt/consul/fake-service/bin
+mkdir -p /opt/consul/fake-service/{central_config,bin,logs}
 cd /opt/consul/fake-service/bin
 wget https://github.com/nicholasjackson/fake-service/releases/download/v0.23.1/fake_service_linux_amd64.zip
 unzip fake_service_linux_amd64.zip
@@ -192,8 +191,8 @@ sleep 1
 consul services register ./api-service.hcl
 
 sleep 1
-consul config write ./central_config/service_intentions_api.hcl
 consul config write ./central_config/service_defaults_api.hcl
+consul config write ./central_config/service_intentions_api.hcl
 consul config write ./api-service-resolver.hcl
 consul config write ./api-service-splitter.hcl
 
@@ -202,16 +201,16 @@ export MESSAGE="API RESPONSE"
 export NAME="api-v1"
 export SERVER_TYPE="http"
 export LISTEN_ADDR="127.0.0.1:9091"
-nohup ./bin/fake-service &
+nohup ./bin/fake-service > logs/fake-service.out 2>&1 &
 
 sleep 1
-consul connect envoy -sidecar-for api -admin-bind localhost:19000 > api-proxy.log &
+consul connect envoy -sidecar-for api -admin-bind localhost:19000 > logs/envoy.log 2>&1 &
 EOF
 
 cat >/opt/consul/fake-service/stop.sh <<- EOF
 #!/bin/bash
-consul config delete -kind service-resolver -name api
 consul config delete -kind service-splitter -name api
+consul config delete -kind service-resolver -name api
 consul config delete -kind service-intentions -name api
 consul config delete -kind service-defaults -name api
 consul services deregister ./api-service.hcl
