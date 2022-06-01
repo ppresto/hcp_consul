@@ -187,14 +187,10 @@ cat >/opt/consul/fake-service/start.sh <<- EOF
 #!/bin/bash
 
 export CONSUL_HTTP_TOKEN="${CONSUL_ACL_TOKEN}"
-sleep 1
-consul services register ./api-service.hcl
-
-sleep 1
-consul config write ./central_config/service_defaults_api.hcl
-consul config write ./central_config/service_intentions_api.hcl
-consul config write ./api-service-resolver.hcl
-consul config write ./api-service-splitter.hcl
+#consul config write ./central_config/service_defaults_api.hcl
+#consul config write ./central_config/service_intentions_api.hcl
+#consul config write ./api-service-resolver.hcl
+#consul config write ./api-service-splitter.hcl
 
 # Start API Service
 export MESSAGE="API RESPONSE"
@@ -202,17 +198,18 @@ export NAME="api-v1"
 export SERVER_TYPE="http"
 export LISTEN_ADDR="127.0.0.1:9091"
 nohup ./bin/fake-service > logs/fake-service.out 2>&1 &
-
+sleep 1
+consul services register ./api-service.hcl
 sleep 1
 consul connect envoy -sidecar-for api -admin-bind localhost:19000 > logs/envoy.log 2>&1 &
 EOF
 
 cat >/opt/consul/fake-service/stop.sh <<- EOF
 #!/bin/bash
-consul config delete -kind service-splitter -name api
-consul config delete -kind service-resolver -name api
-consul config delete -kind service-intentions -name api
-consul config delete -kind service-defaults -name api
+#consul config delete -kind service-splitter -name api
+#consul config delete -kind service-resolver -name api
+#consul config delete -kind service-intentions -name api
+#consul config delete -kind service-defaults -name api
 consul services deregister ./api-service.hcl
 pkill envoy
 pkill fake-service

@@ -1,8 +1,11 @@
 # Demo
 
+## Review this demo...
+
+
 ## Review Current Environment
 * Walk through [TFCB Workspaces](https://app.terraform.io/app/presto-projects/workspaces)
-* HCP, AWS VPC/TG, EKS cluster with basic web and api services
+* HCP, AWS VPC/TG, EKS cluster (Consul, and services)
 * [Show Consul Dashboard](https://hcpc-cluster-presto.consul.328306de-41b8-43a7-9c38-ca8d89d06b07.aws.hashicorp.cloud/ui/~api-ns/hcpc-cluster-presto/services/api/intentions) (No services)
 ## Fake-Service App
 Show current K8s cluster pods in real time for transparency

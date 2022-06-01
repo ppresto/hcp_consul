@@ -15,15 +15,6 @@ spec:
         requestTimeout: 10s
         numRetries: 3
         retryOnConnectFailure: true
-      # Retry Logic Added
-    #- match:
-    #    http:
-    #      pathPrefix: /
-    #  destination:
-    #    service: api
-    #    requestTimeout: 10s
-    #    numRetries: 3
-    #    retryOnConnectFailure: true
 ---
 apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceSplitter
