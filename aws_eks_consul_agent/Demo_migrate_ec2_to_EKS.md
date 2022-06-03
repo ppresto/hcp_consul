@@ -1,21 +1,30 @@
 # Demo
 
 ## Prep
-1. Be sure the consul helm chart to install the agent has been deployed.  Then configure the initial defaults and start the web service.
+1. Connect to EKS Cluster
+```
+#open terminal with iterm shortcut `Shift+Cmd+e` (EKS)
+# `Shift+Cmd+v` (VM)
+cd aws_eks
+dme # Doormat alias to update Terminal with AWS Creds
+./awscli_eks_connect.sh
+```
+
+2.  Be sure the consul helm chart to install the agent has been deployed.  Then configure the initial defaults and start the web service.
 ```
 cd ${HOME}/Projects/hcp/hcp-consul/aws_eks_consul_agent/templates/fs-ns-tp
 kubectl apply -f init-consul-config/
 kubectl apply -f web.yaml
 ```
 
-2. web will expect the api service to be running on the EC2 instances.  Lets check that these are running in the Consul UI.  If not ssh to the hosts and start the api fake-service.
+3. web will expect the api service to be running on the EC2 instances.  Lets check that these are running in the Consul UI.  If not ssh to the hosts and start the api fake-service.
 ```
 ssh ubuntu@
 sudo su -
 cd /opt/consul/fake-service
 ./start.sh
 ```
-3. Build web -> api Intention (can do manually during demo to show intentions)
+4. Build web -> api Intention (can do manually during demo to show intentions)
 4. Open Fake-service URL.
 ```
 echo "http://$(kubectl get svc consul-ingress-gateway -n consul -o json | jq -r '.status.loadBalancer.ingress[].hostname'):8080/ui"

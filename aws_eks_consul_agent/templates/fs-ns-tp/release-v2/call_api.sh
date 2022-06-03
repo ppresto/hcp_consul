@@ -4,10 +4,10 @@ HOST=$(kubectl -n consul get svc -o json | jq -r '.items[].status.loadBalancer.i
 
 while true
 do
-  curl -s \
+  echo "$(date):$(curl -s \
     --request GET \
    http://${HOST}:8080 \
-   | jq -r '.upstream_calls' | grep name
+   | jq -r '.upstream_calls' | grep name)"
 
   sleep 1
 done

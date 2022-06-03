@@ -4,7 +4,7 @@ metadata:
   name: api
 spec:
   splits:
-    - weight: 100 
+    - weight: 100
       serviceSubset: v1
     - weight: 0
       serviceSubset: v2
