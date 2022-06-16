@@ -7,6 +7,7 @@ variable "slackurl" {
   default = "https://hooks.slack.com/services/xxxxxxx"
 }
 
+varible "ec2_key_pair_name" {default = "ppresto-ptfe-dev-key"}
 # Workspace names will be used for the repo name when setting up VCS.
 
 variable "repo_org" {}

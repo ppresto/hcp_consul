@@ -18,7 +18,7 @@ module "ws_hcp_consul" {
     "HCP_CLIENT_ID" = var.HCP_CLIENT_ID
   }
   tf_variables = {
-    "ssh_key_name"   = "ppresto-ptfe-dev-key"
+    "ec2_key_pair_name"   = var.ec2_key_pair_name
     "hvn_id"         = "hvnc-id-presto"
     "cluster_id"     = "hcpc-cluster-presto"
     "region"         = var.aws_default_region

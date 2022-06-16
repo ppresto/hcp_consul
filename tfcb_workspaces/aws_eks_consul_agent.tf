@@ -17,7 +17,7 @@ module "aws_eks_consul_agent" {
     "HCP_CLIENT_ID" = var.HCP_CLIENT_ID
   }
   tf_variables = {
-    "ssh_key_name"    = "ppresto-ptfe-dev-key"
+    "ec2_key_pair_name"    = var.ec2_key_pair_name
     "region"          = var.aws_default_region
     "consul_template" = "fs-ns-tp"
     "namespace"       = "consul"
